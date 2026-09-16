@@ -1,0 +1,250 @@
+/* ============================================================
+   Bako — Page Title (عنوان صفحه با تصویر و جستجو)
+   ============================================================ */
+
+.page-title-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    margin-bottom: 14px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #eadfd4;
+    direction: rtl;
+    flex-wrap: wrap;
+}
+
+/* ============================================================
+   سمت راست: تصویر + متن
+   ============================================================ */
+.page-title-main {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+    flex-shrink: 0;
+}
+
+.page-title-icon-wrap {
+    width: 34px;
+    height: 34px;
+    min-width: 34px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #f5e6d3 0%, #f0dcc0 100%);
+    border: 1px solid rgba(212, 163, 115, 0.35);
+    border-radius: 10px;
+    padding: 5px;
+    box-sizing: border-box;
+    box-shadow:
+            0 2px 6px rgba(44, 24, 16, 0.06),
+            inset 0 1px 0 rgba(255, 255, 255, 0.7);
+    flex-shrink: 0;
+}
+
+.page-title-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+    pointer-events: none;
+    user-select: none;
+}
+
+.page-title-fallback {
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    line-height: 1;
+}
+
+.page-title-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+}
+
+.page-title-text h1 {
+    font-size: 17px;
+    font-weight: 900;
+    color: var(--primary-dark);
+    margin: 0;
+    letter-spacing: -0.3px;
+    line-height: 1.3;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.page-title-subtitle {
+    font-size: 11px;
+    color: var(--primary-light);
+    margin: 0;
+    opacity: 0.85;
+    font-weight: 600;
+    line-height: 1.4;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* ============================================================
+   وسط: کادر جستجو
+   ============================================================ */
+.page-title-search {
+    flex: 1;
+    min-width: 220px;
+    max-width: 380px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #ffffff;
+    border: 1.5px solid #eee4db;
+    border-radius: 10px;
+    padding: 6px 12px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 2px 6px rgba(44, 24, 16, 0.04);
+    margin: 0 auto;
+    direction: rtl;
+}
+
+.page-title-search:focus-within {
+    border-color: var(--gold-soft);
+    box-shadow: 0 4px 12px rgba(212, 163, 115, 0.18);
+}
+
+.page-title-search-icon {
+    font-size: 13px;
+    opacity: 0.6;
+    flex-shrink: 0;
+}
+
+.page-title-search-input {
+    flex: 1;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-family: inherit;
+    font-size: 12.5px;
+    color: var(--primary-dark);
+    font-weight: 600;
+    padding: 2px 0;
+    min-width: 0;
+    text-align: right;
+    direction: rtl;
+}
+
+.page-title-search-input::placeholder {
+    color: rgba(107, 63, 43, 0.4);
+    font-weight: 500;
+    text-align: right;
+}
+
+.page-title-search-clear {
+    background: rgba(192, 57, 43, 0.08);
+    border: none;
+    color: var(--red);
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+    padding: 0;
+}
+
+.page-title-search-clear:hover {
+    background: var(--red);
+    color: #ffffff;
+    transform: scale(1.1);
+}
+
+/* ============================================================
+   سمت چپ: count یا محتوا
+   ============================================================ */
+.page-title-left {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.page-title-count {
+    font-size: 11.5px;
+    font-weight: 800;
+    color: var(--primary-light);
+    background: #faf6f0;
+    border: 1px solid #eee4db;
+    padding: 4px 12px;
+    border-radius: 14px;
+    white-space: nowrap;
+}
+
+.page-title-right {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+/* ============================================================
+   ریسپانسیو
+   ============================================================ */
+@media (max-width: 900px) {
+    .page-title-search {
+        max-width: 100%;
+        margin: 0;
+        order: 3;
+        flex: 1 1 100%;
+    }
+}
+
+@media (max-width: 600px) {
+    .page-title-wrapper {
+        gap: 10px;
+        margin-bottom: 12px;
+        padding-bottom: 10px;
+    }
+
+    .page-title-icon-wrap {
+        width: 28px;
+        height: 28px;
+        min-width: 28px;
+        border-radius: 8px;
+        padding: 4px;
+    }
+
+    .page-title-fallback {
+        font-size: 15px;
+    }
+
+    .page-title-text h1 {
+        font-size: 15px;
+    }
+
+    .page-title-subtitle {
+        font-size: 10px;
+    }
+
+    .page-title-search {
+        min-width: 100%;
+        padding: 5px 10px;
+    }
+
+    .page-title-search-input {
+        font-size: 11.5px;
+    }
+
+    .page-title-count {
+        font-size: 10.5px;
+        padding: 3px 10px;
+    }
+}

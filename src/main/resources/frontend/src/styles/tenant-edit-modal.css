@@ -1,0 +1,272 @@
+/* ============================================================
+   Modal ویرایش نانوایی (Super Admin)
+   ============================================================ */
+
+.sa-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(44, 24, 16, 0.55);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    padding: 20px;
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+    animation: saFadeIn 0.2s ease;
+}
+
+@keyframes saFadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+.sa-modal {
+    background: var(--card-bg);
+    border-radius: var(--radius-lg);
+    width: 100%;
+    max-width: 520px;
+    max-height: 92vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 20px 60px rgba(44, 24, 16, 0.3);
+    animation: saSlideUp 0.25s ease;
+    overflow: hidden;
+}
+
+@keyframes saSlideUp {
+    from { transform: translateY(20px); opacity: 0; }
+    to   { transform: translateY(0);    opacity: 1; }
+}
+
+/* ===== هدر ===== */
+.sa-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 20px;
+    background: linear-gradient(135deg, #4a2c1a 0%, #2c1810 100%);
+    color: var(--gold-text);
+    flex-shrink: 0;
+}
+
+.sa-modal-header h3 {
+    margin: 0;
+    font-size: 13.5px;
+    font-weight: 800;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.sa-modal-close {
+    width: 28px;
+    height: 28px;
+    border: none;
+    background: rgba(243, 212, 166, 0.15);
+    color: var(--gold-text);
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+}
+
+.sa-modal-close:hover:not(:disabled) {
+    background: rgba(243, 212, 166, 0.35);
+    transform: rotate(90deg);
+}
+
+.sa-modal-close:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* ===== بدنه ===== */
+.sa-modal-body {
+    padding: 18px 20px 0;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    flex: 1;
+}
+
+.sa-form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.sa-form-group label {
+    font-size: 11.5px;
+    font-weight: 700;
+    color: var(--primary-dark);
+}
+
+.sa-form-group input,
+.sa-form-group textarea {
+    padding: 9px 12px;
+    border: 1.5px solid #e8e0d8;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 12px;
+    background: #ffffff;
+    color: var(--primary-dark);
+    outline: none;
+    transition: 0.2s ease;
+    resize: vertical;
+}
+
+.sa-form-group input:focus,
+.sa-form-group textarea:focus {
+    border-color: var(--gold-soft);
+    box-shadow: 0 0 0 3px rgba(212, 163, 115, 0.15);
+}
+
+.sa-form-group input:disabled,
+.sa-form-group textarea:disabled {
+    background: #f5f0ea;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+.sa-form-group input::placeholder,
+.sa-form-group textarea::placeholder {
+    color: rgba(44, 24, 16, 0.35);
+}
+
+.sa-required {
+    color: #dc3545;
+    font-weight: 900;
+}
+
+.sa-error-text {
+    color: #dc3545;
+    font-size: 10.5px;
+    font-weight: 700;
+    margin-top: 2px;
+}
+
+/* ===== چک‌باکس‌ها ===== */
+.sa-form-checkboxes {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 12px 14px;
+    background: #faf6f0;
+    border: 1px solid #f0e6d6;
+    border-radius: 9px;
+}
+
+.sa-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--primary-dark);
+    user-select: none;
+}
+
+.sa-checkbox input[type="checkbox"] {
+    width: 17px;
+    height: 17px;
+    accent-color: var(--gold-dark);
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.sa-checkbox input[type="checkbox"]:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+/* ===== فوتر ===== */
+.sa-modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 14px 20px;
+    margin: 16px -20px 0;
+    border-top: 1px solid #f0ebe7;
+    background: #faf6f0;
+    position: sticky;
+    bottom: 0;
+}
+
+.sa-btn-secondary,
+.sa-btn-primary {
+    padding: 9px 22px;
+    border-radius: 9px;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: 0.2s ease;
+    border: none;
+    white-space: nowrap;
+}
+
+.sa-btn-secondary {
+    background: #f0ebe7;
+    color: var(--primary-dark);
+}
+
+.sa-btn-secondary:hover:not(:disabled) {
+    background: #e0d6cc;
+    transform: translateY(-1px);
+}
+
+.sa-btn-primary {
+    background: linear-gradient(135deg, #4a2c1a 0%, #2c1810 100%);
+    color: var(--gold-text);
+    box-shadow: 0 4px 12px rgba(74, 44, 26, 0.2);
+}
+
+.sa-btn-primary:hover:not(:disabled) {
+    background: linear-gradient(135deg, #6b3f2b 0%, #4a2c1a 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 18px rgba(74, 44, 26, 0.3);
+}
+
+.sa-btn-primary:disabled,
+.sa-btn-secondary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none !important;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 600px) {
+    .sa-modal {
+        max-width: 100%;
+    }
+
+    .sa-modal-body {
+        padding: 14px 14px 0;
+    }
+
+    .sa-modal-header {
+        padding: 12px 14px;
+    }
+
+    .sa-modal-header h3 {
+        font-size: 12px;
+    }
+
+    .sa-modal-footer {
+        padding: 12px 14px;
+        margin: 14px -14px 0;
+    }
+
+    .sa-btn-primary,
+    .sa-btn-secondary {
+        padding: 8px 16px;
+        font-size: 11.5px;
+    }
+}

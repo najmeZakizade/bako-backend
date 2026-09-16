@@ -1,0 +1,267 @@
+/* ============================================================
+   src/styles/customer-payment.css
+   استایل صفحه پرداخت مشتری
+   (بخش‌های مشترک با bakery از App.css استفاده می‌شود)
+   ============================================================ */
+
+.payment-page {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 8px 0 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+/* ============================================================
+   حالت خالی — نانوایی هیچ روش پرداختی فعال نکرده
+   ============================================================ */
+.payment-empty {
+    text-align: center;
+    padding: 48px 24px;
+    background: #fdf8f0;
+    border: 1.5px solid #eee4db;
+    border-radius: 14px;
+    max-width: 440px;
+    margin: 40px auto;
+}
+
+.payment-empty .empty-icon {
+    font-size: 52px;
+    display: block;
+    margin-bottom: 12px;
+    opacity: 0.7;
+}
+
+.payment-empty h2 {
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--primary-dark);
+    margin: 0 0 8px;
+}
+
+.payment-empty p {
+    font-size: 12.5px;
+    color: var(--primary-light);
+    line-height: 1.8;
+    margin: 0 0 20px;
+}
+
+.payment-empty .btn-secondary-action {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+}
+
+/* ============================================================
+   خلاصه پرداخت
+   ============================================================ */
+.payment-summary-box {
+    background: #fdf8f0;
+    border: 1.5px solid #eee4db;
+    border-radius: 14px;
+    padding: 14px 18px;
+    box-shadow: 0 2px 8px rgba(44, 24, 16, 0.04);
+}
+
+.payment-summary-box h3 {
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--primary-dark);
+    margin: 0 0 10px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #f0ebe7;
+}
+
+.payment-summary-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    padding: 5px 0;
+    font-size: 12px;
+}
+
+.payment-summary-row span {
+    color: var(--primary-light);
+    font-weight: 600;
+}
+
+.payment-summary-row strong {
+    font-weight: 800;
+    color: var(--primary-dark);
+    text-align: left;
+    word-break: break-word;
+}
+
+.payment-summary-row.total {
+    margin-top: 8px;
+    padding-top: 10px;
+    border-top: 2px dashed #d4a373;
+    font-size: 13px;
+}
+
+.payment-summary-row.total strong {
+    color: var(--gold-dark);
+    font-size: 15px;
+}
+
+/* ============================================================
+   کارت‌های روش پرداخت
+   ============================================================ */
+.payment-methods-box {
+    background: #fdf8f0;
+    border: 1.5px solid #eee4db;
+    border-radius: 14px;
+    padding: 14px 18px;
+    box-shadow: 0 2px 8px rgba(44, 24, 16, 0.04);
+}
+
+.payment-methods-box h3 {
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--primary-dark);
+    margin: 0 0 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #f0ebe7;
+}
+
+.payment-methods-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.payment-method-card {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 16px;
+    background: #ffffff;
+    border: 2px solid #eee4db;
+    border-radius: 12px;
+    cursor: pointer;
+    font-family: inherit;
+    text-align: right;
+    transition: all 0.22s ease;
+    min-height: 80px;
+}
+
+.payment-method-card:hover {
+    border-color: var(--gold-soft);
+    background: rgba(212, 163, 115, 0.04);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(44, 24, 16, 0.08);
+}
+
+.payment-method-card.selected {
+    border-color: var(--gold-dark);
+    background: linear-gradient(135deg, #fbefd9 0%, #f6e3c2 100%);
+    box-shadow: 0 5px 14px rgba(224, 153, 26, 0.22);
+}
+
+.payment-method-card .payment-icon {
+    font-size: 32px;
+    line-height: 1;
+    flex-shrink: 0;
+    width: 44px;
+    text-align: center;
+}
+
+.payment-method-card .payment-title {
+    display: block;
+    font-size: 13.5px;
+    font-weight: 800;
+    color: var(--primary-dark);
+    margin-bottom: 3px;
+}
+
+.payment-method-card .payment-desc {
+    display: block;
+    font-size: 11px;
+    color: var(--primary-light);
+    opacity: 0.85;
+    line-height: 1.5;
+}
+
+.payment-method-card .selected-check {
+    position: absolute;
+    top: 50%;
+    left: 14px;
+    transform: translateY(-50%);
+    width: 26px;
+    height: 26px;
+    background: linear-gradient(135deg, #f5a623 0%, #e0991a 100%);
+    color: #ffffff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 900;
+    box-shadow: 0 3px 8px rgba(224, 153, 26, 0.4);
+}
+
+/* ============================================================
+   دکمه‌های عملیات
+   ============================================================ */
+.payment-actions {
+    display: flex;
+    gap: 10px;
+    padding-top: 4px;
+}
+
+.payment-actions .btn-secondary-action {
+    flex: 0 0 auto;
+    padding: 11px 22px;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.payment-actions .btn-primary-action {
+    flex: 1;
+    padding: 12px 20px;
+}
+
+/* ============================================================
+   Responsive
+   ============================================================ */
+@media (max-width: 480px) {
+    .payment-summary-box,
+    .payment-methods-box {
+        padding: 12px 14px;
+    }
+    .payment-method-card {
+        padding: 12px 14px;
+        gap: 10px;
+        min-height: 70px;
+    }
+    .payment-method-card .payment-icon {
+        font-size: 26px;
+        width: 36px;
+    }
+    .payment-method-card .payment-title {
+        font-size: 12.5px;
+    }
+    .payment-method-card .payment-desc {
+        font-size: 10.5px;
+    }
+    .payment-method-card .selected-check {
+        width: 22px;
+        height: 22px;
+        font-size: 12px;
+        left: 10px;
+    }
+    .payment-actions {
+        flex-direction: column-reverse;
+    }
+    .payment-actions .btn-secondary-action,
+    .payment-actions .btn-primary-action {
+        width: 100%;
+        justify-content: center;
+    }
+}

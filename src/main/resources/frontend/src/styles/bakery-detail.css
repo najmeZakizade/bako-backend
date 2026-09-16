@@ -1,0 +1,558 @@
+/* ============================================================
+   Bako — Bakery Detail Page (صفحه جزئیات نانوایی)
+   تمرکز اصلی: محصولات — ۴ تا ۴ تا در یک خط
+   ============================================================ */
+
+.bakery-detail-page {
+    max-width: var(--content-max);
+    margin: 0 auto;
+    padding: 4px 0 24px;
+}
+
+/* ============================================================
+   دکمه بازگشت
+   ============================================================ */
+.bakery-back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 16px;
+    background: linear-gradient(135deg, #4a2c1a 0%, #2c1810 100%);
+    color: var(--gold-text);
+    border: none;
+    border-radius: 10px;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    box-shadow: 0 3px 10px rgba(74, 44, 26, 0.18);
+    letter-spacing: 0.3px;
+    white-space: nowrap;
+}
+
+.bakery-back-btn:hover {
+    background: linear-gradient(135deg, #6b3f2b 0%, #4a2c1a 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(74, 44, 26, 0.28);
+}
+
+.bakery-back-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 6px rgba(74, 44, 26, 0.2);
+}
+
+/* ============================================================
+   کادر اطلاعات نانوایی
+   ============================================================ */
+.bakery-info-bar {
+    display: flex;
+    align-items: stretch;
+    gap: 16px;
+    padding: 14px 16px;
+    background: #ffffff;
+    border: 1.5px solid #eee4db;
+    border-radius: 14px;
+    box-shadow: 0 2px 8px rgba(44, 24, 16, 0.04);
+    margin-bottom: 16px;
+}
+
+/* تصویر نانوایی */
+.bakery-info-image {
+    width: 130px;
+    min-width: 130px;
+    height: 130px;
+    border-radius: 12px;
+    overflow: hidden;
+    background: linear-gradient(135deg, #f5e6d3 0%, #f0dcc0 100%);
+    border: 1.5px solid rgba(212, 163, 115, 0.35);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    box-shadow: 0 4px 12px rgba(44, 24, 16, 0.08);
+}
+
+.bakery-info-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.bakery-info-image-fallback {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 56px;
+    color: var(--gold-dark);
+    opacity: 0.55;
+}
+
+/* محتوای اطلاعات */
+.bakery-info-content {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    justify-content: center;
+}
+
+.bakery-info-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.bakery-info-name {
+    font-size: 17px;
+    font-weight: 900;
+    color: var(--primary-dark);
+    margin: 0;
+    letter-spacing: -0.3px;
+    line-height: 1.3;
+}
+
+.bakery-info-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 10.5px;
+    font-weight: 800;
+    padding: 3px 10px;
+    border-radius: 10px;
+    letter-spacing: 0.3px;
+}
+
+.bakery-info-status.open {
+    background: #d4edda;
+    color: #155724;
+}
+
+.bakery-info-status.closed {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+.bakery-info-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.bakery-info-status.open .bakery-info-dot {
+    background: #28a745;
+    box-shadow: 0 0 0 0 rgba(40, 167, 69, 0.7);
+    animation: pulse-open 1.8s infinite;
+}
+
+@keyframes pulse-open {
+    0% { box-shadow: 0 0 0 0 rgba(40, 167, 69, 0.7); }
+    70% { box-shadow: 0 0 0 6px rgba(40, 167, 69, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(40, 167, 69, 0); }
+}
+
+.bakery-info-status.closed .bakery-info-dot {
+    background: #c0392b;
+}
+
+/* آمار */
+.bakery-info-stats {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+}
+
+.info-stat {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 12px;
+    padding: 4px 10px;
+    background: linear-gradient(135deg, #fbefd9 0%, #f6e3c2 100%);
+    border: 1px solid var(--gold-soft);
+    border-radius: 10px;
+    white-space: nowrap;
+}
+
+.info-stat-icon {
+    font-size: 13px;
+    line-height: 1;
+}
+
+.info-stat-value {
+    font-size: 12.5px;
+    font-weight: 900;
+    color: var(--primary-dark);
+}
+
+.info-stat-label {
+    font-size: 10.5px;
+    font-weight: 700;
+    color: var(--primary-light);
+}
+
+/* جزئیات inline */
+.bakery-info-details {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+    padding-top: 8px;
+    border-top: 1px dashed #eadfd4;
+}
+
+.info-detail-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11.5px;
+    max-width: 100%;
+}
+
+.info-detail-icon {
+    font-size: 13px;
+    flex-shrink: 0;
+}
+
+.info-detail-value {
+    color: var(--primary-dark);
+    font-weight: 700;
+    font-size: 11.5px;
+    word-break: break-word;
+}
+
+.info-detail-link {
+    color: var(--gold-dark);
+    text-decoration: none;
+    transition: 0.2s ease;
+    direction: ltr;
+    font-weight: 800;
+}
+
+.info-detail-link:hover {
+    color: var(--primary-dark);
+    text-decoration: underline;
+}
+
+/* ============================================================
+   دسته‌بندی
+   ============================================================ */
+.bakery-detail-categories {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 16px;
+    padding-top: 4px;
+}
+
+.bakery-category-btn {
+    padding: 6px 14px;
+    border-radius: 20px;
+    border: 1.5px solid #e8e0d8;
+    background: #ffffff;
+    color: var(--primary-dark);
+    font-family: inherit;
+    font-size: 11.5px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.2s ease;
+    white-space: nowrap;
+}
+
+.bakery-category-btn:hover {
+    border-color: var(--gold-soft);
+    background: #faf6f0;
+}
+
+.bakery-category-btn.active {
+    background: linear-gradient(135deg, #4a2c1a 0%, #2c1810 100%);
+    color: var(--gold-text);
+    border-color: #4a2c1a;
+    box-shadow: 0 3px 10px rgba(74, 44, 26, 0.18);
+}
+
+/* ============================================================
+   🆕 گرید محصولات — همیشه ۴ تا ۴ تا
+   ============================================================ */
+.bakery-detail-page .product-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 12px;
+    margin-top: 4px;
+}
+
+.bakery-detail-page .product-card {
+    padding: 10px;
+    background: var(--card-bg);
+    border-radius: var(--radius-lg);
+    border: 1px solid #eee4db;
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.bakery-detail-page .product-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+}
+
+.bakery-detail-page .product-card img {
+    width: 100%;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.bakery-detail-page .product-card h3 {
+    font-size: 12.5px;
+    margin: 8px 0 4px;
+    font-weight: 800;
+    color: var(--primary-dark);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.bakery-detail-page .product-card .category-tag {
+    display: inline-block;
+    background: var(--gray);
+    padding: 2px 9px;
+    border-radius: 16px;
+    font-size: 9.5px;
+    color: var(--primary-light);
+    margin: 0 auto 3px;
+}
+
+.bakery-detail-page .product-card .price {
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--gold-dark);
+    margin-top: 2px;
+}
+
+.bakery-detail-page .product-card .stock-info {
+    font-size: 10.5px;
+    color: var(--green);
+    margin-top: 3px;
+}
+
+.bakery-detail-page .product-card .stock-info.out-of-stock {
+    color: var(--red);
+}
+
+/* دکمه افزودن به سبد */
+.btn-add-to-cart-themed {
+    width: 100%;
+    margin-top: 6px;
+    padding: 7px 10px;
+    background: linear-gradient(135deg, #4a2c1a 0%, #2c1810 100%);
+    color: var(--gold-text);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 11px;
+    font-weight: 800;
+    font-family: inherit;
+    letter-spacing: 0.3px;
+    transition: all 0.25s ease;
+    box-shadow: 0 3px 10px rgba(74, 44, 26, 0.18);
+    min-height: 30px;
+}
+
+.btn-add-to-cart-themed:hover:not(:disabled) {
+    background: linear-gradient(135deg, #6b3f2b 0%, #4a2c1a 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 5px 14px rgba(74, 44, 26, 0.28);
+}
+
+.btn-add-to-cart-themed:active:not(:disabled) {
+    transform: translateY(0);
+    box-shadow: 0 2px 6px rgba(74, 44, 26, 0.2);
+}
+
+.btn-add-to-cart-themed:disabled {
+    background: #c9c1b8;
+    color: #756a63;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* ============================================================
+   ریسپانسیو
+   ============================================================ */
+
+/* تبلت — همچنان ۴ ستون، فقط فاصله‌ها کمتر */
+@media (max-width: 900px) {
+    .bakery-info-bar {
+        flex-direction: row;
+    }
+
+    .bakery-info-image {
+        width: 110px;
+        min-width: 110px;
+        height: 110px;
+    }
+
+    .bakery-info-image-fallback {
+        font-size: 48px;
+    }
+
+    .bakery-detail-page .product-grid {
+        gap: 10px;
+    }
+}
+
+/* موبایل متوسط — همچنان ۴ ستون */
+@media (max-width: 768px) {
+    .bakery-info-bar {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+    }
+
+    .bakery-info-image {
+        width: 100%;
+        min-width: 100%;
+        height: 140px;
+    }
+
+    .bakery-info-image-fallback {
+        font-size: 56px;
+    }
+
+    .bakery-info-name {
+        font-size: 15px;
+    }
+
+    .bakery-detail-page .product-grid {
+        grid-template-columns: repeat(4, 1fr) !important;
+        gap: 8px;
+    }
+
+    .bakery-detail-page .product-card {
+        padding: 7px;
+    }
+
+    .bakery-detail-page .product-card img {
+        height: 80px;
+    }
+
+    .bakery-detail-page .product-card h3 {
+        font-size: 11px;
+        margin: 6px 0 3px;
+    }
+
+    .bakery-detail-page .product-card .price {
+        font-size: 10.5px;
+    }
+
+    .bakery-detail-page .product-card .stock-info {
+        font-size: 9.5px;
+    }
+
+    .bakery-detail-page .product-card .category-tag {
+        font-size: 8.5px;
+        padding: 1px 6px;
+    }
+
+    .btn-add-to-cart-themed {
+        font-size: 10px;
+        padding: 5px 6px;
+        min-height: 28px;
+    }
+}
+
+/* موبایل کوچک — همچنان ۴ ستون */
+@media (max-width: 600px) {
+    .bakery-info-bar {
+        padding: 12px;
+    }
+
+    .bakery-info-details {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+    }
+
+    .bakery-detail-page .product-grid {
+        grid-template-columns: repeat(4, 1fr) !important;
+        gap: 6px;
+    }
+
+    .bakery-detail-page .product-card {
+        padding: 5px;
+    }
+
+    .bakery-detail-page .product-card img {
+        height: 65px;
+    }
+
+    .bakery-detail-page .product-card h3 {
+        font-size: 10px;
+        margin: 4px 0 2px;
+    }
+
+    .bakery-detail-page .product-card .price {
+        font-size: 9.5px;
+    }
+
+    .bakery-detail-page .product-card .stock-info {
+        font-size: 9px;
+    }
+
+    .bakery-detail-page .product-card .category-tag {
+        font-size: 8px;
+        padding: 1px 5px;
+    }
+
+    .btn-add-to-cart-themed {
+        font-size: 9px;
+        padding: 4px 4px;
+        min-height: 24px;
+    }
+
+    .bakery-back-btn {
+        font-size: 11px;
+        padding: 6px 12px;
+    }
+}
+
+/* در موبایل خیلی کوچک (زیر 420px) → ۲ ستون */
+@media (max-width: 420px) {
+    .bakery-detail-page .product-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 8px;
+    }
+
+    .bakery-detail-page .product-card {
+        padding: 8px;
+    }
+
+    .bakery-detail-page .product-card img {
+        height: 90px;
+    }
+
+    .bakery-detail-page .product-card h3 {
+        font-size: 11px;
+    }
+
+    .bakery-detail-page .product-card .price {
+        font-size: 10.5px;
+    }
+
+    .btn-add-to-cart-themed {
+        font-size: 10px;
+        padding: 6px 6px;
+        min-height: 28px;
+    }
+}

@@ -1,0 +1,220 @@
+/* ============================================================
+   Bako — Customer Layout (پنل مشتری)
+   Sidebar + Content
+   ============================================================ */
+
+/* ============================================================
+   Layout اصلی
+   ============================================================ */
+.customer-layout {
+    display: flex;
+    flex-direction: column;
+    min-height: calc(100vh - var(--navbar-height));
+    background: var(--site-bg);
+}
+
+.customer-content {
+    flex: 1;
+    margin-right: var(--sidebar-width);
+    padding: 20px 20px 32px;
+    min-width: 0;
+    transition: margin-right 0.3s ease;
+}
+
+/* ============================================================
+   Sidebar
+   ============================================================ */
+.customer-sidebar {
+    width: var(--sidebar-width);
+    position: fixed;
+    right: 0;
+    top: var(--navbar-height);
+    height: calc(100vh - var(--navbar-height));
+    padding: 12px 8px;
+    overflow-y: auto;
+    z-index: 990;
+    transition: width 0.3s ease;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    outline: none;
+}
+
+/* اسکرول‌بار نازک */
+.customer-sidebar::-webkit-scrollbar {
+    width: 4px;
+}
+.customer-sidebar::-webkit-scrollbar-thumb {
+    background: rgba(107, 63, 43, 0.2);
+    border-radius: 4px;
+}
+
+.customer-sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+/* ============================================================
+   لینک‌ها
+   ============================================================ */
+.customer-sidebar-link {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 10px;
+    min-height: 40px;
+    padding: 7px 12px;
+    border-radius: 10px;
+    color: #493226;
+    font-weight: 600;
+    font-size: 12.5px;
+    text-decoration: none;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    position: relative;
+    text-align: right;
+    background: transparent;
+    border: 1.5px solid transparent;
+}
+
+.customer-sidebar-link:hover {
+    color: var(--primary-dark);
+    background: rgba(107, 63, 43, 0.07);
+    border-color: rgba(212, 163, 115, 0.25);
+}
+
+.customer-sidebar-link.active {
+    color: var(--gold-text);
+    background: #4a2c1a;
+    border-color: rgba(212, 163, 115, 0.35);
+    box-shadow: 0 3px 10px rgba(74, 44, 26, 0.16);
+}
+
+.customer-sidebar-link.active:hover {
+    color: var(--gold-text);
+    background: #4a2c1a;
+}
+
+/* نوار طلایی سمت راست لینک فعال */
+.customer-sidebar-link.active::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 20%;
+    height: 60%;
+    width: 3px;
+    background: var(--gold);
+    border-radius: 4px 0 0 4px;
+}
+
+/* ============================================================
+   آیکون (تصویر) و متن و بج
+   ============================================================ */
+.customer-sidebar-icon {
+    width: 26px;
+    height: 26px;
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    transition: transform 0.25s ease;
+}
+
+.customer-sidebar-link:hover .customer-sidebar-icon {
+    transform: scale(1.1);
+}
+
+/* تصویر داخل آیکون */
+.customer-sidebar-icon-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+    pointer-events: none;
+    user-select: none;
+    /* در حالت عادی کمی ملایم */
+    opacity: 0.92;
+    transition: opacity 0.2s ease, filter 0.2s ease;
+}
+
+.customer-sidebar-link:hover .customer-sidebar-icon-image {
+    opacity: 1;
+}
+
+/* در حالت active (لینک انتخابی) — روشن‌تر */
+.customer-sidebar-link.active .customer-sidebar-icon-image {
+    opacity: 1;
+    filter: brightness(1.15) drop-shadow(0 1px 3px rgba(245, 166, 35, 0.4));
+}
+
+/* ایموجی جایگزین (اگه تصویر لود نشد) */
+.customer-sidebar-icon-fallback {
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    line-height: 1;
+}
+
+/* ============================================================
+   متن لینک
+   ============================================================ */
+.customer-sidebar-text {
+    font-size: 12.5px;
+    font-weight: 600;
+    color: inherit;
+    white-space: nowrap;
+    letter-spacing: 0.3px;
+    flex: 1;
+    text-align: right;
+}
+
+.customer-sidebar-link.active .customer-sidebar-text {
+    color: var(--gold-text);
+    font-weight: 700;
+}
+
+/* ============================================================
+   بج تعداد سبد خرید
+   ============================================================ */
+.customer-sidebar-badge {
+    background: var(--gold);
+    color: var(--primary-dark);
+    border-radius: 10px;
+    padding: 1px 7px;
+    font-size: 10px;
+    font-weight: 800;
+    min-width: 18px;
+    text-align: center;
+    line-height: 1.4;
+    flex-shrink: 0;
+}
+
+.customer-sidebar-link.active .customer-sidebar-badge {
+    background: #f5a623;
+    color: #2c1810;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+/* ============================================================
+   ریسپانسیو
+   ============================================================ */
+@media (max-width: 768px) {
+    /* در موبایل sidebar پنهان می‌شه */
+    .customer-sidebar {
+        display: none;
+    }
+
+    .customer-content {
+        margin-right: 0;
+        padding: 14px 10px 24px;
+    }
+}
+
+@media (max-width: 900px) and (min-width: 769px) {
+    .customer-content {
+        padding: 16px 14px 28px;
+    }
+}

@@ -1,0 +1,57 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:6
+    container_name: bako-mongo
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD:-secret}
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - bako-network
+
+  backend:
+    build:
+      context: .
+      dockerfile: docker/backend/Dockerfile
+    container_name: bako-backend
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mongodb
+    environment:
+      SPRING_DATA_MONGODB_URI: mongodb://admin:${MONGO_PASSWORD:-secret}@mongodb:27017/bako?authSource=admin
+      JWT_SECRET: ${JWT_SECRET:-defaultSecret}
+    networks:
+      - bako-network
+    restart: on-failure
+
+  frontend:
+    build:
+      context: .
+      dockerfile: docker/frontend/Dockerfile
+    container_name: bako-frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    networks:
+      - bako-network
+
+  # در صورت نیاز به MCP سرورها، آنها را هم اضافه کنید
+  # mcp-database:
+  #   build:
+  #     context: .
+  #     dockerfile: docker/mcp-servers/database/Dockerfile
+  #   ...
+
+networks:
+  bako-network:
+    driver: bridge
+
+volumes:
+  mongo-data:

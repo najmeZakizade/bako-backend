@@ -1,0 +1,446 @@
+/* ============================================================
+   Bako — Bakeries Page (لیست نانوایی‌ها)
+   ============================================================ */
+
+.bakeries-page {
+    max-width: var(--content-max);
+    margin: 0 auto;
+    padding: 4px 0 24px;
+    direction: rtl;
+}
+
+/* ============================================================
+   هدر — راست‌چین
+   ============================================================ */
+.bakeries-header {
+    text-align: right;
+    margin-bottom: 14px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #eadfd4;
+}
+
+.bakeries-header h1 {
+    font-size: 20px;
+    font-weight: 900;
+    color: var(--primary-dark);
+    margin: 0;
+    letter-spacing: -0.3px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* ============================================================
+   نوار جستجو — راست‌چین
+   ============================================================ */
+.bakeries-search-wrapper {
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 18px;
+}
+
+.bakeries-search {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #ffffff;
+    border: 1.5px solid #eee4db;
+    border-radius: 10px;
+    padding: 6px 12px;
+    width: 100%;
+    max-width: 320px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 2px 6px rgba(44, 24, 16, 0.04);
+    direction: rtl;
+}
+
+.bakeries-search:focus-within {
+    border-color: var(--gold-soft);
+    box-shadow: 0 4px 12px rgba(212, 163, 115, 0.18);
+}
+
+.bakeries-search-icon {
+    font-size: 13px;
+    opacity: 0.6;
+    flex-shrink: 0;
+    order: -1;   /* آیکون سمت راست */
+}
+
+.bakeries-search-input {
+    flex: 1;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-family: inherit;
+    font-size: 12.5px;
+    color: var(--primary-dark);
+    font-weight: 600;
+    padding: 2px 0;
+    min-width: 0;
+    text-align: right;
+    direction: rtl;
+}
+
+.bakeries-search-input::placeholder {
+    color: rgba(107, 63, 43, 0.4);
+    font-weight: 500;
+    text-align: right;
+}
+
+.bakeries-search-clear {
+    background: rgba(192, 57, 43, 0.08);
+    border: none;
+    color: var(--red);
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+    padding: 0;
+}
+
+.bakeries-search-clear:hover {
+    background: var(--red);
+    color: #ffffff;
+    transform: scale(1.1);
+}
+
+/* ============================================================
+   گرید نانوایی‌ها — ۳ ستون
+   ============================================================ */
+.bakeries-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+}
+
+/* ============================================================
+   کارت نانوایی
+   ============================================================ */
+.bakery-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    background: #ffffff;
+    border: 1.5px solid #eee4db;
+    border-radius: 16px;
+    overflow: hidden;
+    cursor: pointer;
+    font-family: inherit;
+    text-align: right;
+    padding: 0;
+    transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow: 0 3px 10px rgba(44, 24, 16, 0.05);
+}
+
+.bakery-card:hover:not(.closed) {
+    transform: translateY(-4px);
+    border-color: var(--gold-soft);
+    box-shadow:
+            0 12px 28px rgba(44, 24, 16, 0.12),
+            0 4px 10px rgba(44, 24, 16, 0.05);
+}
+
+.bakery-card:active:not(.closed) {
+    transform: translateY(-2px) scale(0.99);
+}
+
+.bakery-card.closed {
+    opacity: 0.75;
+    cursor: not-allowed;
+    filter: grayscale(40%);
+}
+
+.bakery-card.closed:hover {
+    transform: none;
+}
+
+/* ============================================================
+   تصویر کارت
+   ============================================================ */
+.bakery-card-image-wrap {
+    position: relative;
+    width: 100%;
+    height: 130px;
+    background: linear-gradient(135deg, #f5e6d3 0%, #f0dcc0 100%);
+    overflow: hidden;
+}
+
+.bakery-card-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.35s ease;
+}
+
+.bakery-card:hover:not(.closed) .bakery-card-image {
+    transform: scale(1.06);
+}
+
+.bakery-card-image-fallback {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 48px;
+    color: var(--gold-dark);
+    opacity: 0.6;
+}
+
+/* ============================================================
+   🆕 نشان باز/بسته — جذاب‌تر
+   ============================================================ */
+.bakery-status-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 11px 5px 9px;
+    border-radius: 20px;
+    font-size: 10.5px;
+    font-weight: 800;
+    letter-spacing: 0.3px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow:
+            0 4px 12px rgba(0, 0, 0, 0.15),
+            inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    transition: transform 0.2s ease;
+}
+
+.bakery-card:hover .bakery-status-badge {
+    transform: scale(1.05);
+}
+
+/* نقطه‌ی چشمک‌زن */
+.bakery-status-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    position: relative;
+}
+
+/* حالت باز — سبز روشن با چشمک */
+.bakery-status-badge.open {
+    background: linear-gradient(135deg, rgba(76, 175, 80, 0.95) 0%, rgba(56, 142, 60, 0.95) 100%);
+    color: #ffffff;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+}
+
+.bakery-status-badge.open .bakery-status-dot {
+    background: #ffffff;
+    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7);
+    animation: pulse-open 1.8s infinite;
+}
+
+@keyframes pulse-open {
+    0% {
+        box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7);
+    }
+    70% {
+        box-shadow: 0 0 0 6px rgba(255, 255, 255, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+    }
+}
+
+/* حالت بسته — قرمز تیره با نقطه‌ی ساکن */
+.bakery-status-badge.closed {
+    background: linear-gradient(135deg, rgba(192, 57, 43, 0.95) 0%, rgba(150, 45, 34, 0.95) 100%);
+    color: #ffffff;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+}
+
+.bakery-status-badge.closed .bakery-status-dot {
+    background: rgba(255, 255, 255, 0.6);
+    box-shadow: inset 0 0 0 1.5px rgba(255, 255, 255, 0.9);
+    animation: none;
+}
+
+.bakery-status-text {
+    line-height: 1;
+    position: relative;
+    top: 0.5px;
+}
+
+/* ============================================================
+   بدنه کارت
+   ============================================================ */
+.bakery-card-body {
+    padding: 12px 14px 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    flex: 1;
+}
+
+.bakery-card-name {
+    font-size: 14px;
+    font-weight: 900;
+    color: var(--primary-dark);
+    margin: 0;
+    letter-spacing: 0.2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.4;
+}
+
+.bakery-card-address,
+.bakery-card-phone {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11.5px;
+    color: var(--primary-light);
+    margin: 0;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.5;
+}
+
+.bakery-card-address span:first-child,
+.bakery-card-phone span:first-child {
+    flex-shrink: 0;
+    font-size: 12px;
+}
+
+.bakery-card-address span:last-child,
+.bakery-card-phone span:last-child {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* ============================================================
+   فوتر کارت (امتیاز و تعداد محصول)
+   ============================================================ */
+.bakery-card-footer {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: auto;
+    padding-top: 8px;
+    border-top: 1px dashed #eadfd4;
+}
+
+.bakery-card-rating,
+.bakery-card-products {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--primary-dark);
+    background: #faf6f0;
+    padding: 3px 8px;
+    border-radius: 8px;
+}
+
+.bakery-card-rating {
+    color: #b8860b;
+    background: #fff8e6;
+}
+
+/* ============================================================
+   دکمه پایین کارت
+   ============================================================ */
+.bakery-card-action {
+    padding: 10px 14px;
+    background: linear-gradient(135deg, #4a2c1a 0%, #2c1810 100%);
+    color: var(--gold-text);
+    font-size: 12px;
+    font-weight: 800;
+    text-align: center;
+    letter-spacing: 0.3px;
+    transition: all 0.22s ease;
+}
+
+.bakery-card:hover:not(.closed) .bakery-card-action {
+    background: linear-gradient(135deg, #6b3f2b 0%, #4a2c1a 100%);
+    letter-spacing: 0.5px;
+}
+
+.bakery-card.closed .bakery-card-action {
+    background: #c9c1b8;
+    color: #756a63;
+    cursor: not-allowed;
+}
+
+/* ============================================================
+   ریسپانسیو
+   ============================================================ */
+
+/* تبلت: ۲ ستون */
+@media (max-width: 900px) {
+    .bakeries-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+
+    .bakery-card-image-wrap {
+        height: 110px;
+    }
+}
+
+/* موبایل: ۱ ستون */
+@media (max-width: 600px) {
+    .bakeries-page {
+        padding: 4px 0 20px;
+    }
+
+    .bakeries-header h1 {
+        font-size: 16px;
+    }
+
+    .bakeries-search {
+        max-width: 100%;
+        padding: 5px 10px;
+    }
+
+    .bakeries-search-input {
+        font-size: 11.5px;
+    }
+
+    .bakeries-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    .bakery-card-image-wrap {
+        height: 130px;
+    }
+
+    .bakery-card-name {
+        font-size: 13.5px;
+    }
+
+    .bakery-card-address,
+    .bakery-card-phone {
+        font-size: 11px;
+    }
+
+    .bakery-card-action {
+        padding: 9px 12px;
+        font-size: 11.5px;
+    }
+
+    .bakery-status-badge {
+        font-size: 10px;
+        padding: 4px 10px 4px 8px;
+    }
+}

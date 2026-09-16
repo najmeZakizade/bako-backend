@@ -1,0 +1,311 @@
+/* src/styles/notifications.css */
+
+/* ============================================================
+   1. صفحه اعلان‌ها
+   ============================================================ */
+.notifications-page {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 4px 24px;
+}
+
+/* ============================================================
+   2. نوار ابزار (دکمه علامت‌گذاری همه)
+   ============================================================ */
+.notifications-toolbar {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 14px;
+}
+
+.btn-mark-all {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    background: #ffffff;
+    border: 1.5px solid var(--gold-soft);
+    color: var(--primary-dark);
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 11.5px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.22s ease;
+}
+
+.btn-mark-all:hover:not(:disabled) {
+    background: var(--gold-soft);
+    color: #ffffff;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(212, 163, 115, 0.25);
+}
+
+.btn-mark-all:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+/* ============================================================
+   3. حالت خالی
+   ============================================================ */
+.empty-notifications {
+    text-align: center;
+    padding: 60px 24px;
+    background: var(--card-bg);
+    border: 1px dashed #e0d6cc;
+    border-radius: var(--radius-lg);
+    margin-top: 20px;
+}
+
+.empty-notifications .empty-icon {
+    display: block;
+    font-size: 56px;
+    margin-bottom: 14px;
+    opacity: 0.5;
+}
+
+.empty-notifications h2 {
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--primary-dark);
+    margin: 0 0 6px;
+}
+
+.empty-notifications p {
+    font-size: 12.5px;
+    color: var(--primary-light);
+    margin: 0;
+    opacity: 0.85;
+    font-weight: 600;
+}
+
+/* ============================================================
+   4. لیست اعلان‌ها
+   ============================================================ */
+.notifications-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* ===== هر اعلان ===== */
+.notification-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+    background: var(--card-bg);
+    border: 1.5px solid #eee4db;
+    border-radius: var(--radius-lg);
+    cursor: pointer;
+    font-family: inherit;
+    text-align: right;
+    transition: all 0.22s ease;
+    box-shadow: var(--shadow-sm);
+    width: 100%;
+}
+
+.notification-item:hover {
+    border-color: var(--gold-soft);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(74, 44, 26, 0.1);
+}
+
+/* ===== حالت خوانده‌نشده ===== */
+.notification-item.unread {
+    background: linear-gradient(135deg, #fffcf5 0%, #faf6f0 100%);
+    border-color: var(--gold-soft);
+    border-right-width: 4px;
+    border-right-color: var(--gold);
+}
+
+.notification-item.unread .notification-title {
+    font-weight: 900;
+    color: var(--primary-dark);
+}
+
+.notification-item.unread .notification-message {
+    color: var(--text-dark);
+    font-weight: 700;
+}
+
+/* ============================================================
+   5. اندیکاتور (نقطه قرمز)
+   ============================================================ */
+.notification-indicator {
+    width: 12px;
+    min-width: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.unread-dot {
+    width: 10px;
+    height: 10px;
+    background: #e74c3c;
+    border-radius: 50%;
+    box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.2);
+    animation: notification-pulse 1.8s ease-in-out infinite;
+}
+
+@keyframes notification-pulse {
+    0%, 100% { transform: scale(1); box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.2); }
+    50%      { transform: scale(1.15); box-shadow: 0 0 0 5px rgba(231, 76, 60, 0.05); }
+}
+
+/* ============================================================
+   6. محتوای اعلان
+   ============================================================ */
+.notification-content {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.notification-title {
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--primary-dark);
+    margin: 0;
+    line-height: 1.4;
+}
+
+.notification-message {
+    font-size: 11.5px;
+    color: var(--primary-light);
+    margin: 0;
+    line-height: 1.6;
+    font-weight: 600;
+    word-break: break-word;
+}
+
+.notification-date {
+    font-size: 10.5px;
+    color: var(--primary-light);
+    opacity: 0.75;
+    font-weight: 700;
+    direction: ltr;
+    text-align: right;
+    display: block;
+    margin-top: 2px;
+}
+
+/* ============================================================
+   7. فلش سمت چپ
+   ============================================================ */
+.notification-arrow {
+    font-size: 22px;
+    color: var(--primary-light);
+    opacity: 0.5;
+    flex-shrink: 0;
+    transition: all 0.22s ease;
+    line-height: 1;
+}
+
+.notification-item:hover .notification-arrow {
+    opacity: 1;
+    color: var(--gold-dark);
+    transform: translateX(-4px);
+}
+
+/* ============================================================
+   8. بج اعلان و سبد خرید در سایدبار نانوایی (نگه‌داری شده)
+   ============================================================ */
+.bakery-sidebar a {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.bakery-sidebar-badge {
+    margin-right: auto;
+    min-width: 20px;
+    height: 20px;
+    padding: 0 6px;
+    background: linear-gradient(135deg, #f5a623 0%, #e0991a 100%);
+    color: #2c1810;
+    border-radius: 10px;
+    font-size: 10.5px;
+    font-weight: 900;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    line-height: 1;
+    border: 1.5px solid #ffffff;
+    box-shadow: 0 2px 6px rgba(44, 24, 16, 0.15);
+}
+
+.bakery-sidebar-badge.notification-badge {
+    background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+    color: #ffffff;
+    font-weight: 900;
+    border: 1.5px solid #ffffff;
+    animation: bakery-badge-pulse 1.6s ease-in-out infinite;
+}
+
+@keyframes bakery-badge-pulse {
+    0% {
+        transform: scale(1);
+        box-shadow:
+                0 2px 6px rgba(192, 57, 43, 0.4),
+                0 0 0 0 rgba(231, 76, 60, 0.7);
+    }
+    70% {
+        transform: scale(1.05);
+        box-shadow:
+                0 2px 6px rgba(192, 57, 43, 0.4),
+                0 0 0 8px rgba(231, 76, 60, 0);
+    }
+    100% {
+        transform: scale(1);
+        box-shadow:
+                0 2px 6px rgba(192, 57, 43, 0.4),
+                0 0 0 0 rgba(231, 76, 60, 0);
+    }
+}
+
+/* ============================================================
+   9. Responsive
+   ============================================================ */
+@media (max-width: 600px) {
+    .notifications-page {
+        padding: 0 0 16px;
+    }
+
+    .notification-item {
+        padding: 12px 12px;
+        gap: 10px;
+    }
+
+    .notification-title {
+        font-size: 12px;
+    }
+
+    .notification-message {
+        font-size: 11px;
+    }
+
+    .notification-date {
+        font-size: 10px;
+    }
+
+    .btn-mark-all {
+        padding: 7px 12px;
+        font-size: 11px;
+    }
+
+    .empty-notifications {
+        padding: 40px 18px;
+    }
+
+    .empty-notifications .empty-icon {
+        font-size: 48px;
+    }
+}

@@ -1,0 +1,617 @@
+/* ============================================================
+   Monitoring — استایل‌های اختصاصی پنل مانیتورینگ
+   ============================================================ */
+
+/* ============================================================
+   ۱. Badge در سایدبار
+   ============================================================ */
+.monitoring-layout .sidebar-badge {
+    background: #dc3545;
+    color: #ffffff;
+    border-radius: 10px;
+    padding: 1px 7px;
+    font-size: 10px;
+    font-weight: 800;
+    min-width: 18px;
+    text-align: center;
+    line-height: 1.4;
+    flex-shrink: 0;
+    margin-right: auto;
+}
+
+/* ============================================================
+   ۲. کارت‌های هشدار خلاصه (داشبورد)
+   ============================================================ */
+.mon-alerts-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.mon-alert-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 16px 12px;
+    border-radius: var(--radius);
+    text-align: center;
+    transition: all 0.25s ease;
+    border: 1.5px solid transparent;
+}
+
+.mon-alert-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(44, 24, 16, 0.1);
+}
+
+.mon-alert-card.danger {
+    background: linear-gradient(135deg, #fff5f5 0%, #ffe8e8 100%);
+    border-color: #f5c2c7;
+}
+.mon-alert-card.danger .mon-alert-count { color: #c0392b; }
+.mon-alert-card.danger .mon-alert-label { color: #962d22; }
+
+.mon-alert-card.warning {
+    background: linear-gradient(135deg, #fffbf0 0%, #fff3cd 100%);
+    border-color: #ffe69c;
+}
+.mon-alert-card.warning .mon-alert-count { color: #b8860b; }
+.mon-alert-card.warning .mon-alert-label { color: #856404; }
+
+.mon-alert-card.ok {
+    background: linear-gradient(135deg, #f0f9f3 0%, #d4edda 100%);
+    border-color: #a5d6a7;
+}
+.mon-alert-card.ok .mon-alert-count { color: #2d6a4f; }
+.mon-alert-card.ok .mon-alert-label { color: #155724; }
+
+.mon-alert-count {
+    font-size: 26px;
+    font-weight: 900;
+    line-height: 1;
+}
+
+.mon-alert-label {
+    font-size: 11px;
+    font-weight: 700;
+}
+
+/* ============================================================
+   ۳. صفحه هشدارها
+   ============================================================ */
+.monitoring-alerts-page {
+    max-width: var(--content-max);
+    margin: 0 auto;
+}
+
+.mon-alerts-sections {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-top: 20px;
+}
+
+.mon-alert-section {
+    background: var(--card-bg);
+    border: 1.5px solid #eee4db;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    transition: all 0.25s ease;
+}
+
+.mon-alert-section.mon-alert-danger {
+    border-color: #f5c2c7;
+    background: linear-gradient(180deg, #fffafa 0%, var(--card-bg) 100%);
+}
+
+.mon-alert-section.mon-alert-warning {
+    border-color: #ffe69c;
+    background: linear-gradient(180deg, #fffdf5 0%, var(--card-bg) 100%);
+}
+
+.mon-alert-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    cursor: pointer;
+    user-select: none;
+    gap: 12px;
+    transition: background 0.2s ease;
+}
+
+.mon-alert-header:hover {
+    background: rgba(212, 163, 115, 0.08);
+}
+
+.mon-alert-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+}
+
+.mon-alert-icon {
+    font-size: 20px;
+    flex-shrink: 0;
+}
+
+.mon-alert-title h3 {
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--primary-dark);
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.mon-alert-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+.mon-alert-count-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 28px;
+    height: 24px;
+    padding: 0 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 900;
+    color: #fff;
+}
+
+.mon-count-danger { background: #c0392b; }
+.mon-count-warning { background: #e0991a; }
+
+.mon-alert-arrow {
+    font-size: 10px;
+    color: var(--primary-light);
+    transition: transform 0.25s ease;
+    display: inline-block;
+}
+
+.mon-alert-arrow.open {
+    transform: rotate(180deg);
+}
+
+.mon-alert-body {
+    padding: 0 16px 16px;
+    animation: monSlideDown 0.2s ease;
+}
+
+@keyframes monSlideDown {
+    from { opacity: 0; transform: translateY(-5px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.mon-alert-empty {
+    text-align: center;
+    padding: 14px 20px;
+    font-size: 12px;
+    color: var(--green);
+    font-weight: 700;
+    background: #f0f9f3;
+    border-radius: 8px;
+    margin: 0;
+}
+
+/* ============================================================
+   ۴. جدول داخل هشدارها
+   ============================================================ */
+.mon-table-wrapper {
+    background: #ffffff;
+    border-radius: 10px;
+    overflow-x: auto;
+    border: 1px solid #f0ebe7;
+}
+
+.mon-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 500px;
+}
+
+.mon-table thead {
+    background: #faf6f0;
+}
+
+.mon-table th {
+    color: var(--primary-dark);
+    padding: 9px 10px;
+    text-align: center;
+    font-size: 11px;
+    font-weight: 800;
+    white-space: nowrap;
+    border-bottom: 1.5px solid #f0ebe7;
+}
+
+.mon-table td {
+    padding: 8px 10px;
+    border-bottom: 1px solid #f7f2ec;
+    text-align: center;
+    font-size: 11.5px;
+    color: var(--text-dark);
+}
+
+.mon-table tbody tr:hover td {
+    background: rgba(212, 163, 115, 0.06);
+}
+
+.mon-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.mon-cell-id {
+    font-family: inherit;
+    font-weight: 700;
+    color: var(--primary-dark);
+}
+
+.mon-cell-danger {
+    color: #c0392b;
+    font-weight: 800;
+}
+
+.mon-cell-warning {
+    color: #b8860b;
+    font-weight: 800;
+}
+
+/* ============================================================
+   ۵. Badge و دکمه‌های خاص هشدارها
+   ============================================================ */
+.mon-badge-info {
+    display: inline-block;
+    padding: 2px 8px;
+    background: #d1ecf1;
+    color: #0c5460;
+    border-radius: 10px;
+    font-size: 9.5px;
+    font-weight: 800;
+}
+
+.mon-badge-warning {
+    display: inline-block;
+    padding: 2px 8px;
+    background: #fff3cd;
+    color: #856404;
+    border-radius: 10px;
+    font-size: 9.5px;
+    font-weight: 800;
+}
+
+.mon-btn-link {
+    padding: 4px 10px;
+    background: rgba(212, 163, 115, 0.15);
+    color: var(--primary-dark);
+    border: none;
+    border-radius: 6px;
+    font-family: inherit;
+    font-size: 10.5px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: 0.2s ease;
+    white-space: nowrap;
+}
+
+.mon-btn-link:hover {
+    background: rgba(212, 163, 115, 0.3);
+    transform: translateY(-1px);
+}
+
+/* ============================================================
+   ۶. نمودار خطی درآمد (Area Chart)
+   ============================================================ */
+.mon-chart-mini-stats {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+    margin-bottom: 14px;
+    padding-bottom: 14px;
+    border-bottom: 1.5px dashed #e0d6cc;
+}
+
+.mon-mini-stat {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    padding: 10px 12px;
+    background: linear-gradient(135deg, #faf6f0 0%, #f5ede6 100%);
+    border: 1px solid #f0e6d6;
+    border-radius: 10px;
+    text-align: center;
+    transition: all 0.22s ease;
+}
+
+.mon-mini-stat:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(74, 44, 26, 0.08);
+    border-color: var(--gold-soft);
+}
+
+.mon-mini-stat-label {
+    font-size: 10.5px;
+    font-weight: 700;
+    color: var(--primary-light);
+    opacity: 0.85;
+}
+
+.mon-mini-stat-value {
+    font-size: 14px;
+    font-weight: 900;
+    color: var(--gold-dark);
+    line-height: 1.2;
+    display: inline-flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 3px;
+}
+
+.mon-mini-stat-value small {
+    font-size: 9.5px;
+    font-weight: 600;
+    opacity: 0.75;
+    color: var(--primary-light);
+}
+
+.mon-mini-stat-extra {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--primary-light);
+    opacity: 0.75;
+}
+
+.mon-chart-wrapper {
+    position: relative;
+    width: 100%;
+    padding: 6px 0;
+    direction: ltr;
+}
+
+.mon-line-chart {
+    width: 100%;
+    height: auto;
+    display: block;
+    overflow: visible;
+}
+
+.mon-chart-tooltip {
+    position: absolute;
+    transform: translate(-50%, calc(-100% - 12px));
+    background: #2c1810;
+    color: #f5e6d3;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 11px;
+    font-weight: 700;
+    white-space: nowrap;
+    pointer-events: none;
+    box-shadow: 0 8px 20px rgba(44, 24, 16, 0.35);
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    direction: rtl;
+    animation: monTooltipIn 0.15s ease;
+}
+
+@keyframes monTooltipIn {
+    from { opacity: 0; transform: translate(-50%, calc(-100% - 6px)); }
+    to   { opacity: 1; transform: translate(-50%, calc(-100% - 12px)); }
+}
+
+.mon-chart-tooltip::after {
+    content: '';
+    position: absolute;
+    bottom: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 6px solid #2c1810;
+}
+
+.mon-tooltip-row {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 10.5px;
+}
+
+.mon-tooltip-date {
+    color: #d4a373;
+    font-weight: 800;
+}
+
+.mon-tooltip-value {
+    color: #f5a623;
+    font-size: 12px;
+    font-weight: 900;
+}
+
+.mon-tooltip-orders {
+    color: #a5d6a7;
+    font-size: 10px;
+    opacity: 0.9;
+}
+
+/* ============================================================
+   ۷. 🆕 صفحه گزارشات — کارت‌های آمار ۳ ستونی (FORCED)
+   ============================================================ */
+.monitoring-reports-page-cards {
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 12px !important;
+    margin-bottom: 18px !important;
+}
+
+/* داخل این گرید، کارت‌ها وسط‌چین */
+.monitoring-reports-page-cards .admin-stat-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 6px;
+    padding: 14px 10px;
+    min-height: 105px;
+}
+
+.monitoring-reports-page-cards .admin-stat-number {
+    text-align: center;
+    width: 100%;
+    font-size: 18px;
+    line-height: 1.1;
+}
+
+.monitoring-reports-page-cards .admin-stat-label {
+    text-align: center;
+    width: 100%;
+    font-size: 10.5px;
+}
+
+/* ============================================================
+   ۸. 🆕 آیکون هدر بخش‌ها (Section Icons) — کوچیک‌شده
+   ============================================================ */
+.mon-section-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px !important;
+    height: 18px !important;
+    max-width: 18px !important;
+    max-height: 18px !important;
+    flex-shrink: 0;
+    object-fit: contain;
+    vertical-align: middle;
+}
+
+.mon-section-icon-img {
+    width: 18px !important;
+    height: 18px !important;
+    max-width: 18px !important;
+    max-height: 18px !important;
+}
+
+.mon-section-icon-emoji {
+    font-size: 15px;
+    line-height: 1;
+}
+
+/* ============================================================
+   ۹. 🆕 بند انگشتی محصولات در جدول پرفروش‌ها — کوچیک‌شده
+   ============================================================ */
+.sa-table--products .sa-product-thumb-sm,
+.sa-product-thumb-sm {
+    width: 28px !important;
+    height: 28px !important;
+    max-width: 28px !important;
+    max-height: 28px !important;
+    object-fit: cover;
+    border-radius: 6px;
+    border: 1.5px solid #f0ebe7;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.sa-table--products .sa-product-thumb-sm-placeholder,
+.sa-product-thumb-sm-placeholder {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    background: #f0ebe7;
+    border-radius: 6px;
+    font-size: 14px;
+    vertical-align: middle;
+}
+
+/* ============================================================
+   ۱۰. Responsive
+   ============================================================ */
+@media (max-width: 900px) {
+    .mon-alerts-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .mon-chart-mini-stats {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+
+    .monitoring-reports-page-cards {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    }
+}
+
+@media (max-width: 600px) {
+    .mon-alerts-grid {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+    .mon-alert-card {
+        padding: 12px 10px;
+    }
+    .mon-alert-count {
+        font-size: 22px;
+    }
+    .mon-alert-label {
+        font-size: 10.5px;
+    }
+    .mon-alert-header {
+        padding: 10px 12px;
+    }
+    .mon-alert-title h3 {
+        font-size: 11.5px;
+    }
+    .mon-alert-icon {
+        font-size: 17px;
+    }
+    .mon-alert-body {
+        padding: 0 12px 12px;
+    }
+    .mon-table th,
+    .mon-table td {
+        padding: 6px 7px;
+        font-size: 10.5px;
+    }
+    .mon-chart-tooltip {
+        font-size: 10px;
+        padding: 6px 9px;
+    }
+    .mon-tooltip-value {
+        font-size: 11px;
+    }
+
+    .monitoring-reports-page-cards {
+        grid-template-columns: 1fr !important;
+    }
+
+    .monitoring-reports-page-cards .admin-stat-number {
+        font-size: 16px;
+    }
+
+    .mon-section-icon,
+    .mon-section-icon-img {
+        width: 16px !important;
+        height: 16px !important;
+        max-width: 16px !important;
+        max-height: 16px !important;
+    }
+
+    .mon-section-icon-emoji {
+        font-size: 13px;
+    }
+}

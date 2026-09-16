@@ -1,0 +1,133 @@
+# ================================
+# ۱. فایل‌های مربوط به کنترل نسخه (VCS)
+# ================================
+.git/
+.gitattributes
+.gitignore
+.gitmodules
+
+# ================================
+# ۲. فایل‌های مربوط به IDE و ویرایشگرها
+# ================================
+.idea/
+*.iml
+*.iws
+*.ipr
+.vscode/
+.vscode-server/
+.classpath
+.project
+.settings/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ================================
+# ۳. فایل‌های ساخته شده توسط Maven / کامپایل جاوا
+# ================================
+target/
+*.class
+*.jar
+*.war
+*.ear
+*.log
+*.tmp
+*.bak
+*.orig
+*.rej
+
+# ================================
+# ۴. فایل‌های Node.js و فرانت‌اند (ریشه و زیرپوشه‌ها)
+# ================================
+node_modules/
+**/node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# ================================
+# ۵. فایل‌های ساخته شده توسط فرانت‌اند (Build output)
+# ================================
+dist/
+build/
+*.min.js
+*.min.css
+**/dist/
+**/build/
+
+# ================================
+# ۶. فایل‌های داکر و زیرساخت (نیازی به کپی شدن ندارند)
+# ================================
+docker/
+docker-compose.yml
+docker-compose.override.yml
+Dockerfile
+*.Dockerfile
+.dockerignore
+.env
+.env.*
+!.env.example  # اگر فایل نمونه نیاز است، استثنا بگذارید
+
+# ================================
+# ۷. فایل‌های مربوط به Maven Wrapper (اختیاری - چون داخل کانتینر از Maven استفاده می‌کنیم)
+# ================================
+.mvn/
+mvnw
+mvnw.cmd
+
+# ================================
+# ۸. فایل‌های لاگ و موقت
+# ================================
+logs/
+*.log
+*.pid
+*.seed
+*.pid.lock
+*.hs_err_pid*
+
+# ================================
+# ۹. فایل‌های سیستم‌عامل
+# ================================
+.DS_Store
+.directory
+Icon?
+ehthumbs.db
+Thumbs.db
+
+# ================================
+# ۱۰. فایل‌های پروژه و مستندات غیرضروری
+# ================================
+README.md
+HELP.md
+project_tree.txt
+*.txt
+*.md
+!.mvn/wrapper/maven-wrapper.jar  # (اختیاری) اگر wrapper را نگه می‌دارید
+
+# ================================
+# ۱۱. فایل‌های پیکربندی محلی (Local configs)
+# ================================
+application-local.properties
+application-dev.properties
+application-test.properties
+*.local.properties
+
+# ================================
+# ۱۲. پوشه‌های تست و گزارش‌ها
+# ================================
+test-output/
+surefire-reports/
+target/surefire-reports/
+
+# ================================
+# ۱۳. فایل‌های آپلود یا موقت کاربران (اختیاری)
+# ================================
+uploads/
+temp/
+tmp/

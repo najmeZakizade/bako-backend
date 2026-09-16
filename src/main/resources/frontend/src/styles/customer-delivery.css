@@ -1,0 +1,157 @@
+/* ============================================================
+   src/styles/customer-delivery.css
+   استایل‌های اضافی برای صفحه تحویل مشتری
+   (بقیه استایل‌ها از App.css استفاده می‌شود)
+   ============================================================ */
+
+/* ============================================================
+   لیست کارت‌های آدرس در صفحه تحویل
+   ============================================================ */
+.delivery-addresses-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.delivery-address-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 11px 13px;
+    background: #ffffff;
+    border: 2px solid #eee4db;
+    border-radius: 10px;
+    cursor: pointer;
+    font-family: inherit;
+    text-align: right;
+    transition: all 0.22s ease;
+    width: 100%;
+}
+
+.delivery-address-card:hover {
+    border-color: var(--gold-soft);
+    background: #fdf8f0;
+}
+
+.delivery-address-card.selected {
+    border-color: var(--gold-dark);
+    background: linear-gradient(135deg, #fdf8f0 0%, #fbefd9 100%);
+    box-shadow: 0 4px 14px rgba(224, 153, 26, 0.18);
+}
+
+.delivery-address-card-header {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    margin-bottom: 2px;
+}
+
+.delivery-address-icon {
+    font-size: 18px;
+    line-height: 1;
+}
+
+.delivery-address-title {
+    font-size: 12.5px;
+    font-weight: 800;
+    color: var(--primary-dark);
+}
+
+.delivery-address-default {
+    font-size: 9.5px;
+    font-weight: 800;
+    background: var(--gold-soft);
+    color: #ffffff;
+    padding: 2px 7px;
+    border-radius: 10px;
+}
+
+.delivery-address-check {
+    margin-right: auto;
+    width: 22px;
+    height: 22px;
+    background: var(--green);
+    color: #ffffff;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 900;
+    box-shadow: 0 2px 6px rgba(45, 106, 79, 0.3);
+}
+
+.delivery-address-text {
+    font-size: 11px;
+    color: var(--text-dark);
+    line-height: 1.65;
+    margin: 2px 0 0;
+    font-weight: 600;
+    padding-right: 25px;
+}
+
+.delivery-address-phone {
+    font-size: 10.5px;
+    color: var(--primary-light);
+    margin: 2px 0 0;
+    padding-right: 25px;
+    font-weight: 700;
+}
+
+/* ============================================================
+   دکمه افزودن آدرس جدید
+   ============================================================ */
+.btn-add-new-address {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    width: 100%;
+    padding: 9px 14px;
+    margin-top: 4px;
+    background: transparent;
+    border: 1.5px dashed var(--gold-soft);
+    color: var(--gold-dark);
+    border-radius: 9px;
+    font-size: 11.5px;
+    font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.22s ease;
+}
+
+.btn-add-new-address:hover {
+    background: rgba(212, 163, 115, 0.08);
+    border-style: solid;
+    border-color: var(--gold-dark);
+}
+
+/* ============================================================
+   خطای فیلد
+   ============================================================ */
+.field-error-message {
+    color: var(--red);
+    font-size: 10.5px;
+    margin-top: 4px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+/* ============================================================
+   Responsive
+   ============================================================ */
+@media (max-width: 480px) {
+    .delivery-address-card {
+        padding: 10px 11px;
+    }
+    .delivery-address-title {
+        font-size: 12px;
+    }
+    .delivery-address-text {
+        font-size: 10.5px;
+    }
+}

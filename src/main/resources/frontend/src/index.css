@@ -1,0 +1,170 @@
+/* ============================================================
+   تعریف فونت هما (Homa)
+   ============================================================ */
+
+@font-face {
+  font-family: 'Homa';
+  src: url('/Far_Homa.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Homa';
+  src: url('/Far_Homa-Bold.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+}
+
+
+/* ============================================================
+   ریست و تنظیمات پایه
+   ============================================================ */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Homa', 'Tahoma', 'Arial', sans-serif;
+  background: #FAF6F0;
+  color: #2c1810;
+  line-height: 1.6;
+  margin: 0;
+  padding: 0;
+  direction: rtl;
+}
+
+
+/* ============================================================
+   لینک‌ها
+   ============================================================ */
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+a:hover {
+  color: #f5a623;
+}
+
+
+/* ============================================================
+   اسکرول بار
+   ============================================================ */
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f0ebe7;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #6b3f2b;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #4a2c1a;
+}
+
+
+/* ============================================================
+   کادر محتوا
+   ============================================================ */
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+
+/* ============================================================
+   دکمه‌های عمومی
+   ============================================================ */
+
+button {
+  font-family: 'Homa', 'Tahoma', 'Arial', sans-serif;
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+
+/* ============================================================
+   ورودی‌ها
+   ============================================================ */
+
+input,
+textarea,
+select {
+  font-family: 'Homa', 'Tahoma', 'Arial', sans-serif;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+}
+
+
+/* ============================================================
+   تصاویر
+   ============================================================ */
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+
+/* ============================================================
+   لیست‌ها
+   ============================================================ */
+
+ul,
+ol {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+
+/* ============================================================
+   جداول
+   ============================================================ */
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+
+/* ============================================================
+   تنظیمات ریسپانسیو
+   ============================================================ */
+
+@media (max-width: 768px) {
+  body {
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    font-size: 14px;
+  }
+}

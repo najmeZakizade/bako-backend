@@ -1,0 +1,618 @@
+/* ============================================================
+   src/styles/customer-profile.css
+   استایل صفحه پروفایل مشتری — طراحی دو ستونه
+   ============================================================ */
+
+.profile-wrapper {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+/* ============================================================
+   🆕 گرید دو ستونه برای کارت‌های پروفایل
+   ============================================================ */
+.profile-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 16px;
+}
+
+.profile-grid .profile-menu-card {
+    margin-bottom: 0;
+}
+
+/* ============================================================
+   کارت لیست — اطلاعات / تنظیمات
+   ============================================================ */
+.profile-menu-card {
+    background: #ffffff;
+    border: 1.5px solid #eee4db;
+    border-radius: 14px;
+    padding: 6px 0;
+    margin-bottom: 16px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(44, 24, 16, 0.04);
+}
+
+.profile-menu-title {
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--primary-light);
+    padding: 8px 18px 6px;
+    margin: 0;
+    letter-spacing: 0.3px;
+}
+
+/* ============================================================
+   ردیف‌های لیست
+   ============================================================ */
+.profile-menu-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 13px 18px;
+    border-top: 1px solid #f5ece3;
+    width: 100%;
+    background: transparent;
+    border-left: none;
+    border-right: none;
+    border-bottom: none;
+    font-family: inherit;
+    text-align: right;
+    transition: background 0.18s ease;
+    font-size: 13px;
+    box-sizing: border-box;
+}
+
+.profile-menu-row:first-of-type {
+    border-top: none;
+}
+
+.profile-menu-action {
+    cursor: pointer;
+}
+
+.profile-menu-action:hover {
+    background: #faf6f0;
+}
+
+.profile-menu-action:active {
+    background: #f5ede6;
+}
+
+.profile-row-icon {
+    font-size: 18px;
+    width: 26px;
+    text-align: center;
+    flex-shrink: 0;
+    line-height: 1;
+}
+
+.profile-row-label {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--primary-dark);
+    flex: 1;
+    text-align: right;
+}
+
+.profile-row-value {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--primary-light);
+    text-align: left;
+    max-width: 50%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.profile-row-chevron {
+    font-size: 22px;
+    color: var(--gold-soft);
+    font-weight: 700;
+    line-height: 1;
+    flex-shrink: 0;
+    transition: transform 0.25s ease;
+}
+
+.profile-row-chevron.open {
+    transform: rotate(90deg);
+}
+
+.profile-row-badge {
+    font-size: 10.5px;
+    font-weight: 800;
+    background: var(--gold-soft);
+    color: #ffffff;
+    padding: 2px 9px;
+    border-radius: 10px;
+    margin-left: 4px;
+    flex-shrink: 0;
+}
+
+/* ============================================================
+   بخش آدرس‌ها
+   ============================================================ */
+.addresses-section {
+    background: #ffffff;
+    border: 1.5px solid #eee4db;
+    border-radius: 14px;
+    padding: 16px 18px 18px;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 8px rgba(44, 24, 16, 0.04);
+    animation: slideDownFade 0.25s ease;
+}
+
+@keyframes slideDownFade {
+    from {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.addresses-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+}
+
+.addresses-title {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--primary-dark);
+    margin: 0;
+}
+
+.btn-add-address {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 14px;
+    background: linear-gradient(135deg, #2d6a4f 0%, #1b4d3e 100%);
+    color: #ffffff;
+    border: none;
+    border-radius: 9px;
+    font-size: 11.5px;
+    font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 3px 10px rgba(45, 106, 79, 0.22);
+}
+
+.btn-add-address:hover {
+    background: linear-gradient(135deg, #3a8060 0%, #2d6a4f 100%);
+    transform: translateY(-1px);
+}
+
+.addresses-empty {
+    text-align: center;
+    padding: 32px 16px;
+    background: #faf6f0;
+    border-radius: 12px;
+    border: 1.5px dashed #d4a373;
+}
+
+.addresses-empty .empty-icon {
+    font-size: 42px;
+    display: block;
+    margin-bottom: 8px;
+    opacity: 0.7;
+}
+
+.addresses-empty h3 {
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--primary-dark);
+    margin: 0 0 4px;
+}
+
+.addresses-empty p {
+    font-size: 11.5px;
+    color: var(--primary-light);
+    margin: 0;
+}
+
+.addresses-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 10px;
+}
+
+/* ============================================================
+   کارت آدرس
+   ============================================================ */
+.address-card {
+    position: relative;
+    padding: 12px 14px 10px;
+    background: #fdf8f0;
+    border: 1.5px solid #eee4db;
+    border-radius: 12px;
+    transition: all 0.2s ease;
+}
+
+.address-card:hover {
+    border-color: var(--gold-soft);
+    box-shadow: 0 4px 12px rgba(44, 24, 16, 0.06);
+    transform: translateY(-2px);
+}
+
+.address-card.is-default {
+    border-color: var(--gold-dark);
+    background: linear-gradient(135deg, #fdf8f0 0%, #fbefd9 100%);
+}
+
+.default-badge {
+    position: absolute;
+    top: -8px;
+    right: 12px;
+    padding: 2px 9px;
+    background: linear-gradient(135deg, #f5a623 0%, #e0991a 100%);
+    color: #2c1810;
+    font-size: 9.5px;
+    font-weight: 900;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(245, 166, 35, 0.35);
+}
+
+.address-card-header {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    margin-bottom: 6px;
+}
+
+.address-icon {
+    font-size: 18px;
+    line-height: 1;
+}
+
+.address-title {
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--primary-dark);
+    margin: 0;
+}
+
+.address-text {
+    font-size: 11.5px;
+    color: var(--text-dark);
+    line-height: 1.7;
+    margin: 0 0 6px;
+    font-weight: 600;
+    word-break: break-word;
+}
+
+.address-phone {
+    font-size: 11px;
+    color: var(--primary-light);
+    margin: 0 0 8px;
+    font-weight: 700;
+}
+
+.address-actions {
+    display: flex;
+    gap: 5px;
+    padding-top: 8px;
+    border-top: 1px dashed #eadfd4;
+    flex-wrap: wrap;
+}
+
+.address-action-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    padding: 5px 9px;
+    border-radius: 7px;
+    border: 1.5px solid;
+    font-size: 10.5px;
+    font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.18s ease;
+}
+
+.address-action-btn.default {
+    background: transparent;
+    border-color: var(--gold-soft);
+    color: var(--gold-dark);
+}
+.address-action-btn.default:hover {
+    background: var(--gold-soft);
+    color: #ffffff;
+}
+
+.address-action-btn.edit {
+    background: transparent;
+    border-color: #a8d0b8;
+    color: var(--green);
+    flex: 1;
+}
+.address-action-btn.edit:hover {
+    background: var(--green);
+    color: #ffffff;
+}
+
+.address-action-btn.delete {
+    background: transparent;
+    border-color: rgba(192, 57, 43, 0.3);
+    color: var(--red);
+    width: 30px;
+    padding: 5px 0;
+}
+.address-action-btn.delete:hover {
+    background: var(--red);
+    color: #ffffff;
+}
+
+/* ============================================================
+   مودال
+   ============================================================ */
+.address-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+    z-index: 9998;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    animation: fadeInOverlay 0.2s ease;
+}
+
+@keyframes fadeInOverlay {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+.address-modal {
+    background: #ffffff;
+    border-radius: 14px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    width: 100%;
+    max-width: 520px;
+    max-height: 92vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    animation: slideUpModal 0.25s ease;
+}
+
+@keyframes slideUpModal {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.address-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 14px 18px;
+    background: linear-gradient(135deg, #4a2c1a 0%, #2c1810 100%);
+}
+
+.address-modal-header h3 {
+    font-size: 14px;
+    font-weight: 800;
+    margin: 0;
+    color: #f3d4a6;
+}
+
+.address-modal-close {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 2px solid rgba(243, 212, 166, 0.4);
+    background: transparent;
+    color: #f3d4a6;
+    font-size: 13px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    font-family: inherit;
+}
+
+.address-modal-close:hover {
+    background: rgba(243, 212, 166, 0.15);
+    transform: rotate(90deg);
+}
+
+.address-modal-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.address-modal-body .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.address-modal-body .form-group label {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--primary-dark);
+}
+
+.address-modal-body input[type='text'],
+.address-modal-body input[type='password'],
+.address-modal-body textarea {
+    width: 100%;
+    padding: 9px 12px;
+    border: 1.5px solid #e0d6cc;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 12.5px;
+    color: var(--text-dark);
+    background: #fffdfb;
+    outline: none;
+    transition: all 0.2s ease;
+    box-sizing: border-box;
+}
+
+.address-modal-body input:focus,
+.address-modal-body textarea:focus {
+    border-color: var(--gold-soft);
+    box-shadow: 0 0 0 3px rgba(212, 163, 115, 0.15);
+    background: #ffffff;
+}
+
+.address-modal-body textarea {
+    resize: vertical;
+    min-height: 60px;
+    line-height: 1.6;
+}
+
+.title-options {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.title-option-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 7px 14px;
+    background: transparent;
+    border: 1.5px solid #d4a373;
+    color: var(--primary-brown);
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.title-option-btn:hover {
+    background: rgba(212, 163, 115, 0.12);
+}
+
+.title-option-btn.active {
+    background: linear-gradient(135deg, #4a2c1a 0%, #2c1810 100%);
+    color: var(--gold-text);
+    border-color: var(--primary-dark);
+    box-shadow: 0 3px 10px rgba(74, 44, 26, 0.2);
+}
+
+.coords-display {
+    margin-top: 6px;
+    padding: 5px 10px;
+    background: #f0ebe7;
+    border-radius: 6px;
+    font-size: 10.5px;
+    color: var(--primary-light);
+    text-align: center;
+    font-weight: 700;
+    border: 1px solid #e5dcd3;
+}
+
+.field-error {
+    font-size: 10.5px;
+    color: var(--red);
+    font-weight: 700;
+    margin-top: 3px;
+}
+
+.checkbox-group {
+    padding-top: 4px;
+}
+
+.checkbox-label {
+    display: inline-flex !important;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    font-size: 12.5px !important;
+    font-weight: 700;
+    color: var(--primary-dark);
+}
+
+.checkbox-label input[type='checkbox'] {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--gold-dark);
+    cursor: pointer;
+}
+
+.address-modal-footer {
+    display: flex;
+    gap: 10px;
+    padding: 12px 18px;
+    border-top: 1.5px solid #f0ebe7;
+    background: #fdf8f0;
+}
+
+.address-modal-footer button {
+    flex: 1;
+    justify-content: center;
+}
+
+/* ============================================================
+   Responsive
+   ============================================================ */
+
+/* در موبایل/تبلت کوچک: یک ستون */
+@media (max-width: 700px) {
+    .profile-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+}
+
+@media (max-width: 600px) {
+    .profile-menu-row {
+        padding: 12px 14px;
+        gap: 10px;
+    }
+    .profile-row-label {
+        font-size: 12.5px;
+    }
+    .profile-row-value {
+        font-size: 12px;
+        max-width: 45%;
+    }
+    .addresses-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .btn-add-address {
+        width: 100%;
+        justify-content: center;
+    }
+    .addresses-grid {
+        grid-template-columns: 1fr;
+    }
+    .address-modal {
+        max-width: 100%;
+        max-height: 94vh;
+        border-radius: 12px;
+    }
+}

@@ -1,0 +1,330 @@
+/* ============================================================
+   Bako — Tenant Payment Config (پنل ادمین)
+   ============================================================ */
+
+.tenant-payment-config {
+    max-width: var(--content-max);
+    margin: 0 auto;
+}
+
+.tenant-payment-grid {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 16px;
+    align-items: flex-start;
+}
+
+/* ============================================================
+   لیست نانوایی‌ها
+   ============================================================ */
+.tenant-list-panel {
+    background: var(--card-bg);
+    border: 1px solid #eee4db;
+    border-radius: var(--radius);
+    padding: 10px;
+    max-height: 600px;
+    overflow-y: auto;
+    box-shadow: var(--shadow-sm);
+}
+
+.tenant-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.tenant-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    background: #ffffff;
+    border: 1.5px solid #eee4db;
+    border-radius: 10px;
+    cursor: pointer;
+    font-family: inherit;
+    text-align: right;
+    transition: all 0.2s ease;
+    width: 100%;
+}
+
+.tenant-item:hover {
+    border-color: var(--gold-soft);
+    background: rgba(212, 163, 115, 0.05);
+    transform: translateX(-2px);
+}
+
+.tenant-item.selected {
+    border-color: var(--gold-dark);
+    background: linear-gradient(135deg, #fbefd9 0%, #f6e3c2 100%);
+    box-shadow: 0 4px 12px rgba(224, 153, 26, 0.2);
+}
+
+.tenant-item-icon {
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #4a2c1a 0%, #2c1810 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+}
+
+.tenant-item-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.tenant-item-info h4 {
+    font-size: 12.5px;
+    font-weight: 800;
+    color: var(--primary-dark);
+    margin: 0 0 3px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.tenant-item-status {
+    font-size: 10px;
+}
+
+.status-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 10px;
+}
+
+.status-badge.active {
+    background: #d4edda;
+    color: #155724;
+}
+
+.status-badge.inactive {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+/* ============================================================
+   پنل تنظیمات
+   ============================================================ */
+.payment-config-panel {
+    background: var(--card-bg);
+    border: 1px solid #eee4db;
+    border-radius: var(--radius);
+    padding: 18px;
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.payment-config-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #f0ebe7;
+}
+
+.payment-config-header h3 {
+    font-size: 14px;
+    font-weight: 900;
+    color: var(--primary-dark);
+    margin: 0;
+}
+
+.btn-close-panel {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--gray);
+    border: none;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--primary-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.btn-close-panel:hover {
+    background: var(--red);
+    color: white;
+    transform: rotate(90deg);
+}
+
+/* ============================================================
+   اطلاعات نانوایی
+   ============================================================ */
+.payment-config-tenant-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    background: #faf6f0;
+    border: 1px solid #f0e6d6;
+    border-radius: 10px;
+}
+
+.payment-config-tenant-info .info-icon {
+    font-size: 24px;
+}
+
+.payment-config-tenant-info h4 {
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--primary-dark);
+    margin: 0 0 2px;
+}
+
+.payment-config-tenant-info p {
+    font-size: 11px;
+    color: var(--primary-light);
+    margin: 0;
+    opacity: 0.8;
+}
+
+/* ============================================================
+   فرم
+   ============================================================ */
+.payment-config-form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.payment-config-form .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.payment-config-form .form-group label {
+    font-size: 11.5px;
+    font-weight: 800;
+    color: var(--primary-dark);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.payment-config-form .form-group input[type="text"] {
+    width: 100%;
+    padding: 9px 12px;
+    border: 1.5px solid #e8e0d8;
+    border-radius: 8px;
+    font-size: 12.5px;
+    font-family: inherit;
+    background: white;
+    outline: none;
+    transition: 0.2s ease;
+    color: var(--primary-dark);
+}
+
+.payment-config-form .form-group input[type="text"]:focus {
+    border-color: var(--gold-soft);
+    box-shadow: 0 0 0 3px rgba(212, 163, 115, 0.15);
+}
+
+.form-hint {
+    font-size: 10.5px;
+    color: var(--primary-light);
+    opacity: 0.75;
+    font-weight: 600;
+}
+
+.validation-badge {
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 9.5px;
+    font-weight: 800;
+}
+
+.validation-badge.valid {
+    background: #d4edda;
+    color: #155724;
+}
+
+.validation-badge.invalid {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+/* ============================================================
+   Toggle
+   ============================================================ */
+.form-toggle {
+    padding: 10px 12px;
+    background: #faf6f0;
+    border-radius: 8px;
+    border: 1px solid #f0e6d6;
+}
+
+.toggle-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    font-family: inherit;
+    user-select: none;
+}
+
+.toggle-label input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--gold-dark);
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.toggle-text {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--primary-dark);
+}
+
+/* ============================================================
+   دکمه‌ها
+   ============================================================ */
+.payment-config-actions {
+    display: flex;
+    gap: 8px;
+    padding-top: 12px;
+    border-top: 1px solid #f0ebe7;
+}
+
+.payment-config-actions button {
+    flex: 1;
+    justify-content: center;
+}
+
+/* ============================================================
+   ریسپانسیو
+   ============================================================ */
+@media (max-width: 900px) {
+    .tenant-payment-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .tenant-list-panel {
+        max-height: 300px;
+    }
+}
+
+@media (max-width: 480px) {
+    .payment-config-panel {
+        padding: 14px;
+    }
+
+    .payment-config-actions {
+        flex-direction: column;
+    }
+}

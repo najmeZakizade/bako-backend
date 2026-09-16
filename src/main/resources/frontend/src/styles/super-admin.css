@@ -1,0 +1,810 @@
+/* ============================================================
+   Super Admin — استایل‌های اختصاصی صفحات جدید
+   ============================================================ */
+
+/* ============================================================
+   ۱. جدول عمومی سوپر ادمین
+   ============================================================ */
+.sa-table-wrapper {
+    background: var(--card-bg);
+    border: 1px solid #e8dccf;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: 0 8px 24px rgba(74, 44, 26, 0.08);
+    overflow-x: auto;
+}
+
+.sa-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 720px;
+    background: var(--card-bg);
+}
+
+.sa-table thead {
+    background: linear-gradient(135deg, #4a2c1a 0%, #2c1810 100%);
+}
+
+.sa-table th {
+    color: var(--gold-text);
+    padding: 11px 12px;
+    text-align: center;
+    font-size: 12px;
+    font-weight: 800;
+    white-space: nowrap;
+    letter-spacing: 0.5px;
+}
+
+.sa-table td {
+    padding: 9px 12px;
+    border-bottom: 1px solid #f2e9dd;
+    text-align: center;
+    font-size: 11.5px;
+    color: var(--text-dark);
+    transition: background-color 0.22s ease;
+}
+
+.sa-table tbody tr:nth-child(even) td {
+    background-color: rgba(240, 220, 192, 0.35);
+}
+
+.sa-table tbody tr:hover td {
+    background-color: rgba(245, 166, 35, 0.12);
+}
+
+.sa-table tbody tr:last-child td { border-bottom: none; }
+
+/* ============================================================
+   ۲. سلول‌های خاص جدول
+   ============================================================ */
+
+/* نام کاربری — ساده و کوچیک */
+.sa-cell-username {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--primary-dark);
+    text-align: center;
+}
+
+/* نام کامل — راست‌چین */
+.sa-cell-name {
+    font-weight: 700;
+    text-align: right !important;
+    padding-right: 16px !important;
+}
+
+/* ✅ سلول‌های عادی (شناسه/موبایل/مبلغ) — فونت اصلی سایت، بولد */
+.sa-cell-normal {
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--primary-dark);
+    letter-spacing: 0.3px;
+}
+
+/* سلول مونواسپیس (اگه جایی لازم شد) */
+.sa-cell-mono {
+    font-family: monospace;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    color: var(--primary-dark);
+}
+
+/* رتبه */
+.sa-cell-rank {
+    font-weight: 900;
+    color: var(--gold-dark);
+    font-size: 14px;
+    width: 40px;
+}
+
+/* ============================================================
+   ۳. Select درون جدول
+   ============================================================ */
+.sa-inline-select {
+    padding: 4px 8px;
+    border: 1.5px solid #e8e0d8;
+    border-radius: 6px;
+    font-family: inherit;
+    font-size: 11px;
+    background: #ffffff;
+    color: var(--primary-dark);
+    font-weight: 700;
+    cursor: pointer;
+    outline: none;
+    transition: 0.2s ease;
+    width: 100%;
+    max-width: 130px;
+}
+
+.sa-inline-select:focus {
+    border-color: var(--gold-soft);
+    box-shadow: 0 0 0 3px rgba(212, 163, 115, 0.15);
+}
+
+.sa-inline-select:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* ============================================================
+   ۴. Badges
+   ============================================================ */
+.sa-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 9.5px;
+    font-weight: 800;
+    margin-right: 4px;
+    white-space: nowrap;
+}
+.sa-badge-purple { background: #e8daef; color: #6c3483; }
+.sa-badge-orange { background: #fff3cd; color: #856404; }
+.sa-badge-blue   { background: #d1ecf1; color: #0c5460; }
+.sa-badge-green  { background: #d4edda; color: #155724; }
+.sa-badge-gray   { background: #e9ecef; color: #495057; }
+
+/* ============================================================
+   ۵. آیکون وضعیت کاربر
+   ============================================================ */
+.sa-status-icon {
+    width: 30px;
+    height: 30px;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 17px;
+    font-weight: 900;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    font-family: inherit;
+}
+
+.sa-status-icon-on {
+    background: #d4edda;
+    color: #155724;
+}
+
+.sa-status-icon-on:hover:not(:disabled) {
+    background: #155724;
+    color: #d4edda;
+    transform: scale(1.1);
+}
+
+.sa-status-icon-off {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+.sa-status-icon-off:hover:not(:disabled) {
+    background: #721c24;
+    color: #f8d7da;
+    transform: scale(1.1);
+}
+
+.sa-status-icon:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+/* ============================================================
+   ۶. دکمه‌های آیکونی جدول
+   ============================================================ */
+.sa-actions { display: flex; gap: 4px; justify-content: center; }
+
+.sa-btn-icon {
+    width: 28px;
+    height: 28px;
+    border: none;
+    border-radius: 7px;
+    background: rgba(212, 163, 115, 0.12);
+    color: var(--primary-dark);
+    cursor: pointer;
+    font-size: 13px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.2s ease;
+}
+
+.sa-btn-icon:hover:not(:disabled) {
+    background: rgba(212, 163, 115, 0.3);
+    transform: translateY(-1px);
+}
+
+.sa-btn-icon:disabled { opacity: 0.35; cursor: not-allowed; }
+
+.sa-btn-danger { background: rgba(192, 57, 43, 0.08); }
+.sa-btn-danger:hover:not(:disabled) {
+    background: rgba(192, 57, 43, 0.2);
+    color: var(--red);
+}
+
+/* ============================================================
+   ۷. نمودار میله‌ای عمودی
+   ============================================================ */
+.sa-chart-bars {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-around;
+    gap: 8px;
+    min-height: 180px;
+    padding: 10px 4px 0;
+    border-bottom: 1.5px dashed #e0d6cc;
+    direction: rtl;
+}
+
+.sa-chart-bars-large { min-height: 220px; gap: 3px; }
+
+.sa-chart-bar-item {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    height: 100%;
+    justify-content: flex-end;
+}
+
+.sa-chart-bar-wrap {
+    flex: 1;
+    width: 100%;
+    max-width: 40px;
+    min-height: 100px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+}
+
+.sa-chart-bar {
+    width: 100%;
+    background: linear-gradient(180deg, #f5a623 0%, #e0991a 100%);
+    border-radius: 6px 6px 0 0;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(224, 153, 26, 0.25);
+    min-height: 4px;
+}
+
+.sa-chart-bar:hover {
+    background: linear-gradient(180deg, #ffb93a 0%, #f0a530 100%);
+    transform: scale(1.04);
+}
+
+.sa-chart-bar-label { font-size: 9.5px; font-weight: 700; color: var(--primary-light); white-space: nowrap; }
+.sa-chart-bar-value { font-size: 9px; font-weight: 800; color: var(--gold-dark); white-space: nowrap; }
+.sa-chart-total { font-size: 11px; font-weight: 800; color: var(--gold-dark); }
+
+/* ============================================================
+   ۸. نمودار میله‌ای افقی
+   ============================================================ */
+.sa-hbar-list { display: flex; flex-direction: column; gap: 10px; }
+
+.sa-hbar-item {
+    display: grid;
+    grid-template-columns: 180px 1fr 110px;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 12px;
+    background: #faf6f0;
+    border-radius: 10px;
+    transition: 0.2s ease;
+}
+
+.sa-hbar-item:hover { background: #f5ede6; }
+
+.sa-hbar-info { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+
+.sa-hbar-name {
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--primary-dark);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.sa-hbar-stats { font-size: 10px; color: var(--primary-light); font-weight: 600; }
+
+.sa-hbar-track {
+    height: 14px;
+    background: #f0ebe7;
+    border-radius: 7px;
+    overflow: hidden;
+}
+
+.sa-hbar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #f5a623 0%, #d4a373 100%);
+    border-radius: 7px;
+    transition: width 0.5s ease;
+    min-width: 4px;
+}
+
+.sa-hbar-value {
+    font-size: 11.5px;
+    font-weight: 900;
+    color: var(--gold-dark);
+    text-align: left;
+    white-space: nowrap;
+}
+
+/* ============================================================
+   ۹. بند انگشتی محصولات
+   ============================================================ */
+.sa-product-thumb {
+    width: 36px;
+    height: 36px;
+    object-fit: cover;
+    border-radius: 7px;
+    border: 1.5px solid #f0ebe7;
+    display: inline-block;
+}
+
+.sa-product-thumb-placeholder {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    background: #f0ebe7;
+    border-radius: 7px;
+    font-size: 16px;
+}
+
+/* ============================================================
+   ۱۰. Responsive — جداول و نمودارها
+   ============================================================ */
+@media (max-width: 900px) {
+    .sa-hbar-item {
+        grid-template-columns: 130px 1fr 90px;
+        gap: 8px;
+        padding: 6px 9px;
+    }
+    .sa-hbar-name { font-size: 11px; }
+    .sa-hbar-value { font-size: 10.5px; }
+    .sa-table { min-width: 600px; }
+    .sa-table th, .sa-table td { padding: 7px 8px; font-size: 10.5px; }
+}
+
+@media (max-width: 600px) {
+    .sa-chart-bars { min-height: 140px; gap: 4px; }
+    .sa-chart-bar-wrap { min-height: 80px; }
+    .sa-chart-bar-label { font-size: 8.5px; }
+    .sa-chart-bar-value { display: none; }
+    .sa-hbar-item { grid-template-columns: 1fr; gap: 6px; }
+    .sa-hbar-value { text-align: right; font-size: 11px; }
+}
+
+/* ============================================================
+   ۱۱. Print
+   ============================================================ */
+@media print {
+    .sa-table thead { background: #fff !important; background-image: none !important; }
+    .sa-table th { color: #000 !important; border: 1px solid #000 !important; }
+    .sa-chart-bar { background: #888 !important; box-shadow: none !important; }
+    .sa-hbar-fill { background: #888 !important; }
+}
+
+/* ============================================================
+   ۱۲. آیکون‌های سایدبار سوپر ادمین
+   ============================================================ */
+.admin-sidebar .sidebar-icon-img {
+    width: 22px;
+    height: 22px;
+    object-fit: contain;
+    flex-shrink: 0;
+    display: block;
+    opacity: 0.95;
+    transition: opacity 0.2s ease, transform 0.25s ease;
+    pointer-events: none;
+    user-select: none;
+}
+
+.admin-sidebar a:hover .sidebar-icon-img { opacity: 1; transform: scale(1.1); }
+.admin-sidebar a.active .sidebar-icon-img { opacity: 1; transform: scale(1.08); }
+
+.admin-sidebar .sidebar-icon-emoji {
+    width: 22px;
+    height: 22px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    line-height: 1;
+    flex-shrink: 0;
+    opacity: 0.95;
+    transition: opacity 0.2s ease, transform 0.25s ease;
+}
+
+.admin-sidebar a:hover .sidebar-icon-emoji { opacity: 1; transform: scale(1.1); }
+.admin-sidebar a.active .sidebar-icon-emoji { opacity: 1; transform: scale(1.08); }
+
+@media (max-width: 768px) {
+    .admin-sidebar .sidebar-icon-img,
+    .admin-sidebar .sidebar-icon-emoji {
+        width: 18px;
+        height: 18px;
+        font-size: 14px;
+    }
+}
+
+/* ============================================================
+   ۱۳. آیکون‌های هدر
+   ============================================================ */
+.admin-header-icon {
+    width: 26px;
+    height: 26px;
+    object-fit: contain;
+    flex-shrink: 0;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.admin-dashboard-header h1 {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.admin-header-icon-fallback {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    font-size: 20px;
+    line-height: 1;
+    flex-shrink: 0;
+}
+
+@media (max-width: 768px) {
+    .admin-header-icon,
+    .admin-header-icon-fallback {
+        width: 22px;
+        height: 22px;
+        font-size: 17px;
+    }
+}
+
+/* ============================================================
+   ۱۴. کارت‌های آمار داشبورد
+   ============================================================ */
+.admin-dashboard .admin-stat-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 6px;
+    padding: 12px 10px;
+    min-height: 110px;
+}
+
+.admin-stat-icon-img {
+    width: 34px;
+    height: 34px;
+    object-fit: contain;
+    display: block;
+    margin: 0 auto;
+    transition: transform 0.25s ease;
+    pointer-events: none;
+    user-select: none;
+}
+
+.admin-stat-card:hover .admin-stat-icon-img {
+    transform: scale(1.08);
+}
+
+.admin-stat-icon-fallback {
+    display: block;
+    font-size: 24px;
+    line-height: 1;
+    text-align: center;
+    margin: 0 auto;
+    opacity: 0.85;
+}
+
+.admin-dashboard .admin-stat-number {
+    text-align: center;
+    width: 100%;
+    font-size: 18px;
+    line-height: 1.1;
+}
+
+.admin-dashboard .admin-stat-label {
+    text-align: center;
+    width: 100%;
+    font-size: 10.5px;
+    margin-top: 0;
+}
+
+/* ============================================================
+   ۱۵. رنگ‌بندی نوار رنگی کارت‌ها
+   ============================================================ */
+.admin-stat-card.gold::before {
+    background: linear-gradient(180deg, #f5a623 0%, #e0991a 100%);
+}
+.admin-stat-card.green::before {
+    background: linear-gradient(180deg, #2d6a4f 0%, #1b4d3e 100%);
+}
+.admin-stat-card.blue::before {
+    background: linear-gradient(180deg, #4a7fb5 0%, #2c5d8b 100%);
+}
+.admin-stat-card.red::before {
+    background: linear-gradient(180deg, #c0392b 0%, #962d22 100%);
+}
+
+/* ============================================================
+   ۱۶. چیدمان کارت‌های داشبورد — ۳ تا در هر خط
+   ============================================================ */
+.admin-dashboard .admin-stats-grid,
+.admin-dashboard .admin-stats-grid.admin-stats-grid {
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 12px !important;
+    margin-bottom: 18px !important;
+}
+
+@media (max-width: 900px) {
+    .admin-dashboard .admin-stats-grid,
+    .admin-dashboard .admin-stats-grid.admin-stats-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    }
+}
+
+@media (max-width: 600px) {
+    .admin-dashboard .admin-stats-grid,
+    .admin-dashboard .admin-stats-grid.admin-stats-grid {
+        grid-template-columns: 1fr !important;
+        gap: 8px !important;
+    }
+    .admin-stat-icon-img { width: 30px; height: 30px; }
+    .admin-stat-icon-fallback { font-size: 20px; }
+    .admin-dashboard .admin-stat-card {
+        padding: 10px 8px;
+        gap: 5px;
+        min-height: 95px;
+    }
+    .admin-dashboard .admin-stat-number { font-size: 16px; }
+    .admin-dashboard .admin-stat-label { font-size: 10px; }
+}
+
+/* ============================================================
+   ۱۷. لوگوی نانوایی
+   ============================================================ */
+.admin-tenants-grid .admin-tenant-card-icon {
+    width: 64px;
+    height: 64px;
+    min-width: 64px;
+    background: transparent;
+    box-shadow: none;
+    border-radius: 14px;
+    overflow: hidden;
+    padding: 0;
+}
+
+.admin-tenants-grid .admin-tenant-card-icon-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    border-radius: 14px;
+    transition: transform 0.25s ease;
+    user-select: none;
+    pointer-events: none;
+}
+
+.admin-tenant-card:hover .admin-tenant-card-icon-img {
+    transform: scale(1.06);
+}
+
+.admin-tenants-grid .admin-tenant-card-icon-emoji {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    font-size: 32px;
+    line-height: 1;
+    background: linear-gradient(135deg, #4a2c1a 0%, #2c1810 100%);
+    border-radius: 14px;
+}
+
+@media (max-width: 768px) {
+    .admin-tenants-grid .admin-tenant-card-icon {
+        width: 52px;
+        height: 52px;
+        min-width: 52px;
+    }
+    .admin-tenants-grid .admin-tenant-card-icon-emoji {
+        font-size: 26px;
+    }
+}
+
+/* ============================================================
+   ۱۸. صفحه تنظیمات پرداخت — گرید ۳ ستونی
+   ============================================================ */
+.tpc-tenants-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+    margin-bottom: 22px;
+}
+
+.tpc-tenant-card {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    background: var(--card-bg);
+    border: 2px solid #eee4db;
+    border-radius: var(--radius-lg);
+    cursor: pointer;
+    font-family: inherit;
+    text-align: right;
+    transition: all 0.22s ease;
+    box-shadow: 0 3px 10px rgba(44, 24, 16, 0.05);
+    min-width: 0;
+}
+
+.tpc-tenant-card:hover {
+    border-color: var(--gold-soft);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(74, 44, 26, 0.12);
+}
+
+.tpc-tenant-card-selected {
+    border-color: var(--gold-dark);
+    background: linear-gradient(135deg, #fbefd9 0%, #f6e3c2 100%);
+    box-shadow: 0 6px 18px rgba(224, 153, 26, 0.2);
+}
+
+.tpc-tenant-logo {
+    width: 56px;
+    height: 56px;
+    min-width: 56px;
+    border-radius: 14px;
+    overflow: hidden;
+    flex-shrink: 0;
+    background: linear-gradient(135deg, #4a2c1a 0%, #2c1810 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 10px rgba(74, 44, 26, 0.18);
+}
+
+.tpc-tenant-logo-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.25s ease;
+}
+
+.tpc-tenant-card:hover .tpc-tenant-logo-img {
+    transform: scale(1.08);
+}
+
+.tpc-tenant-logo-emoji {
+    font-size: 26px;
+    line-height: 1;
+}
+
+.tpc-tenant-info {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.tpc-tenant-name {
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--primary-dark);
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.tpc-tenant-address {
+    font-size: 10.5px;
+    color: var(--primary-light);
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    opacity: 0.85;
+    font-weight: 600;
+}
+
+.tpc-tenant-status {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 9.5px;
+    font-weight: 800;
+    width: fit-content;
+    margin-top: 2px;
+}
+
+.tpc-tenant-status.active {
+    background: #d4edda;
+    color: #155724;
+}
+
+.tpc-tenant-status.inactive {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+.tpc-tenant-check {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    width: 22px;
+    height: 22px;
+    background: var(--gold-dark);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 900;
+    box-shadow: 0 2px 6px rgba(224, 153, 26, 0.4);
+}
+
+/* ============================================================
+   ۱۹. پنل تنظیمات (زیر گرید)
+   ============================================================ */
+.tpc-settings-panel {
+    background: var(--card-bg);
+    border: 1px solid #eee4db;
+    border-radius: var(--radius-lg);
+    padding: 18px 20px;
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    animation: tpcSlideDown 0.3s ease;
+}
+
+@keyframes tpcSlideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================================
+   ۲۰. Responsive — صفحه تنظیمات پرداخت
+   ============================================================ */
+@media (max-width: 1000px) {
+    .tpc-tenants-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 600px) {
+    .tpc-tenants-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+    .tpc-tenant-card {
+        padding: 10px 12px;
+        gap: 10px;
+    }
+    .tpc-tenant-logo {
+        width: 48px;
+        height: 48px;
+        min-width: 48px;
+    }
+    .tpc-tenant-name { font-size: 12px; }
+    .tpc-tenant-address { font-size: 10px; }
+    .tpc-settings-panel { padding: 14px; }
+}
