@@ -1,0 +1,30 @@
+/* ============ Breakpoints ============ */
+:root {
+    --bp-mobile: 480px;
+    --bp-tablet: 768px;
+    --bp-desktop: 1024px;
+    --bp-wide: 1280px;
+}
+
+/* ============ Hide / Show Utility ============ */
+.hide-mobile { display: initial; }
+.show-mobile { display: none; }
+
+@media (max-width: 767px) {
+    .hide-mobile { display: none !important; }
+    .show-mobile { display: initial !important; }
+}
+
+/* ============ Touch-friendly ============ */
+@media (hover: none) {
+    button, a, [role="button"] {
+        min-height: 44px;    /* اپل استاندارد لمسی */
+        min-width: 44px;
+    }
+}
+
+/* ============ Safe Area (iPhone notch) ============ */
+body {
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+}

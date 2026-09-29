@@ -1,0 +1,77 @@
+.table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.responsive-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.responsive-table th,
+.responsive-table td {
+    padding: 12px 16px;
+    text-align: right;
+    font-size: 14px;
+    border-bottom: 1px solid #eee;
+}
+
+.responsive-table th {
+    background: #f8f5f0;
+    font-weight: 600;
+    color: #5a3a1a;
+}
+
+.responsive-table tbody tr:hover {
+    background: #fdfbf7;
+    cursor: pointer;
+}
+
+/* ============ Mobile: Cards ============ */
+.responsive-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.resp-card {
+    background: #fff;
+    border-radius: 14px;
+    padding: 14px 16px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    border: 1px solid #f0e8df;
+}
+
+.resp-card-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid #f5f0ea;
+}
+
+.resp-card-row:last-child { border-bottom: 0; }
+
+.resp-card-label {
+    color: #8a7a68;
+    font-size: 12.5px;
+    font-weight: 500;
+}
+
+.resp-card-value {
+    color: #2c2c2c;
+    font-size: 14px;
+    font-weight: 500;
+    text-align: left;
+}
+
+.table-empty {
+    text-align: center;
+    padding: 40px 20px;
+    color: #999;
+    background: #fff;
+    border-radius: 12px;
+}

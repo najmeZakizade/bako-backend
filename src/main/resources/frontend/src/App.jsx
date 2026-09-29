@@ -40,6 +40,12 @@ import AdminLayout from './components/layout/AdminLayout';
 import MonitoringLayout from './components/layout/MonitoringLayout';
 
 // ============================================================
+//  📱 PWA Components
+// ============================================================
+import InstallPWA from './components/common/InstallPWA';
+import OfflineBanner from './components/common/OfflineBanner';
+
+// ============================================================
 //  پنل ادمین
 // ============================================================
 import AdminDashboard from './pages/admin/AdminDashboard';
@@ -118,6 +124,10 @@ function App() {
     return (
         <BrowserRouter>
             <Navbar />
+
+            {/* 📡 نوار هشدار آفلاین — فقط در صورت قطع اینترنت نمایش داده می‌شود */}
+            <OfflineBanner />
+
             <Routes>
 
                 {/* ============================================================
@@ -232,6 +242,9 @@ function App() {
                 </Route>
 
             </Routes>
+
+            {/* 📲 بنر نصب PWA — فقط در صورت پشتیبانی مرورگر و عدم رد قبلی نمایش داده می‌شود */}
+            <InstallPWA />
         </BrowserRouter>
     );
 }
