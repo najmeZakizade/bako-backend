@@ -99,6 +99,7 @@ function ProtectedRoute({ children, allowedRoles }) {
     }
 
     if (!token || !user) {
+        // ذخیره مسیر مقصد برای بازگشت بعد از لاگین
         return <Navigate to="/login" state={{ from: location }} replace />;
     }
 
@@ -125,7 +126,7 @@ function App() {
         <BrowserRouter>
             <Navbar />
 
-            {/* 📡 نوار هشدار آفلاین — فقط در صورت قطع اینترنت نمایش داده می‌شود */}
+            {/* 📡 نوار هشدار آفلاین */}
             <OfflineBanner />
 
             <Routes>
@@ -134,17 +135,84 @@ function App() {
                     صفحات مشتری
                     ============================================================ */}
                 <Route element={<CustomerLayout />}>
+
+                    {/* 🟢 عمومی — بدون نیاز به لاگین */}
                     <Route path="/" element={<BakeriesPage />} />
                     <Route path="/bakeries/:id" element={<BakeryDetailPage />} />
-                    <Route path="/cart" element={<CartPage />} />
-                    <Route path="/delivery" element={<DeliveryPage />} />
-                    <Route path="/payment" element={<PaymentPage />} />
-                    <Route path="/receipt" element={<Receipt />} />
-                    <Route path="/receipt/:orderId" element={<Receipt />} />
-                    <Route path="/order-success" element={<OrderSuccessPage />} />
-                    <Route path="/my-orders" element={<MyOrdersPage />} />
-                    <Route path="/notifications" element={<NotificationsPage />} />
-                    <Route path="/profile" element={<ProfilePage />} />
+
+                    {/* 🔒 محافظت‌شده — نیاز به لاگین */}
+                    <Route
+                        path="/cart"
+                        element={
+                            <ProtectedRoute>
+                                <CartPage />
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path="/delivery"
+                        element={
+                            <ProtectedRoute>
+                                <DeliveryPage />
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path="/payment"
+                        element={
+                            <ProtectedRoute>
+                                <PaymentPage />
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path="/receipt"
+                        element={
+                            <ProtectedRoute>
+                                <Receipt />
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path="/receipt/:orderId"
+                        element={
+                            <ProtectedRoute>
+                                <Receipt />
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path="/order-success"
+                        element={
+                            <ProtectedRoute>
+                                <OrderSuccessPage />
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path="/my-orders"
+                        element={
+                            <ProtectedRoute>
+                                <MyOrdersPage />
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path="/notifications"
+                        element={
+                            <ProtectedRoute>
+                                <NotificationsPage />
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path="/profile"
+                        element={
+                            <ProtectedRoute>
+                                <ProfilePage />
+                            </ProtectedRoute>
+                        }
+                    />
                 </Route>
 
                 {/* ============================================================
@@ -191,6 +259,7 @@ function App() {
                     />
                     <Route path="transactions" element={<TransactionsPage />} />
                     <Route path="payment-stats" element={<PaymentStatsPage />} />
+                    <Route path="notifications" element={<NotificationsPage />} />
                 </Route>
 
                 {/* ============================================================
@@ -209,6 +278,7 @@ function App() {
                     <Route path="alerts" element={<MonitoringAlertsPage />} />
                     <Route path="reports" element={<MonitoringReportsPage />} />
                     <Route path="transactions" element={<MonitoringTransactionsPage />} />
+                    <Route path="notifications" element={<NotificationsPage />} />
                 </Route>
 
                 {/* ============================================================
@@ -237,13 +307,19 @@ function App() {
                     <Route path="counter/cart" element={<CounterCart />} />
                     <Route path="counter/courier" element={<CounterCourierSelect />} />
                     <Route path="counter/payment" element={<PaymentMethod />} />
+
+                    {/* فاکتور سفارش حضوری (بدون orderId — از localStorage) */}
                     <Route path="counter/receipt" element={<BakeryReceipt />} />
+
+                    {/* 🆕 فاکتور سفارش با orderId (از اعلان‌ها) */}
+                    <Route path="counter/receipt/:orderId" element={<BakeryReceipt />} />
+
                     <Route path="notifications" element={<NotificationsPage />} />
                 </Route>
 
             </Routes>
 
-            {/* 📲 بنر نصب PWA — فقط در صورت پشتیبانی مرورگر و عدم رد قبلی نمایش داده می‌شود */}
+            {/* 📲 بنر نصب PWA */}
             <InstallPWA />
         </BrowserRouter>
     );

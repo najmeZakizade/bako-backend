@@ -214,15 +214,8 @@ function Orders() {
 
     const isDelivery = (order) => order.deliveryMethod === 'DELIVERY';
 
-    // ============================================================
-    //  🆕 تشخیص دریافت مشتری
-    //  - اگه customerReceived === true → دریافت شد
-    //  - اگه سفارش حضوری باشه → خودکار دریافت شد (برای سفارش‌های قدیمی)
-    //  - در غیر این صورت → در انتظار
-    // ============================================================
     const isCustomerReceived = (order) => {
         if (order.customerReceived === true) return true;
-        // Fallback برای سفارش‌های قدیمی حضوری که فیلد جدید رو ندارن
         if (order.deliveryMethod !== 'DELIVERY') return true;
         return false;
     };
@@ -273,7 +266,7 @@ function Orders() {
                 </p>
             ) : (
                 <div className="table-wrapper">
-                    <table className="order-table">
+                    <table className="order-table responsive-cards-table">
                         <thead>
                         <tr>
                             <th>شماره</th>
@@ -298,19 +291,27 @@ function Orders() {
                             return (
                                 <tr key={orderId}>
                                     {/* شماره */}
-                                    <td>#{toPersianNumber(String(orderId).slice(-6))}</td>
+                                    <td data-label="شماره">
+                                        #{toPersianNumber(String(orderId).slice(-6))}
+                                    </td>
 
                                     {/* مشتری */}
-                                    <td>{order.customerName || 'ناشناس'}</td>
+                                    <td data-label="مشتری">
+                                        {order.customerName || 'ناشناس'}
+                                    </td>
 
                                     {/* نوع */}
-                                    <td>{getDeliveryMethodBadge(order.deliveryMethod)}</td>
+                                    <td data-label="نوع">
+                                        {getDeliveryMethodBadge(order.deliveryMethod)}
+                                    </td>
 
                                     {/* مبلغ کل */}
-                                    <td>{formatPrice(order.totalPrice || 0)}</td>
+                                    <td data-label="مبلغ کل (ریال)">
+                                        {formatPrice(order.totalPrice || 0)}
+                                    </td>
 
                                     {/* هزینه پیک */}
-                                    <td>
+                                    <td data-label="هزینه پیک (ریال)">
                                         {delivery && deliveryPrice > 0 ? (
                                             <span style={{
                                                 color: 'var(--gold-dark)',
@@ -330,7 +331,7 @@ function Orders() {
                                     </td>
 
                                     {/* پیک */}
-                                    <td>
+                                    <td data-label="پیک">
                                         {hasCourier ? (
                                             <div style={{
                                                 display: 'flex',
@@ -368,8 +369,8 @@ function Orders() {
                                         )}
                                     </td>
 
-                                    {/* 🆕 دریافت مشتری */}
-                                    <td>
+                                    {/* دریافت مشتری */}
+                                    <td data-label="دریافت مشتری">
                                         {received ? (
                                             <span className="received-badge">
                                                 ✅
@@ -382,7 +383,7 @@ function Orders() {
                                     </td>
 
                                     {/* عملیات */}
-                                    <td>
+                                    <td data-label="عملیات">
                                         <div style={{
                                             display: 'flex',
                                             gap: '4px',

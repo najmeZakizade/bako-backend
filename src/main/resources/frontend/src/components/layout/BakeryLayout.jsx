@@ -5,7 +5,7 @@ import Sidebar from '../common/Sidebar';
 import { toPersianNumber } from '../../utils/format';
 
 /* ============================================================
-   🎯 کلید localStorage — per-tenant (هماهنگ با CounterOrder/CounterCart)
+   🎯 کلید localStorage — per-tenant
    ============================================================ */
 const getTenantId = () => {
     try {
@@ -25,8 +25,14 @@ const getCartKey = () => {
     return tid ? `bako_counter_cart_${tid}` : 'bako_counter_cart_guest';
 };
 
+/* ============================================================
+   🆕 تشخیص صفحه کوچک
+   ============================================================ */
+const isSmallScreen = () =>
+    typeof window !== 'undefined' && window.innerWidth <= 900;
+
 function BakeryLayout() {
-    const [sidebarOpen, setSidebarOpen] = useState(true);
+    const [sidebarOpen, setSidebarOpen] = useState(!isSmallScreen());
     const [cartCount, setCartCount] = useState(0);
     const location = useLocation();
     const navigate = useNavigate();
@@ -40,7 +46,47 @@ function BakeryLayout() {
         setSidebarOpen(!sidebarOpen);
     };
 
-    // ===== خواندن تعداد سبد خرید از localStorage (per-tenant) =====
+    /* ============================================================
+       🆕 هماهنگی با تغییر اندازه صفحه
+       ============================================================ */
+    useEffect(() => {
+        let lastWasSmall = isSmallScreen();
+
+        const handleResize = () => {
+            const nowSmall = isSmallScreen();
+            if (nowSmall !== lastWasSmall) {
+                lastWasSmall = nowSmall;
+                setSidebarOpen(!nowSmall);
+            }
+        };
+
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
+    /* ============================================================
+       🆕 با تغییر مسیر، در موبایل سایدبار بسته شود
+       ============================================================ */
+    useEffect(() => {
+        if (isSmallScreen()) {
+            setSidebarOpen(false);
+        }
+    }, [location.pathname]);
+
+    /* ============================================================
+       🆕 قفل اسکرول بدنه وقتی Drawer باز است (فقط در موبایل)
+       ============================================================ */
+    useEffect(() => {
+        if (isSmallScreen() && sidebarOpen) {
+            document.body.style.overflow = 'hidden';
+            return () => {
+                document.body.style.overflow = '';
+            };
+        }
+        return undefined;
+    }, [sidebarOpen]);
+
+    // ===== خواندن تعداد سبد خرید =====
     const refreshCart = () => {
         try {
             const saved = localStorage.getItem(getCartKey());
@@ -64,11 +110,9 @@ function BakeryLayout() {
 
     useEffect(() => {
         refreshCart();
-
         const handleCartUpdate = () => refreshCart();
         window.addEventListener('cartUpdated', handleCartUpdate);
         window.addEventListener('storage', handleCartUpdate);
-
         return () => {
             window.removeEventListener('cartUpdated', handleCartUpdate);
             window.removeEventListener('storage', handleCartUpdate);
@@ -82,7 +126,7 @@ function BakeryLayout() {
     }, [location.pathname]);
 
     // ============================================================
-    //  نقشه عنوان صفحات — کلیدها با مسیر دقیق
+    //  نقشه عنوان صفحات
     // ============================================================
     const pageTitles = {
         '/bakery/dashboard': { title: 'داشبورد مدیریت', icon: '/images/sidebar/dashboard-icon.png' },
@@ -100,16 +144,10 @@ function BakeryLayout() {
         '/bakery/courier-tariff': { title: 'تعرفه پیک', icon: '/images/sidebar/tariff-icon.png' },
     };
 
-    // ============================================================
-    //  🎯 پیدا کردن عنوان — با پشتیبانی از مسیرهای داینامیک
-    // ============================================================
     const getPageInfo = () => {
-        // ۱. تطابق دقیق
         if (pageTitles[location.pathname]) {
             return pageTitles[location.pathname];
         }
-
-        // ۲. تطابق با prefix (برای مسیرهای داینامیک مثل /bakery/orders/:id)
         const sortedPaths = Object.keys(pageTitles).sort(
             (a, b) => b.length - a.length
         );
@@ -118,17 +156,23 @@ function BakeryLayout() {
                 return pageTitles[path];
             }
         }
-
-        // ۳. اگه هیچی پیدا نشد، برگرد به داشبورد
         return pageTitles['/bakery/dashboard'];
     };
 
     const currentPage = getPageInfo();
-
     const isCounterHome = location.pathname === '/bakery/counter';
 
     return (
         <div className="bakery-layout">
+            {/* 🆕 Overlay پشت Drawer — فقط وقتی باز است */}
+            {sidebarOpen && (
+                <div
+                    className="bakery-sidebar-overlay"
+                    onClick={toggleSidebar}
+                    aria-hidden="true"
+                />
+            )}
+
             <div className="bakery-body">
                 <Sidebar isOpen={sidebarOpen} toggleSidebar={toggleSidebar} />
                 <div className="bakery-content">
@@ -148,7 +192,6 @@ function BakeryLayout() {
                             <h1>{currentPage.title}</h1>
                         </div>
 
-                        {/* ===== دکمه سبد خرید — فقط در صفحه حضوری ===== */}
                         {isCounterHome && (
                             <button
                                 className="header-cart-btn"

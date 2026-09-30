@@ -151,7 +151,7 @@ function MonitoringAlertsPage() {
                     level="danger"
                 >
                     <div className="mon-table-wrapper">
-                        <table className="mon-table">
+                        <table className="mon-table responsive-cards-table">
                             <thead>
                             <tr>
                                 <th>شناسه</th>
@@ -164,13 +164,13 @@ function MonitoringAlertsPage() {
                             <tbody>
                             {pendingOrders.map((item) => (
                                 <tr key={item.orderId}>
-                                    <td className="mon-cell-id">
+                                    <td className="mon-cell-id" data-label="شناسه">
                                         #{toPersianNumber(String(item.orderId).slice(-6))}
                                     </td>
-                                    <td>{item.tenantName}</td>
-                                    <td>{item.customerName || '—'}</td>
-                                    <td>{formatPrice(item.totalPrice || 0)}</td>
-                                    <td className="mon-cell-danger">
+                                    <td data-label="نانوایی">{item.tenantName}</td>
+                                    <td data-label="مشتری">{item.customerName || '—'}</td>
+                                    <td data-label="مبلغ">{formatPrice(item.totalPrice || 0)}</td>
+                                    <td className="mon-cell-danger" data-label="زمان انتظار">
                                         {toPersianNumber(item.hoursWaiting)} ساعت
                                     </td>
                                 </tr>
@@ -188,7 +188,7 @@ function MonitoringAlertsPage() {
                     level="danger"
                 >
                     <div className="mon-table-wrapper">
-                        <table className="mon-table">
+                        <table className="mon-table responsive-cards-table">
                             <thead>
                             <tr>
                                 <th>شناسه</th>
@@ -200,12 +200,12 @@ function MonitoringAlertsPage() {
                             <tbody>
                             {failedTransactions.map((item) => (
                                 <tr key={item.orderId}>
-                                    <td className="mon-cell-id">
+                                    <td className="mon-cell-id" data-label="شناسه">
                                         #{toPersianNumber(String(item.orderId).slice(-6))}
                                     </td>
-                                    <td>{item.tenantName}</td>
-                                    <td>{item.customerName || '—'}</td>
-                                    <td>{formatPrice(item.totalPrice || 0)}</td>
+                                    <td data-label="نانوایی">{item.tenantName}</td>
+                                    <td data-label="مشتری">{item.customerName || '—'}</td>
+                                    <td data-label="مبلغ">{formatPrice(item.totalPrice || 0)}</td>
                                 </tr>
                             ))}
                             </tbody>
@@ -221,7 +221,7 @@ function MonitoringAlertsPage() {
                     level="warning"
                 >
                     <div className="mon-table-wrapper">
-                        <table className="mon-table">
+                        <table className="mon-table responsive-cards-table">
                             <thead>
                             <tr>
                                 <th>نام نانوایی</th>
@@ -233,9 +233,11 @@ function MonitoringAlertsPage() {
                             <tbody>
                             {tenantsWithoutPayment.map((item) => (
                                 <tr key={item.tenantId}>
-                                    <td>{item.tenantName}</td>
-                                    <td>{toPersianNumber(item.productCount)}</td>
-                                    <td>
+                                    <td data-label="نام نانوایی">{item.tenantName}</td>
+                                    <td data-label="تعداد محصولات">
+                                        {toPersianNumber(item.productCount)}
+                                    </td>
+                                    <td data-label="Merchant ID">
                                         {item.hasMerchantId ? (
                                             <span className="mon-badge-info">
                                                     ثبت شده (غیرفعال)
@@ -246,7 +248,7 @@ function MonitoringAlertsPage() {
                                                 </span>
                                         )}
                                     </td>
-                                    <td>
+                                    <td data-label="عملیات">
                                         <button
                                             type="button"
                                             className="mon-btn-link"
@@ -274,7 +276,7 @@ function MonitoringAlertsPage() {
                     level="warning"
                 >
                     <div className="mon-table-wrapper">
-                        <table className="mon-table">
+                        <table className="mon-table responsive-cards-table">
                             <thead>
                             <tr>
                                 <th>نام محصول</th>
@@ -285,9 +287,9 @@ function MonitoringAlertsPage() {
                             <tbody>
                             {lowStockProducts.map((item) => (
                                 <tr key={item.productId}>
-                                    <td>{item.name}</td>
-                                    <td>{item.tenantName}</td>
-                                    <td className="mon-cell-warning">
+                                    <td data-label="نام محصول">{item.name}</td>
+                                    <td data-label="نانوایی">{item.tenantName}</td>
+                                    <td className="mon-cell-warning" data-label="موجودی">
                                         {toPersianNumber(item.stock)} عدد
                                     </td>
                                 </tr>
@@ -305,7 +307,7 @@ function MonitoringAlertsPage() {
                     level="warning"
                 >
                     <div className="mon-table-wrapper">
-                        <table className="mon-table">
+                        <table className="mon-table responsive-cards-table">
                             <thead>
                             <tr>
                                 <th>نام نانوایی</th>
@@ -315,8 +317,8 @@ function MonitoringAlertsPage() {
                             <tbody>
                             {expiringSubscriptions.map((item) => (
                                 <tr key={item.tenantId}>
-                                    <td>{item.tenantName}</td>
-                                    <td className="mon-cell-warning">
+                                    <td data-label="نام نانوایی">{item.tenantName}</td>
+                                    <td className="mon-cell-warning" data-label="روزهای باقی‌مانده">
                                         {toPersianNumber(item.daysLeft)} روز
                                     </td>
                                 </tr>

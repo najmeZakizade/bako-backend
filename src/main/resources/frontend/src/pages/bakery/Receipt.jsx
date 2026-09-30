@@ -1,56 +1,87 @@
 // src/pages/bakery/Receipt.jsx
 import { useState, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import { getOrder } from '../../services/api';
 import { toPersianNumber, formatPrice } from '../../utils/format';
-
-const LAST_ORDER_KEY = 'bako_last_order';
+import { getLastOrderKey } from '../../utils/counterStorage';
 
 function Receipt() {
     const navigate = useNavigate();
+    const { orderId } = useParams();
     const [order, setOrder] = useState(null);
     const [loading, setLoading] = useState(true);
     const receiptRef = useRef(null);
 
+    /* ============================================================
+       🎯 بارگذاری فاکتور:
+       - اگه orderId در URL بود → از API
+       - وگرنه → از localStorage (جریان عادی سفارش حضوری)
+       ============================================================ */
     useEffect(() => {
-        try {
-            const saved = localStorage.getItem(LAST_ORDER_KEY);
-            if (saved) {
-                const parsed = JSON.parse(saved);
-                setOrder(parsed);
+        const loadOrder = async () => {
+            setLoading(true);
+
+            // حالت اول: از URL
+            if (orderId) {
+                try {
+                    const res = await getOrder(orderId);
+                    const data = res?.data || null;
+                    setOrder(data);
+                } catch (err) {
+                    console.error('❌ خطا در دریافت سفارش:', err);
+                    setOrder(null);
+                } finally {
+                    setLoading(false);
+                }
+                return;
             }
-        } catch (e) {
-            console.error('خطا در بارگذاری فاکتور:', e);
-        } finally {
-            setLoading(false);
-        }
-    }, []);
+
+            // حالت دوم: از localStorage (سفارش حضوری جدید)
+            try {
+                const saved = localStorage.getItem(getLastOrderKey());
+                if (saved) {
+                    const parsed = JSON.parse(saved);
+                    setOrder(parsed);
+                }
+            } catch (e) {
+                console.error('خطا در بارگذاری فاکتور:', e);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        loadOrder();
+    }, [orderId]);
 
     /* ============================================================
-       پرینت — موقتاً تیتر صفحه رو خالی می‌کنیم تا در چاپ نیاد
+       پرینت
        ============================================================ */
     const handlePrint = () => {
         const originalTitle = document.title;
         document.title = '';
-
         window.print();
-
         setTimeout(() => {
             document.title = originalTitle;
         }, 100);
     };
 
     /* ============================================================
-       شماره فاکتور — اعداد لاتین
+       🎯 دکمه بازگشت هوشمند
        ============================================================ */
+    const handleBack = () => {
+        if (orderId) {
+            navigate('/bakery/orders');
+        } else {
+            navigate('/bakery/counter');
+        }
+    };
+
     const getOrderNumber = () => {
         if (!order) return '—';
         const id = order._id || order.id || order.orderId || '';
         return String(id).slice(-6);
     };
 
-    /* ============================================================
-       تاریخ سفارش — شمسی با اعداد لاتین
-       ============================================================ */
     const getOrderDate = () => {
         if (!order?.orderDate && !order?.createdAt) return '—';
         try {
@@ -80,15 +111,45 @@ function Receipt() {
         }
     };
 
-    /* ============================================================
-       برچسب روش پرداخت
-       ============================================================ */
     const getPaymentMethodLabel = () => {
         const method = order?.paymentMethod;
         if (method === 'CASH') return '💵 نقدی';
         if (method === 'POS') return '💳 کارتخوان حضوری';
         if (method === 'GATEWAY') return '🌐 درگاه آنلاین';
         return null;
+    };
+
+    /* ============================================================
+       🎯 استخراج فیلدهای item
+       ============================================================ */
+    const getItemName = (item) => {
+        if (!item) return 'نامشخص';
+        const name =
+            item.productName ||
+            item.name ||
+            item.product?.name ||
+            item.product?.productName;
+        return name && String(name).trim() !== '' ? name : 'نامشخص';
+    };
+
+    const getItemPrice = (item) => {
+        if (!item) return 0;
+        const price =
+            item.productPrice ??
+            item.price ??
+            item.unitPrice ??
+            item.product?.price ??
+            item.product?.productPrice ??
+            0;
+        const num = Number(price);
+        return Number.isFinite(num) ? num : 0;
+    };
+
+    const getItemQty = (item) => {
+        if (!item) return 0;
+        const qty = item.quantity ?? item.qty ?? 0;
+        const num = Number(qty);
+        return Number.isFinite(num) ? num : 0;
     };
 
     if (loading) {
@@ -108,9 +169,9 @@ function Receipt() {
                 <p>لطفاً ابتدا یک سفارش ثبت کنید.</p>
                 <button
                     className="btn-back-shop"
-                    onClick={() => navigate('/bakery/counter')}
+                    onClick={handleBack}
                 >
-                    🍞 بازگشت به سفارشات
+                    🍞 بازگشت
                 </button>
             </div>
         );
@@ -125,11 +186,10 @@ function Receipt() {
 
     return (
         <div className="receipt-page">
-            {/* ===== دکمه‌های عملیات (در پرینت مخفی) ===== */}
             <div className="receipt-actions no-print">
                 <button
                     className="btn-secondary-action btn-back-icon"
-                    onClick={() => navigate('/bakery/counter')}
+                    onClick={handleBack}
                     aria-label="بازگشت"
                     title="بازگشت"
                 >
@@ -153,13 +213,10 @@ function Receipt() {
                 </button>
             </div>
 
-            {/* ===== محتوای فاکتور ===== */}
             <div className="receipt-container" ref={receiptRef}>
 
-                {/* ===== ردیف بالا: شماره/تاریخ (چپ) + عنوان (وسط) + لوگو (راست) ===== */}
                 <div className="receipt-header-row">
 
-                    {/* سمت چپ: شماره فاکتور + تاریخ سفارش */}
                     <div className="receipt-invoice-side">
                         <div className="receipt-info-row">
                             <span className="receipt-info-label">شماره فاکتور:</span>
@@ -175,12 +232,10 @@ function Receipt() {
                         </div>
                     </div>
 
-                    {/* وسط: عنوان فاکتور */}
                     <div className="receipt-title-center">
                         <h2>فاکتور فروش</h2>
                     </div>
 
-                    {/* سمت راست: لوگو + برند */}
                     <div className="receipt-logo-side">
                         <img
                             src="/bakoLogo.png"
@@ -193,12 +248,9 @@ function Receipt() {
                     </div>
                 </div>
 
-                {/* ===== خط جداکننده ===== */}
                 <div className="receipt-divider"></div>
 
-                {/* ===== اطلاعات مشتری ===== */}
                 <div className="receipt-customer-section">
-                    {/* خط اول: مشتری + تماس */}
                     <div className="receipt-customer-row">
                         <div className="receipt-info-row">
                             <span className="receipt-info-label">مشتری:</span>
@@ -216,7 +268,6 @@ function Receipt() {
                         )}
                     </div>
 
-                    {/* خط دوم: آدرس تمام‌عرض */}
                     {isDelivery && order.address && (
                         <div className="receipt-address-row">
                             <span className="receipt-info-label">آدرس:</span>
@@ -226,7 +277,6 @@ function Receipt() {
                         </div>
                     )}
 
-                    {/* 🆕 خط سوم: روش پرداخت (فقط اگه تعیین شده) */}
                     {paymentMethodLabel && (
                         <div className="receipt-payment-row">
                             <span className="receipt-info-label">روش پرداخت:</span>
@@ -241,7 +291,6 @@ function Receipt() {
                         </div>
                     )}
 
-                    {/* 🆕 کد پیگیری درگاه (اگه پرداخت آنلاین باشه) */}
                     {order.paymentMethod === 'GATEWAY' && order.paymentRefId && (
                         <div className="receipt-payment-row">
                             <span className="receipt-info-label">کد پیگیری:</span>
@@ -252,7 +301,6 @@ function Receipt() {
                     )}
                 </div>
 
-                {/* ===== جدول محصولات ===== */}
                 <div className="receipt-items-section">
                     <table className="receipt-items-table">
                         <thead>
@@ -265,28 +313,34 @@ function Receipt() {
                         </tr>
                         </thead>
                         <tbody>
-                        {items.map((item, idx) => (
-                            <tr key={idx}>
-                                <td className="col-index">
-                                    {toPersianNumber(idx + 1)}
-                                </td>
-                                <td className="col-name">{item.name}</td>
-                                <td className="col-qty">
-                                    {toPersianNumber(item.quantity)}
-                                </td>
-                                <td className="col-price">
-                                    {formatPrice(item.price)}
-                                </td>
-                                <td className="col-total">
-                                    {formatPrice(item.price * item.quantity)}
-                                </td>
-                            </tr>
-                        ))}
+                        {items.map((item, idx) => {
+                            const itemName = getItemName(item);
+                            const itemPrice = getItemPrice(item);
+                            const itemQty = getItemQty(item);
+                            const itemTotal = itemPrice * itemQty;
+
+                            return (
+                                <tr key={idx}>
+                                    <td className="col-index">
+                                        {toPersianNumber(idx + 1)}
+                                    </td>
+                                    <td className="col-name">{itemName}</td>
+                                    <td className="col-qty">
+                                        {toPersianNumber(itemQty)}
+                                    </td>
+                                    <td className="col-price">
+                                        {formatPrice(itemPrice)}
+                                    </td>
+                                    <td className="col-total">
+                                        {formatPrice(itemTotal)}
+                                    </td>
+                                </tr>
+                            );
+                        })}
                         </tbody>
                     </table>
                 </div>
 
-                {/* ===== جمع‌بندی ===== */}
                 <div className="receipt-totals-section">
                     <div className="receipt-total-row">
                         <span className="receipt-total-label">جمع کل محصولات:</span>
@@ -316,7 +370,6 @@ function Receipt() {
                     </div>
                 </div>
 
-                {/* ===== پیام تشکر ===== */}
                 <div className="receipt-thanks">
                     <div className="receipt-thanks-line"></div>
                     <p className="receipt-thanks-text">

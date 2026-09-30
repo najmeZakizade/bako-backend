@@ -9,6 +9,14 @@ import '../../styles/customer-delivery.css';
 
 const CHECKOUT_KEY = 'bako_customer_checkout';
 
+/* ============================================================
+   🆕 اعتبارسنجی شماره موبایل ایران
+   ============================================================ */
+const isValidIranMobile = (phone) => {
+    const cleaned = String(phone || '').replace(/\D/g, '');
+    return /^09\d{9}$/.test(cleaned);
+};
+
 function CheckoutPage() {
     const navigate = useNavigate();
 
@@ -74,12 +82,41 @@ function CheckoutPage() {
             return;
         }
 
+        /* ============================================================
+           🆕 اعتبارسنجی نهایی قبل از ارسال
+           ============================================================ */
+        const finalPhone = String(checkoutInfo.customerPhone || '')
+            .replace(/\D/g, '')
+            .trim();
+
+        if (!isValidIranMobile(finalPhone)) {
+            showToast(
+                'شماره موبایل معتبر نیست. لطفاً به پروفایل یا آدرس برگردید و شماره ۱۱ رقمی وارد کنید.',
+                'error'
+            );
+            return;
+        }
+
+        // اگه آدرس پیک داره، نام و آدرس هم باید کامل باشه
+        if (
+            checkoutInfo.deliveryMethod === 'DELIVERY' &&
+            (!checkoutInfo.address?.fullAddress ||
+                !checkoutInfo.address?.latitude ||
+                !checkoutInfo.address?.longitude)
+        ) {
+            showToast('اطلاعات آدرس ناقص است. لطفاً دوباره آدرس را انتخاب کنید.', 'error');
+            return;
+        }
+
+        if (items.length === 0) {
+            showToast('سبد خرید خالی است', 'error');
+            return;
+        }
+
         setSubmitting(true);
         try {
             const orderItems = items.map((item) => ({
-                productId: String(
-                    item.product?._id || item.product?.id
-                ),
+                productId: String(item.product?._id || item.product?.id),
                 name: String(item.product?.name || ''),
                 quantity: Number(item.quantity),
                 price: Number(item.product?.price || 0),
@@ -92,7 +129,7 @@ function CheckoutPage() {
 
             const orderData = {
                 customerName: checkoutInfo.customerName || '',
-                phone: checkoutInfo.customerPhone || '',
+                phone: finalPhone, // ← شماره اعتبارسنجی‌شده
                 address:
                     checkoutInfo.deliveryMethod === 'PICKUP'
                         ? 'تحویل حضوری در نانوایی'

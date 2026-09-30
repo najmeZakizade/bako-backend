@@ -5,7 +5,6 @@ import '../../styles/super-admin.css';
 
 // ============================================================
 //  آیتم‌های منوی سایدبار سوپر ادمین
-//  (گزارشات به پنل مانیتورینگ منتقل شد)
 // ============================================================
 const MENU_ITEMS = [
     {
@@ -67,9 +66,27 @@ function SidebarIcon({ src, fallback, alt }) {
 // ============================================================
 //  سایدبار اصلی
 // ============================================================
-function AdminSidebar() {
+function AdminSidebar({ isOpen = true, onClose }) {
     return (
-        <aside className="admin-sidebar open">
+        <aside className={`admin-sidebar ${isOpen ? 'open' : ''}`}>
+            {/* 🆕 هدر داخل Drawer (فقط موبایل نمایش داده می‌شود) */}
+            <div className="admin-sidebar-mobile-header">
+                <img
+                    src="/bakoLogo.png"
+                    alt="بیکو"
+                    className="admin-sidebar-logo"
+                    onError={(e) => (e.target.style.display = 'none')}
+                />
+                <button
+                    className="admin-sidebar-close"
+                    onClick={onClose}
+                    aria-label="بستن منو"
+                    type="button"
+                >
+                    ✕
+                </button>
+            </div>
+
             <nav>
                 {MENU_ITEMS.map((item) => (
                     <NavLink
@@ -79,6 +96,12 @@ function AdminSidebar() {
                         className={({ isActive }) =>
                             isActive ? 'active' : ''
                         }
+                        onClick={() => {
+                            // 🆕 در موبایل با کلیک روی لینک، Drawer بسته شود
+                            if (onClose && window.innerWidth <= 900) {
+                                onClose();
+                            }
+                        }}
                     >
                         <SidebarIcon
                             src={item.icon}

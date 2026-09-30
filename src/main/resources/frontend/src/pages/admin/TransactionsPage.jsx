@@ -161,7 +161,7 @@ function TransactionsPage() {
                 </div>
             ) : (
                 <div className="sa-table-wrapper">
-                    <table className="sa-table">
+                    <table className="sa-table responsive-cards-table">
                         <thead>
                         <tr>
                             <th>شناسه</th>
@@ -187,7 +187,7 @@ function TransactionsPage() {
                             return (
                                 <tr key={id}>
                                     {/* شناسه — فارسی + فونت سایت */}
-                                    <td className="sa-cell-normal">
+                                    <td className="sa-cell-normal" data-label="شناسه">
                                         #
                                         {toPersianNumber(
                                             String(id).slice(-6)
@@ -195,41 +195,45 @@ function TransactionsPage() {
                                     </td>
 
                                     {/* نانوایی */}
-                                    <td>{getTenantName(tx.tenantId)}</td>
+                                    <td data-label="نانوایی">
+                                        {getTenantName(tx.tenantId)}
+                                    </td>
 
                                     {/* مشتری */}
-                                    <td>{tx.customerName || '—'}</td>
+                                    <td data-label="مشتری">
+                                        {tx.customerName || '—'}
+                                    </td>
 
                                     {/* موبایل — فارسی + فونت سایت */}
-                                    <td className="sa-cell-normal">
+                                    <td className="sa-cell-normal" data-label="موبایل">
                                         {tx.phone
                                             ? toPersianNumber(tx.phone)
                                             : '—'}
                                     </td>
 
                                     {/* مبلغ — فارسی + فونت سایت */}
-                                    <td className="sa-cell-normal">
+                                    <td className="sa-cell-normal" data-label="مبلغ (ریال)">
                                         {formatPrice(tx.totalPrice || 0)}
                                     </td>
 
                                     {/* روش پرداخت — فارسی */}
-                                    <td>
+                                    <td data-label="روش پرداخت">
                                         {getPaymentMethodLabel(
                                             tx.paymentMethod
                                         )}
                                     </td>
 
                                     {/* وضعیت */}
-                                    <td>
-                                            <span
-                                                className={`sa-badge ${status.class}`}
-                                            >
-                                                {status.label}
-                                            </span>
+                                    <td data-label="وضعیت">
+                                        <span
+                                            className={`sa-badge ${status.class}`}
+                                        >
+                                            {status.label}
+                                        </span>
                                     </td>
 
                                     {/* تاریخ */}
-                                    <td>{date}</td>
+                                    <td data-label="تاریخ">{date}</td>
                                 </tr>
                             );
                         })}

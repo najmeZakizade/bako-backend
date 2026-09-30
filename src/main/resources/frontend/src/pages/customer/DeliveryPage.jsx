@@ -6,6 +6,7 @@ import {
     getMyAddresses,
     addMyAddress,
     calculateDelivery,
+    getMyProfile,
 } from '../../services/api';
 import { showToast } from '../../utils/toast';
 import { toPersianNumber, formatPrice, toEnglishNumber } from '../../utils/format';
@@ -23,6 +24,14 @@ const TITLE_OPTIONS = [
 ];
 
 const CHECKOUT_KEY = 'bako_customer_checkout';
+
+/* ============================================================
+   🆕 اعتبارسنجی شماره موبایل ایران (۱۱ رقم، شروع با 09)
+   ============================================================ */
+const isValidIranMobile = (phone) => {
+    const cleaned = String(phone || '').replace(/\D/g, '');
+    return /^09\d{9}$/.test(cleaned);
+};
 
 function DeliveryPage() {
     const navigate = useNavigate();
@@ -71,25 +80,45 @@ function DeliveryPage() {
     const [fieldErrors, setFieldErrors] = useState({
         address: '',
         coords: '',
+        phone: '',
     });
 
     const [submitting, setSubmitting] = useState(false);
 
     /* ============================================================
-       بارگذاری اولیه — سبد، آدرس‌ها، کاربر
+       بارگذاری اولیه — سبد، آدرس‌ها، پروفایل تازه
        ============================================================ */
     useEffect(() => {
-        // کاربر از localStorage
-        try {
-            const userStr = localStorage.getItem('user');
-            const parsed = userStr ? JSON.parse(userStr) : null;
-            setUser(parsed);
-            if (parsed?.phone) {
-                setNewAddressPhone(parsed.phone);
+        // 🆕 پروفایل تازه از سرور (به‌جای کش قدیمی)
+        const fetchFreshUser = async () => {
+            try {
+                const res = await getMyProfile();
+                const freshUser = res?.data || null;
+                if (freshUser) {
+                    setUser(freshUser);
+                    if (freshUser.phone) {
+                        setNewAddressPhone(freshUser.phone);
+                    }
+                    // آپدیت localStorage با داده تازه
+                    localStorage.setItem('user', JSON.stringify(freshUser));
+                    return;
+                }
+            } catch (err) {
+                console.warn('⚠️ خطا در دریافت پروفایل تازه:', err.message);
             }
-        } catch {
-            setUser(null);
-        }
+
+            // Fallback: از localStorage
+            try {
+                const userStr = localStorage.getItem('user');
+                const parsed = userStr ? JSON.parse(userStr) : null;
+                setUser(parsed);
+                if (parsed?.phone) {
+                    setNewAddressPhone(parsed.phone);
+                }
+            } catch {
+                setUser(null);
+            }
+        };
 
         // سبد خرید
         const fetchCart = async () => {
@@ -104,7 +133,6 @@ function DeliveryPage() {
                 });
                 setTotalPrice(total);
 
-                // tenantId از اولین آیتم
                 if (data.length > 0) {
                     setTenantId(data[0].tenantId || null);
                 }
@@ -123,13 +151,11 @@ function DeliveryPage() {
                 const list = res.data || [];
                 setAddresses(list);
 
-                // اگه آدرس داشت → پیش‌فرض رو انتخاب کن
                 if (list.length > 0) {
                     const def = list.find((a) => a.isDefault);
                     setSelectedAddressId(def ? def.id : list[0].id);
                     setShowNewAddressForm(false);
                 } else {
-                    // آدرسی نداره → فرم نقشه رو نشون بده
                     setShowNewAddressForm(true);
                 }
             } catch (err) {
@@ -140,6 +166,7 @@ function DeliveryPage() {
             }
         };
 
+        fetchFreshUser();
         fetchCart();
         fetchAddresses();
     }, []);
@@ -150,7 +177,7 @@ function DeliveryPage() {
     const handleSelectAddress = (addressId) => {
         setSelectedAddressId(addressId);
         setShowNewAddressForm(false);
-        setFieldErrors({ address: '', coords: '' });
+        setFieldErrors({ address: '', coords: '', phone: '' });
     };
 
     /* ============================================================
@@ -166,7 +193,7 @@ function DeliveryPage() {
         setSaveNewAddress(true);
         setDeliveryPrice(0);
         setDeliveryDistance(0);
-        setFieldErrors({ address: '', coords: '' });
+        setFieldErrors({ address: '', coords: '', phone: '' });
     };
 
     /* ============================================================
@@ -176,11 +203,10 @@ function DeliveryPage() {
         setShowNewAddressForm(false);
         setNewAddressCoords(null);
         setNewAddressText('');
-        setFieldErrors({ address: '', coords: '' });
+        setFieldErrors({ address: '', coords: '', phone: '' });
         setDeliveryPrice(0);
         setDeliveryDistance(0);
 
-        // برگرد به اولین آدرس
         if (addresses.length > 0) {
             const def = addresses.find((a) => a.isDefault);
             setSelectedAddressId(def ? def.id : addresses[0].id);
@@ -200,7 +226,6 @@ function DeliveryPage() {
             setFieldErrors((prev) => ({ ...prev, address: '' }));
         }
 
-        // محاسبه هزینه پیک
         await calculateDeliveryCost(coords);
     };
 
@@ -264,7 +289,7 @@ function DeliveryPage() {
        ============================================================ */
     const handleChangeMethod = (method) => {
         setDeliveryMethod(method);
-        setFieldErrors({ address: '', coords: '' });
+        setFieldErrors({ address: '', coords: '', phone: '' });
 
         if (method === 'PICKUP') {
             setDeliveryPrice(0);
@@ -278,6 +303,19 @@ function DeliveryPage() {
     const handleContinue = async () => {
         if (items.length === 0) {
             showToast('سبد خرید خالی است', 'error');
+            return;
+        }
+
+        /* ============================================================
+           🆕 اعتبارسنجی شماره موبایل کاربر (fresh از پروفایل)
+           ============================================================ */
+        const userPhone = String(user?.phone || '').replace(/\D/g, '').trim();
+
+        if (!isValidIranMobile(userPhone)) {
+            showToast(
+                'شماره موبایل حساب شما معتبر نیست. لطفاً در پروفایل اصلاح کنید.',
+                'error'
+            );
             return;
         }
 
@@ -303,11 +341,32 @@ function DeliveryPage() {
                     return;
                 }
 
+                // 🆕 اعتبارسنجی شماره تماس آدرس (اگر وارد شده)
+                const addressPhoneRaw = String(newAddressPhone || '')
+                    .replace(/\D/g, '')
+                    .trim();
+
+                // اگر کاربر شماره‌ای وارد کرده، حتماً باید معتبر باشد
+                if (addressPhoneRaw && !isValidIranMobile(addressPhoneRaw)) {
+                    setFieldErrors((prev) => ({
+                        ...prev,
+                        phone: 'شماره تماس باید ۱۱ رقم و با 09 شروع شود.',
+                    }));
+                    showToast(
+                        'شماره تماس باید ۱۱ رقم و با 09 شروع شود',
+                        'error'
+                    );
+                    return;
+                }
+
+                // اگر خالی است، از شماره پروفایل استفاده می‌کنیم
+                const finalAddressPhone = addressPhoneRaw || userPhone;
+
                 finalAddress = {
                     fullAddress: newAddressText.trim(),
                     latitude: newAddressCoords.lat,
                     longitude: newAddressCoords.lng,
-                    phone: newAddressPhone.trim(),
+                    phone: finalAddressPhone,
                 };
 
                 // اگه کاربر خواست، ذخیره کن
@@ -317,7 +376,7 @@ function DeliveryPage() {
                         const payload = {
                             title: newAddressTitle,
                             fullAddress: newAddressText.trim(),
-                            phone: toEnglishNumber(newAddressPhone.trim()),
+                            phone: finalAddressPhone,
                             latitude: newAddressCoords.lat,
                             longitude: newAddressCoords.lng,
                             isDefault: addresses.length === 0,
@@ -329,7 +388,6 @@ function DeliveryPage() {
                         );
                     } catch (err) {
                         console.warn('⚠️ خطا در ذخیره آدرس:', err);
-                        // ادامه می‌دیم حتی اگه ذخیره نشد
                     } finally {
                         setSubmitting(false);
                     }
@@ -345,7 +403,7 @@ function DeliveryPage() {
                     fullAddress: addr.fullAddress,
                     latitude: addr.latitude,
                     longitude: addr.longitude,
-                    phone: addr.phone || user?.phone || '',
+                    phone: addr.phone || userPhone,
                 };
             }
 
@@ -358,15 +416,18 @@ function DeliveryPage() {
             }
         }
 
-        // ذخیره در localStorage برای PaymentPage
+        /* ============================================================
+           ذخیره در localStorage برای PaymentPage
+           ✅ شماره از پروفایل کاربر (fresh) — نه از کش قدیمی
+           ============================================================ */
         const checkoutData = {
-            deliveryMethod, // 'PICKUP' | 'DELIVERY'
+            deliveryMethod,
             address: finalAddress,
             deliveryPrice: deliveryMethod === 'DELIVERY' ? deliveryPrice : 0,
             deliveryDistance:
                 deliveryMethod === 'DELIVERY' ? deliveryDistance : 0,
             customerName: user?.fullName || '',
-            customerPhone: user?.phone || '',
+            customerPhone: userPhone, // ← تضمین‌شده ۱۱ رقمی
             tenantId,
         };
 
@@ -731,24 +792,54 @@ function DeliveryPage() {
                                     </div>
                                 )}
 
+                                {/* ============================================================
+                                    🆕 شماره تماس — اعتبارسنجی + محدودیت ۱۱ رقم
+                                    ============================================================ */}
                                 <label style={{ marginTop: '10px' }}>
                                     📞 شماره تماس (اختیاری)
                                 </label>
                                 <input
-                                    type="text"
-                                    value={newAddressPhone}
-                                    onChange={(e) =>
-                                        setNewAddressPhone(
-                                            toEnglishNumber(e.target.value)
-                                        )
-                                    }
-                                    placeholder="۰۹۱۲۳۴۵۶۷۸۹"
+                                    type="tel"
                                     inputMode="numeric"
+                                    maxLength={11}
+                                    value={newAddressPhone}
+                                    onChange={(e) => {
+                                        // فقط عدد، حداکثر ۱۱ رقم
+                                        const cleaned = toEnglishNumber(
+                                            e.target.value
+                                        )
+                                            .replace(/\D/g, '')
+                                            .slice(0, 11);
+                                        setNewAddressPhone(cleaned);
+                                        setFieldErrors((prev) => ({
+                                            ...prev,
+                                            phone: '',
+                                        }));
+                                    }}
+                                    onBlur={() => {
+                                        const cleaned = String(
+                                            newAddressPhone || ''
+                                        )
+                                            .replace(/\D/g, '')
+                                            .trim();
+                                        if (
+                                            cleaned &&
+                                            !isValidIranMobile(cleaned)
+                                        ) {
+                                            setFieldErrors((prev) => ({
+                                                ...prev,
+                                                phone: 'شماره تماس باید ۱۱ رقم و با 09 شروع شود.',
+                                            }));
+                                        }
+                                    }}
+                                    placeholder="09xxxxxxxxx"
                                     className="form-input"
                                     style={{
                                         width: '100%',
                                         padding: '7px 10px',
-                                        border: '1.5px solid var(--gray)',
+                                        border: fieldErrors.phone
+                                            ? '1.5px solid var(--red)'
+                                            : '1.5px solid var(--gray)',
                                         borderRadius: '7px',
                                         fontFamily: 'inherit',
                                         fontSize: '11px',
@@ -756,6 +847,11 @@ function DeliveryPage() {
                                         outline: 'none',
                                     }}
                                 />
+                                {fieldErrors.phone && (
+                                    <div className="field-error-message">
+                                        ⚠️ {fieldErrors.phone}
+                                    </div>
+                                )}
 
                                 <label
                                     className="checkbox-label"

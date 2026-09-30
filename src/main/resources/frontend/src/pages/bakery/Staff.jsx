@@ -76,7 +76,6 @@ function Staff() {
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        // شماره تماس رو هم فارسی بپذیر، به انگلیسی برای ارسال تبدیل کن
         const normalized = name === 'phone' ? toEnglishNumber(value) : value;
         setFormData(prev => ({ ...prev, [name]: normalized }));
     };
@@ -302,61 +301,71 @@ function Staff() {
             {staff.length === 0 ? (
                 <p className="empty-text">هیچ پرسنلی ثبت نشده است.</p>
             ) : (
-                <table className="order-table">
-                    <thead>
-                    <tr>
-                        <th>نام و نام خانوادگی</th>
-                        <th>نام کاربری</th>
-                        <th>شماره تماس</th>
-                        <th>نقش</th>
-                        <th>وضعیت</th>
-                        <th>عملیات</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {staff.map((item) => (
-                        <tr key={item.id}>
-                            <td><strong>{item.fullName}</strong></td>
-                            <td>{item.username}</td>
-                            <td>{item.phone ? toPersianNumber(item.phone) : '—'}</td>
-                            <td><span className="role-badge">{getRoleLabel(item.role)}</span></td>
-                            <td>
+                <div className="table-wrapper">
+                    <table className="order-table responsive-cards-table">
+                        <thead>
+                        <tr>
+                            <th>نام و نام خانوادگی</th>
+                            <th>نام کاربری</th>
+                            <th>شماره تماس</th>
+                            <th>نقش</th>
+                            <th>وضعیت</th>
+                            <th>عملیات</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {staff.map((item) => (
+                            <tr key={item.id}>
+                                <td data-label="نام و نام خانوادگی">
+                                    <strong>{item.fullName}</strong>
+                                </td>
+                                <td data-label="نام کاربری">
+                                    {item.username}
+                                </td>
+                                <td data-label="شماره تماس">
+                                    {item.phone ? toPersianNumber(item.phone) : '—'}
+                                </td>
+                                <td data-label="نقش">
+                                    <span className="role-badge">{getRoleLabel(item.role)}</span>
+                                </td>
+                                <td data-label="وضعیت">
                                     <span className={`status-badge ${item.status === 'ACTIVE' ? 'active' : 'inactive'}`}>
                                         {item.status === 'ACTIVE' ? '✅ فعال' : '❌ غیرفعال'}
                                     </span>
-                            </td>
-                            <td>
-                                <div style={{ display: 'flex', gap: '4px', alignItems: 'center', justifyContent: 'center' }}>
-                                    <button
-                                        className="action-btn toggle"
-                                        onClick={() => handleToggleStatus(item.id, item.status)}
-                                        title={item.status === 'ACTIVE' ? 'غیرفعال کردن' : 'فعال کردن'}
-                                        style={{ ...actionBtnStyle, color: item.status === 'ACTIVE' ? '#d32f2f' : '#2e7d32' }}
-                                    >
-                                        {item.status === 'ACTIVE' ? '⛔' : '✅'}
-                                    </button>
-                                    <button
-                                        className="action-btn edit"
-                                        onClick={() => handleEdit(item)}
-                                        title="ویرایش"
-                                        style={{ ...actionBtnStyle, color: '#5C3317' }}
-                                    >
-                                        ✏️
-                                    </button>
-                                    <button
-                                        className="action-btn delete"
-                                        onClick={() => handleDelete(item.id, item.fullName)}
-                                        title="حذف"
-                                        style={{ ...actionBtnStyle, color: '#b71c1c' }}
-                                    >
-                                        🗑️
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                    ))}
-                    </tbody>
-                </table>
+                                </td>
+                                <td data-label="عملیات">
+                                    <div style={{ display: 'flex', gap: '4px', alignItems: 'center', justifyContent: 'center' }}>
+                                        <button
+                                            className="action-btn toggle"
+                                            onClick={() => handleToggleStatus(item.id, item.status)}
+                                            title={item.status === 'ACTIVE' ? 'غیرفعال کردن' : 'فعال کردن'}
+                                            style={{ ...actionBtnStyle, color: item.status === 'ACTIVE' ? '#d32f2f' : '#2e7d32' }}
+                                        >
+                                            {item.status === 'ACTIVE' ? '⛔' : '✅'}
+                                        </button>
+                                        <button
+                                            className="action-btn edit"
+                                            onClick={() => handleEdit(item)}
+                                            title="ویرایش"
+                                            style={{ ...actionBtnStyle, color: '#5C3317' }}
+                                        >
+                                            ✏️
+                                        </button>
+                                        <button
+                                            className="action-btn delete"
+                                            onClick={() => handleDelete(item.id, item.fullName)}
+                                            title="حذف"
+                                            style={{ ...actionBtnStyle, color: '#b71c1c' }}
+                                        >
+                                            🗑️
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        ))}
+                        </tbody>
+                    </table>
+                </div>
             )}
         </div>
     );

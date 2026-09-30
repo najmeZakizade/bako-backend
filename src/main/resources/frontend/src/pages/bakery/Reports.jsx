@@ -8,7 +8,7 @@ import moment from 'moment-jalaali';
 moment.loadPersian({ dialect: 'persian-modern' });
 
 /* ============================================================
-   🎯 استخراج نام و قیمت از item — سازگار با هر دو ساختار
+   🎯 استخراج نام و قیمت از item
    ============================================================ */
 const getItemName = (item) => {
     return (
@@ -34,6 +34,12 @@ const getItemQty = (item) => {
     return Number(qty) || 0;
 };
 
+/* ============================================================
+   🆕 تشخیص صفحه موبایل
+   ============================================================ */
+const isMobile = () =>
+    typeof window !== 'undefined' && window.innerWidth <= 640;
+
 function Reports() {
     const [report, setReport] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -46,8 +52,20 @@ function Reports() {
     const [showCalendar, setShowCalendar] = useState(null);
     const [showProductDropdown, setShowProductDropdown] = useState(false);
     const [currentMonth, setCurrentMonth] = useState(moment());
+    const [isMobileView, setIsMobileView] = useState(isMobile());
     const calendarRef = useRef(null);
     const productDropdownRef = useRef(null);
+
+    /* ============================================================
+       🆕 گوش دادن به تغییر اندازه صفحه
+       ============================================================ */
+    useEffect(() => {
+        const handleResize = () => {
+            setIsMobileView(isMobile());
+        };
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
 
     /* ============================================================
        دریافت لیست محصولات
@@ -77,7 +95,6 @@ function Reports() {
             const ordersRes = await getOrders();
             let orders = ordersRes.data || [];
 
-            /* ===== فیلتر بازه زمانی ===== */
             if (startDate && endDate) {
                 const startMoment = moment(startDate, 'jYYYY/jMM/jDD');
                 const endMoment = moment(endDate, 'jYYYY/jMM/jDD');
@@ -96,7 +113,6 @@ function Reports() {
                 }
             }
 
-            /* ===== فیلتر محصول انتخاب‌شده ===== */
             let filteredOrders = orders;
             if (selectedProductId) {
                 filteredOrders = orders.filter((order) => {
@@ -112,9 +128,6 @@ function Reports() {
 
             const totalOrders = filteredOrders.length;
 
-            /* ============================================================
-               🎯 درآمد کل = جمع order.totalPrice (منبع واحد با Dashboard)
-               ============================================================ */
             let totalRevenue = 0;
             filteredOrders.forEach((order) => {
                 totalRevenue += Number(order.totalPrice) || 0;
@@ -125,9 +138,6 @@ function Reports() {
                     ? Math.round(totalRevenue / totalOrders)
                     : 0;
 
-            /* ============================================================
-               محاسبه فروش هر محصول (فقط برای آمار محصول انتخاب‌شده)
-               ============================================================ */
             const productSales = {};
 
             filteredOrders.forEach((order) => {
@@ -167,7 +177,6 @@ function Reports() {
                 });
             });
 
-            /* ===== آمار محصول انتخاب‌شده ===== */
             if (selectedProductId) {
                 const selectedProduct = productsList.find(
                     (p) =>
@@ -216,9 +225,6 @@ function Reports() {
         }
     };
 
-    /* ============================================================
-       اجرای اولیه + واکنش به فیلترها
-       ============================================================ */
     useEffect(() => {
         fetchReport();
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -305,7 +311,10 @@ function Reports() {
         return days;
     };
 
-    const renderCalendar = (type) => {
+    /* ============================================================
+       🆕 کالبد مشترک تقویم (فقط position متفاوت است)
+       ============================================================ */
+    const renderCalendarBody = (type) => {
         const days = getJalaliMonthDays(currentMonth);
         const weekDays = ['ش', 'ی', 'د', 'س', 'چ', 'پ', 'ج'];
         const firstDayOffset = moment(currentMonth)
@@ -313,22 +322,7 @@ function Reports() {
             .weekday();
 
         return (
-            <div
-                ref={calendarRef}
-                style={{
-                    position: 'absolute',
-                    top: '100%',
-                    left: 0,
-                    marginTop: '4px',
-                    background: 'white',
-                    borderRadius: '12px',
-                    boxShadow: '0 8px 30px rgba(0,0,0,0.15)',
-                    padding: '12px',
-                    zIndex: 1000,
-                    minWidth: '260px',
-                    border: '1px solid #eee',
-                }}
-            >
+            <>
                 <div
                     style={{
                         display: 'flex',
@@ -339,6 +333,7 @@ function Reports() {
                     }}
                 >
                     <button
+                        type="button"
                         onClick={() =>
                             setCurrentMonth(
                                 currentMonth.clone().subtract(1, 'jMonth')
@@ -349,6 +344,7 @@ function Reports() {
                             border: 'none',
                             fontSize: '18px',
                             cursor: 'pointer',
+                            padding: '4px 10px',
                         }}
                     >
                         ›
@@ -357,6 +353,7 @@ function Reports() {
                         {currentMonth.format('jMMMM jYYYY')}
                     </span>
                     <button
+                        type="button"
                         onClick={() =>
                             setCurrentMonth(
                                 currentMonth.clone().add(1, 'jMonth')
@@ -367,11 +364,13 @@ function Reports() {
                             border: 'none',
                             fontSize: '18px',
                             cursor: 'pointer',
+                            padding: '4px 10px',
                         }}
                     >
                         ‹
                     </button>
                 </div>
+
                 <div
                     style={{
                         display: 'grid',
@@ -452,6 +451,86 @@ function Reports() {
                         );
                     })}
                 </div>
+            </>
+        );
+    };
+
+    /* ============================================================
+       🆕 رندر تقویم — موبایل مودال وسط‌چین، دسکتاپ absolute
+       ============================================================ */
+    const renderCalendar = (type) => {
+        if (isMobileView) {
+            // موبایل: مودال وسط صفحه
+            return (
+                <>
+                    <div
+                        onClick={() => setShowCalendar(null)}
+                        style={{
+                            position: 'fixed',
+                            inset: 0,
+                            background: 'rgba(0, 0, 0, 0.45)',
+                            zIndex: 9999,
+                            animation: 'calendarFadeIn 0.2s ease',
+                        }}
+                    />
+                    <div
+                        ref={calendarRef}
+                        style={{
+                            position: 'fixed',
+                            top: '50%',
+                            left: '50%',
+                            transform: 'translate(-50%, -50%)',
+                            background: 'white',
+                            borderRadius: '14px',
+                            boxShadow: '0 20px 60px rgba(0, 0, 0, 0.3)',
+                            padding: '16px',
+                            zIndex: 10000,
+                            width: 'calc(100vw - 32px)',
+                            maxWidth: '340px',
+                            animation: 'calendarSlideUp 0.25s ease',
+                        }}
+                    >
+                        {renderCalendarBody(type)}
+                    </div>
+                    <style>{`
+                        @keyframes calendarFadeIn {
+                            from { opacity: 0; }
+                            to   { opacity: 1; }
+                        }
+                        @keyframes calendarSlideUp {
+                            from {
+                                opacity: 0;
+                                transform: translate(-50%, -45%);
+                            }
+                            to {
+                                opacity: 1;
+                                transform: translate(-50%, -50%);
+                            }
+                        }
+                    `}</style>
+                </>
+            );
+        }
+
+        // دسکتاپ: همون رفتار قبلی (absolute کنار input)
+        return (
+            <div
+                ref={calendarRef}
+                style={{
+                    position: 'absolute',
+                    top: '100%',
+                    left: 0,
+                    marginTop: '4px',
+                    background: 'white',
+                    borderRadius: '12px',
+                    boxShadow: '0 8px 30px rgba(0,0,0,0.15)',
+                    padding: '12px',
+                    zIndex: 1000,
+                    minWidth: '260px',
+                    border: '1px solid #eee',
+                }}
+            >
+                {renderCalendarBody(type)}
             </div>
         );
     };
@@ -636,9 +715,6 @@ function Reports() {
         );
     };
 
-    /* ============================================================
-       رندر — بارگذاری
-       ============================================================ */
     if (loading) {
         return (
             <div style={{ textAlign: 'center', padding: '50px' }}>
@@ -648,9 +724,6 @@ function Reports() {
         );
     }
 
-    /* ============================================================
-       رندر اصلی
-       ============================================================ */
     return (
         <div className="reports-page">
             {error && (
@@ -717,6 +790,7 @@ function Reports() {
                             if (!currentMonth.isValid())
                                 setCurrentMonth(moment());
                         }}
+                        placeholder="از تاریخ"
                         readOnly
                     />
                     {showCalendar === 'start' && renderCalendar('start')}
@@ -755,6 +829,7 @@ function Reports() {
                             if (!currentMonth.isValid())
                                 setCurrentMonth(moment());
                         }}
+                        placeholder="تا تاریخ"
                         readOnly
                     />
                     {showCalendar === 'end' && renderCalendar('end')}
@@ -840,9 +915,6 @@ function Reports() {
 
             {report ? (
                 <>
-                    {/* ============================================================
-                        کارت‌های آماری — ۳ کارت (محصول پرفروش حذف شد)
-                        ============================================================ */}
                     <div
                         className="stats-grid"
                         style={{
@@ -1081,7 +1153,7 @@ function Reports() {
                                 </span>
                             </div>
                             <div className="table-wrapper">
-                                <table className="order-table">
+                                <table className="order-table responsive-cards-table">
                                     <thead>
                                     <tr>
                                         <th>شماره</th>
@@ -1097,7 +1169,7 @@ function Reports() {
                                             order._id || order.id;
                                         return (
                                             <tr key={orderId}>
-                                                <td>
+                                                <td data-label="شماره">
                                                     #
                                                     {toPersianNumber(
                                                         String(
@@ -1105,22 +1177,22 @@ function Reports() {
                                                         ).slice(-6)
                                                     )}
                                                 </td>
-                                                <td>
+                                                <td data-label="مشتری">
                                                     {order.customerName ||
                                                         'ناشناس'}
                                                 </td>
-                                                <td>
+                                                <td data-label="تعداد اقلام">
                                                     {toPersianNumber(
                                                         order.items
                                                             ?.length || 0
                                                     )}
                                                 </td>
-                                                <td>
+                                                <td data-label="مبلغ (ریال)">
                                                     {formatPrice(
                                                         order.totalPrice || 0
                                                     )}
                                                 </td>
-                                                <td>
+                                                <td data-label="وضعیت">
                                                     <span
                                                         className={`badge ${getStatusBadge(
                                                             order.status

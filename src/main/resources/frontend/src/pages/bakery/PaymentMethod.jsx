@@ -4,9 +4,10 @@ import { useNavigate } from 'react-router-dom';
 import { showToast } from '../../utils/toast';
 import { toPersianNumber, formatPrice } from '../../utils/format';
 import { requestOnlinePayment } from '../../services/api';
-
-const LAST_ORDER_KEY = 'bako_last_order';
-const PAYMENT_METHOD_KEY = 'bako_payment_method';
+import {
+    getLastOrderKey,
+    getPaymentMethodKey,
+} from '../../utils/counterStorage';
 
 function PaymentMethod() {
     const navigate = useNavigate();
@@ -16,7 +17,7 @@ function PaymentMethod() {
 
     useEffect(() => {
         try {
-            const saved = localStorage.getItem(LAST_ORDER_KEY);
+            const saved = localStorage.getItem(getLastOrderKey());
             if (saved) {
                 setOrder(JSON.parse(saved));
             } else {
@@ -36,7 +37,7 @@ function PaymentMethod() {
         }
 
         try {
-            localStorage.setItem(PAYMENT_METHOD_KEY, selected);
+            localStorage.setItem(getPaymentMethodKey(), selected);
 
             // آپدیت سفارش با روش پرداخت
             const updatedOrder = {
@@ -45,7 +46,10 @@ function PaymentMethod() {
                 paymentStatus:
                     selected === 'GATEWAY' ? 'PENDING' : 'PAID',
             };
-            localStorage.setItem(LAST_ORDER_KEY, JSON.stringify(updatedOrder));
+            localStorage.setItem(
+                getLastOrderKey(),
+                JSON.stringify(updatedOrder)
+            );
         } catch (e) {
             console.error('خطا در ذخیره روش پرداخت:', e);
         }
@@ -66,11 +70,12 @@ function PaymentMethod() {
             const data = response?.data || {};
 
             if (data.paymentUrl) {
-                // ذخیره authority برای verify در بازگشت
                 if (data.authority) {
-                    localStorage.setItem('bako_payment_authority', data.authority);
+                    localStorage.setItem(
+                        'bako_payment_authority',
+                        data.authority
+                    );
                 }
-                // ریدایرکت به درگاه
                 window.location.href = data.paymentUrl;
             } else {
                 throw new Error(data.message || 'لینک پرداخت دریافت نشد');
@@ -93,7 +98,6 @@ function PaymentMethod() {
 
     return (
         <div className="payment-page">
-            {/* ===== خلاصه سفارش ===== */}
             <div className="payment-summary-box">
                 <h3>📋 خلاصه پرداخت</h3>
                 <div className="payment-summary-row">
@@ -118,7 +122,6 @@ function PaymentMethod() {
                 </div>
             </div>
 
-            {/* ===== انتخاب روش پرداخت ===== */}
             <div className="payment-methods-box">
                 <h3>💳 روش پرداخت را انتخاب کنید</h3>
 
@@ -176,7 +179,6 @@ function PaymentMethod() {
                 </div>
             </div>
 
-            {/* ===== دکمه‌های عملیات ===== */}
             <div className="payment-actions">
                 <button
                     className="btn-secondary-action"

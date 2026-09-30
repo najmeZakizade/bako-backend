@@ -143,7 +143,7 @@ function MonitoringTransactionsPage() {
                 </div>
             ) : (
                 <div className="sa-table-wrapper">
-                    <table className="sa-table">
+                    <table className="sa-table responsive-cards-table">
                         <thead>
                         <tr>
                             <th>شناسه</th>
@@ -166,24 +166,30 @@ function MonitoringTransactionsPage() {
 
                             return (
                                 <tr key={id}>
-                                    <td className="sa-cell-normal">
+                                    <td className="sa-cell-normal" data-label="شناسه">
                                         #{toPersianNumber(String(id).slice(-6))}
                                     </td>
-                                    <td>{getTenantName(tx.tenantId)}</td>
-                                    <td>{tx.customerName || '—'}</td>
-                                    <td className="sa-cell-normal">
+                                    <td data-label="نانوایی">
+                                        {getTenantName(tx.tenantId)}
+                                    </td>
+                                    <td data-label="مشتری">
+                                        {tx.customerName || '—'}
+                                    </td>
+                                    <td className="sa-cell-normal" data-label="موبایل">
                                         {tx.phone ? toPersianNumber(tx.phone) : '—'}
                                     </td>
-                                    <td className="sa-cell-normal">
+                                    <td className="sa-cell-normal" data-label="مبلغ (ریال)">
                                         {formatPrice(tx.totalPrice || 0)}
                                     </td>
-                                    <td>{getPaymentMethodLabel(tx.paymentMethod)}</td>
-                                    <td>
-                                            <span className={`sa-badge ${status.class}`}>
-                                                {status.label}
-                                            </span>
+                                    <td data-label="روش پرداخت">
+                                        {getPaymentMethodLabel(tx.paymentMethod)}
                                     </td>
-                                    <td>{date}</td>
+                                    <td data-label="وضعیت">
+                                        <span className={`sa-badge ${status.class}`}>
+                                            {status.label}
+                                        </span>
+                                    </td>
+                                    <td data-label="تاریخ">{date}</td>
                                 </tr>
                             );
                         })}

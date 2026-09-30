@@ -215,7 +215,6 @@ function Couriers() {
         } catch (err) {
             console.error(err);
             const msg = extractErrorMessage(err);
-            // 🎯 فقط یک بار پیام خطا نشون بده (Toast)
             showToast(msg, 'error');
         } finally {
             setSubmitLoading(false);
@@ -505,7 +504,7 @@ function Couriers() {
                 <p className="empty-text">هیچ پیکی ثبت نشده است.</p>
             ) : (
                 <div className="table-wrapper">
-                    <table className="order-table">
+                    <table className="order-table responsive-cards-table">
                         <thead>
                         <tr>
                             <th>نام و نام خانوادگی</th>
@@ -520,31 +519,35 @@ function Couriers() {
                         <tbody>
                         {couriers.map((item) => (
                             <tr key={item.id}>
-                                <td><strong>{item.fullName}</strong></td>
-                                <td>{item.phone ? toPersianNumber(item.phone) : '—'}</td>
-                                <td>
+                                <td data-label="نام و نام خانوادگی">
+                                    <strong>{item.fullName}</strong>
+                                </td>
+                                <td data-label="شماره تماس">
+                                    {item.phone ? toPersianNumber(item.phone) : '—'}
+                                </td>
+                                <td data-label="وسیله">
                                     <span className="role-badge">
                                         {getVehicleLabel(item.vehicleType)}
                                     </span>
                                 </td>
-                                <td>
+                                <td data-label="پلاک">
                                     {item.vehiclePlate ? (
                                         <span className="plate-display">
                                             {displayPlate(item.vehiclePlate)}
                                         </span>
                                     ) : '—'}
                                 </td>
-                                <td>
+                                <td data-label="آدرس">
                                     <span className="address-cell" title={item.address}>
                                         {item.address || '—'}
                                     </span>
                                 </td>
-                                <td>
+                                <td data-label="وضعیت">
                                     <span className={`status-badge ${item.status === 'ACTIVE' ? 'active' : 'inactive'}`}>
                                         {item.status === 'ACTIVE' ? '✅ فعال' : '❌ غیرفعال'}
                                     </span>
                                 </td>
-                                <td>
+                                <td data-label="عملیات">
                                     <div style={{
                                         display: 'flex',
                                         gap: '4px',

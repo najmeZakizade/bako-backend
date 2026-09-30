@@ -202,83 +202,14 @@ function TenantPaymentConfig() {
         );
     }
 
-    return (
-        <div className="tenant-payment-config">
-            {/* ===== هدر ===== */}
-            <div className="admin-dashboard-header">
-                <h1>
-                    {!headerIconError ? (
-                        <img
-                            src="/admin-sidebar-icons/payment.png"
-                            alt="پرداخت"
-                            className="admin-header-icon"
-                            onError={() => setHeaderIconError(true)}
-                        />
-                    ) : (
-                        <span className="admin-header-icon-fallback">💳</span>
-                    )}
-                    تنظیمات درگاه پرداخت
-                </h1>
-            </div>
-
-            {/* ===== گرید نانوایی‌ها (۳ تا در خط) ===== */}
-            {tenants.length === 0 ? (
-                <div className="admin-empty">
-                    <span className="admin-empty-icon">🏪</span>
-                    <h3>نانوایی‌ای ثبت نشده است</h3>
-                    <p>ابتدا از بخش «نانوایی‌ها» یک نانوایی بسازید</p>
-                </div>
-            ) : (
-                <div className="tpc-tenants-grid">
-                    {tenants.map((tenant) => {
-                        const id = tenant._id || tenant.id;
-                        const isSelected =
-                            selectedTenant &&
-                            (selectedTenant._id || selectedTenant.id) === id;
-                        const hasConfig =
-                            tenant.zarinpalMerchantId && tenant.zarinpalEnabled;
-
-                        return (
-                            <button
-                                key={id}
-                                type="button"
-                                className={`tpc-tenant-card ${
-                                    isSelected ? 'tpc-tenant-card-selected' : ''
-                                }`}
-                                onClick={() => handleSelectTenant(tenant)}
-                            >
-                                <div className="tpc-tenant-logo">
-                                    <TenantLogo tenant={tenant} />
-                                </div>
-                                <div className="tpc-tenant-info">
-                                    <h4 className="tpc-tenant-name">
-                                        {tenant.name}
-                                    </h4>
-                                    <p className="tpc-tenant-address">
-                                        {tenant.address || 'آدرس ثبت نشده'}
-                                    </p>
-                                    <span
-                                        className={`tpc-tenant-status ${
-                                            hasConfig ? 'active' : 'inactive'
-                                        }`}
-                                    >
-                                        {hasConfig
-                                            ? '✅ درگاه فعال'
-                                            : '⛔ درگاه غیرفعال'}
-                                    </span>
-                                </div>
-                                {isSelected && (
-                                    <span className="tpc-tenant-check">✓</span>
-                                )}
-                            </button>
-                        );
-                    })}
-                </div>
-            )}
-
-            {/* ===== پنل تنظیمات (زیر گرید) ===== */}
-            {selectedTenant && (
+    /* ============================================================
+       🆕 اگر نانوایی انتخاب شده → فقط پنل تنظیمات
+       ============================================================ */
+    if (selectedTenant) {
+        return (
+            <div className="tenant-payment-config">
                 <div className="tpc-settings-panel">
+                    {/* ===== هدر پنل ===== */}
                     <div className="payment-config-header">
                         <h3>تنظیمات پرداخت</h3>
                         <button
@@ -291,14 +222,31 @@ function TenantPaymentConfig() {
                         </button>
                     </div>
 
+                    {/* ===== اطلاعات نانوایی ===== */}
                     <div className="payment-config-tenant-info">
-                        <span className="info-icon">🏪</span>
-                        <div>
+                        <div className="payment-config-tenant-logo">
+                            <TenantLogo tenant={selectedTenant} />
+                        </div>
+                        <div className="payment-config-tenant-details">
                             <h4>{selectedTenant.name}</h4>
                             <p>{selectedTenant.address || 'آدرس ثبت نشده'}</p>
+                            <span
+                                className={`tpc-tenant-status ${
+                                    selectedTenant.zarinpalMerchantId &&
+                                    selectedTenant.zarinpalEnabled
+                                        ? 'active'
+                                        : 'inactive'
+                                }`}
+                            >
+                                {selectedTenant.zarinpalMerchantId &&
+                                selectedTenant.zarinpalEnabled
+                                    ? '✅ درگاه فعال'
+                                    : '⛔ درگاه غیرفعال'}
+                            </span>
                         </div>
                     </div>
 
+                    {/* ===== فرم ===== */}
                     <div className="payment-config-form">
                         {/* Merchant ID */}
                         <div className="form-group">
@@ -416,6 +364,7 @@ function TenantPaymentConfig() {
                         </div>
                     </div>
 
+                    {/* ===== دکمه‌ها ===== */}
                     <div className="payment-config-actions">
                         <button
                             type="button"
@@ -423,7 +372,7 @@ function TenantPaymentConfig() {
                             onClick={handleClose}
                             disabled={saving}
                         >
-                            انصراف
+                            ← بازگشت
                         </button>
                         <button
                             type="button"
@@ -434,6 +383,78 @@ function TenantPaymentConfig() {
                             {saving ? '⏳ در حال ذخیره...' : '💾 ذخیره تنظیمات'}
                         </button>
                     </div>
+                </div>
+            </div>
+        );
+    }
+
+    /* ============================================================
+       🆕 اگر نانوایی انتخاب نشده → فقط گرید نانوایی‌ها
+       ============================================================ */
+    return (
+        <div className="tenant-payment-config">
+            <div className="admin-dashboard-header">
+                <h1>
+                    {!headerIconError ? (
+                        <img
+                            src="/admin-sidebar-icons/payment.png"
+                            alt="پرداخت"
+                            className="admin-header-icon"
+                            onError={() => setHeaderIconError(true)}
+                        />
+                    ) : (
+                        <span className="admin-header-icon-fallback">💳</span>
+                    )}
+                    تنظیمات درگاه پرداخت
+                </h1>
+                <p className="admin-subtitle">
+                    یک نانوایی را انتخاب کنید تا تنظیمات پرداخت آن را ویرایش کنید
+                </p>
+            </div>
+
+            {tenants.length === 0 ? (
+                <div className="admin-empty">
+                    <span className="admin-empty-icon">🏪</span>
+                    <h3>نانوایی‌ای ثبت نشده است</h3>
+                    <p>ابتدا از بخش «نانوایی‌ها» یک نانوایی بسازید</p>
+                </div>
+            ) : (
+                <div className="tpc-tenants-grid">
+                    {tenants.map((tenant) => {
+                        const id = tenant._id || tenant.id;
+                        const hasConfig =
+                            tenant.zarinpalMerchantId && tenant.zarinpalEnabled;
+
+                        return (
+                            <button
+                                key={id}
+                                type="button"
+                                className="tpc-tenant-card"
+                                onClick={() => handleSelectTenant(tenant)}
+                            >
+                                <div className="tpc-tenant-logo">
+                                    <TenantLogo tenant={tenant} />
+                                </div>
+                                <div className="tpc-tenant-info">
+                                    <h4 className="tpc-tenant-name">
+                                        {tenant.name}
+                                    </h4>
+                                    <p className="tpc-tenant-address">
+                                        {tenant.address || 'آدرس ثبت نشده'}
+                                    </p>
+                                    <span
+                                        className={`tpc-tenant-status ${
+                                            hasConfig ? 'active' : 'inactive'
+                                        }`}
+                                    >
+                                        {hasConfig
+                                            ? '✅ درگاه فعال'
+                                            : '⛔ درگاه غیرفعال'}
+                                    </span>
+                                </div>
+                            </button>
+                        );
+                    })}
                 </div>
             )}
         </div>

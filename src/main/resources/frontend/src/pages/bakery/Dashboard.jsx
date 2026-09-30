@@ -240,60 +240,6 @@ function Dashboard() {
         );
     };
 
-    /* ============================================================
-       نمایش سهم نانوایی
-       ============================================================ */
-    const renderBakeryCommission = (order) => {
-        if (order.deliveryMethod !== 'DELIVERY') {
-            return (
-                <span
-                    style={{
-                        color: 'var(--primary-light)',
-                        fontSize: '11px',
-                    }}
-                >
-                    —
-                </span>
-            );
-        }
-        if (!order.courierId) {
-            return (
-                <span
-                    style={{
-                        color: 'var(--primary-light)',
-                        fontSize: '11px',
-                    }}
-                >
-                    —
-                </span>
-            );
-        }
-        const commission = Number(order.courierCommission) || 0;
-        if (commission <= 0) {
-            return (
-                <span
-                    style={{
-                        color: 'var(--primary-light)',
-                        fontSize: '11px',
-                    }}
-                >
-                    —
-                </span>
-            );
-        }
-        return (
-            <span
-                style={{
-                    fontWeight: '700',
-                    color: 'var(--green-dark)',
-                    fontSize: '11.5px',
-                }}
-            >
-                {formatPrice(commission)}
-            </span>
-        );
-    };
-
     return (
         <div className="dashboard">
             <div className="stats-grid">
@@ -425,21 +371,20 @@ function Dashboard() {
                     </p>
                 ) : (
                     <div className="table-wrapper">
-                        <table className="order-table">
+                        <table className="order-table responsive-cards-table">
                             <thead>
                             <tr>
                                 <th>شماره</th>
                                 <th>مشتری</th>
                                 <th>مبلغ (ریال)</th>
                                 <th>هزینه پیک (ریال)</th>
-                                <th>سهم نانوایی (ریال)</th>
                                 <th>وضعیت</th>
                             </tr>
                             </thead>
                             <tbody>
                             {recentOrders.map((order) => (
                                 <tr key={order._id || order.id}>
-                                    <td>
+                                    <td data-label="شماره">
                                         #
                                         {toPersianNumber(
                                             String(
@@ -449,10 +394,10 @@ function Dashboard() {
                                             ).slice(-6)
                                         )}
                                     </td>
-                                    <td>
+                                    <td data-label="مشتری">
                                         {order.customerName || 'ناشناس'}
                                     </td>
-                                    <td>
+                                    <td data-label="مبلغ (ریال)">
                                         <span
                                             style={{
                                                 fontWeight: '700',
@@ -464,11 +409,10 @@ function Dashboard() {
                                             )}
                                         </span>
                                     </td>
-                                    <td>{renderDeliveryFee(order)}</td>
-                                    <td>
-                                        {renderBakeryCommission(order)}
+                                    <td data-label="هزینه پیک (ریال)">
+                                        {renderDeliveryFee(order)}
                                     </td>
-                                    <td>
+                                    <td data-label="وضعیت">
                                         <span
                                             className={`badge ${
                                                 STATUS_BADGE_CLASS[

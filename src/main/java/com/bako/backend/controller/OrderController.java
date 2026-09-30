@@ -95,6 +95,29 @@ public class OrderController {
     }
 
     // ============================================================
+    //  ۰. سفارشات شخصی کاربر لاگین‌شده (بدون فیلتر tenantId)
+    //  GET /api/orders/my
+    // ============================================================
+    @GetMapping("/my")
+    public ResponseEntity<List<Order>> getMyOrders(
+            @RequestHeader(value = "Authorization", required = false) String authHeader) {
+
+        User user = getCurrentUser(authHeader);
+
+        log.info("🛒 دریافت سفارشات شخصی — کاربر: '{}' | نقش: {} | شماره: {}",
+                user.getUsername(), user.getRole(), user.getPhone());
+
+        if (user.getPhone() == null || user.getPhone().isBlank()) {
+            log.warn("⚠️ کاربر '{}' شماره تماس ثبت نکرده است.", user.getUsername());
+            return ResponseEntity.ok(List.of());
+        }
+
+        List<Order> orders = orderService.getOrdersByPhone(user.getPhone());
+        log.info("✅ {} سفارش برای کاربر '{}' برگشت داده شد.", orders.size(), user.getUsername());
+        return ResponseEntity.ok(orders);
+    }
+
+    // ============================================================
     //  ۱. دریافت همه سفارشات
     // ============================================================
     @GetMapping
@@ -110,8 +133,6 @@ public class OrderController {
 
     // ============================================================
     //  ۲. دریافت یک سفارش با ID
-    //  🎯 مشتری → فقط سفارش‌های خودش
-    //  🎯 صاحب نانوایی / کارمند → فقط سفارش‌های نانوایی خودش
     // ============================================================
     @GetMapping("/{id}")
     public ResponseEntity<Order> getOrderById(
@@ -121,12 +142,18 @@ public class OrderController {
         User user = getCurrentUser(authHeader);
         Order order;
 
-        if ("CUSTOMER".equals(user.getRole())) {
-            // 🎯 مشتری — چک می‌کنیم که شماره تماس سفارش با کاربر یکی باشه
-            log.info("🛒 دریافت سفارش {} برای مشتری '{}'", id, user.getUsername());
+        // 🎯 سوپر ادمین → دسترسی کامل
+        if ("SUPER_ADMIN".equals(user.getRole())) {
+            log.info("👑 سوپر ادمین سفارش {} را می‌خواند.", id);
+            order = orderService.getOrderById(id);
+        }
+        // 🎯 مشتری → فقط سفارش‌های خودش
+        else if ("CUSTOMER".equals(user.getRole())) {
+            log.info("🛒 مشتری '{}' سفارش {} را می‌خواند.", user.getUsername(), id);
             order = orderService.getOrderByIdForCustomer(id, user.getPhone());
-        } else {
-            // صاحب نانوایی / کارمند
+        }
+        // 🎯 صاحب نانوایی / کارمند
+        else {
             String tenantId = getTenantIdFromUsername(user.getUsername());
             order = orderService.getOrderById(id, tenantId);
         }
@@ -264,8 +291,6 @@ public class OrderController {
 
     // ============================================================
     //  ۸. دریافت سفارشات بر اساس شماره تلفن
-    //  🎯 مشتری → همه سفارشات خودش (بدون فیلتر tenantId)
-    //  🎯 صاحب نانوایی / کارمند → فقط سفارشات نانوایی خودش
     // ============================================================
     @GetMapping("/phone/{phone}")
     public ResponseEntity<List<Order>> getOrdersByPhone(
@@ -278,8 +303,8 @@ public class OrderController {
 
         List<Order> orders;
 
-        if ("CUSTOMER".equals(user.getRole())) {
-            log.info("🛒 دریافت همه سفارشات مشتری '{}' با شماره {}", username, phone);
+        if ("CUSTOMER".equals(user.getRole()) || "SUPER_ADMIN".equals(user.getRole())) {
+            log.info("🛒 دریافت همه سفارشات '{}' با شماره {}", username, phone);
             orders = orderService.getOrdersByPhone(phone);
         } else {
             String tenantId = getTenantIdFromUsername(username);
@@ -372,11 +397,15 @@ public class OrderController {
             return ResponseEntity.status(401).body("❌ " + e.getMessage());
         }
     }
+
     // ============================================================
-    //  ۱۳. 🆕 تأیید دریافت سفارش توسط مشتری
+    //  ۱۳. 🆕 تأیید دریافت سفارش توسط صاحب سفارش
     //  PATCH /api/orders/{id}/customer-received
-    //  - فقط CUSTOMER
-    //  - فقط یه‌بار قابل ثبت
+    //
+    //  🎯 منطق جدید:
+    //     - هر کاربری که با JWT احراز هویت شده باشه می‌تونه این درخواست رو بفرسته
+    //     - چک اصلی داخل OrderService انجام می‌شه: شماره موبایل کاربر باید با شماره سفارش مطابق باشه
+    //     - پس سوپر ادمین، مشتری، هر کسی که صاحب سفارش باشه می‌تونه تأیید کنه
     // ============================================================
     @PatchMapping("/{id}/customer-received")
     public ResponseEntity<Order> markCustomerReceived(
@@ -385,10 +414,11 @@ public class OrderController {
 
         User user = getCurrentUser(authHeader);
 
-        if (!"CUSTOMER".equals(user.getRole())) {
-            throw new ResourceNotFoundException("فقط مشتری می‌تواند این عملیات را انجام دهد.");
-        }
+        log.info("📦 درخواست تأیید دریافت سفارش {} — کاربر: '{}' | نقش: {} | شماره: {}",
+                id, user.getUsername(), user.getRole(), user.getPhone());
 
+        // ⚠️ نکته: بررسی مالکیت سفارش داخل OrderService انجام می‌شود
+        //    (چک می‌کند که شماره موبایل کاربر با شماره سفارش یکی باشد)
         Order updated = orderService.markCustomerReceived(id, user.getPhone());
         return ResponseEntity.ok(updated);
     }

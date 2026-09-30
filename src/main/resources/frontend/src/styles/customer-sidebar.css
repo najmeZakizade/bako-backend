@@ -1,62 +1,348 @@
-/* دسکتاپ */
+/* ============================================================
+   Bako — Customer Sidebar
+   Desktop: Fixed Sidebar  |  Mobile: Drawer
+   ============================================================ */
+
+/* ============================================================
+   دسکتاپ — سایدبار ثابت سمت راست
+   ============================================================ */
 .customer-sidebar {
-    width: 240px;
-    height: 100vh;
-    background: #fff;
-    border-left: 1px solid #eee;
-    position: sticky;
-    top: 0;
-    display: flex;
-    flex-direction: column;
+    width: var(--sidebar-width);
+    position: fixed;
+    right: 0;
+    top: var(--navbar-height);
+    height: calc(100vh - var(--navbar-height));
+    padding: 12px 8px;
+    overflow-y: auto;
+    z-index: 990;
+    transition: width 0.3s ease;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    outline: none;
 }
 
-/* موبایل: Drawer */
-@media (max-width: 767px) {
+/* اسکرول‌بار نازک */
+.customer-sidebar::-webkit-scrollbar {
+    width: 4px;
+}
+.customer-sidebar::-webkit-scrollbar-thumb {
+    background: rgba(107, 63, 43, 0.2);
+    border-radius: 4px;
+}
+
+/* ============================================================
+   Nav
+   ============================================================ */
+.customer-sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+/* ============================================================
+   لینک‌ها
+   ============================================================ */
+.customer-sidebar-link {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 10px;
+    min-height: 40px;
+    padding: 7px 12px;
+    border-radius: 10px;
+    color: #493226;
+    font-weight: 600;
+    font-size: 12.5px;
+    text-decoration: none;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    position: relative;
+    text-align: right;
+    background: transparent;
+    border: 1.5px solid transparent;
+}
+
+.customer-sidebar-link:hover {
+    color: var(--primary-dark);
+    background: rgba(107, 63, 43, 0.07);
+    border-color: rgba(212, 163, 115, 0.25);
+}
+
+.customer-sidebar-link.active {
+    color: var(--gold-text);
+    background: #4a2c1a;
+    border-color: rgba(212, 163, 115, 0.35);
+    box-shadow: 0 3px 10px rgba(74, 44, 26, 0.16);
+}
+
+.customer-sidebar-link.active:hover {
+    color: var(--gold-text);
+    background: #4a2c1a;
+}
+
+/* نوار طلایی سمت راست لینک فعال */
+.customer-sidebar-link.active::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 20%;
+    height: 60%;
+    width: 3px;
+    background: var(--gold);
+    border-radius: 4px 0 0 4px;
+}
+
+/* ============================================================
+   آیکون
+   ============================================================ */
+.customer-sidebar-icon {
+    width: 26px;
+    height: 26px;
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    transition: transform 0.25s ease;
+}
+
+.customer-sidebar-link:hover .customer-sidebar-icon {
+    transform: scale(1.1);
+}
+
+.customer-sidebar-icon-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+    pointer-events: none;
+    user-select: none;
+    opacity: 0.92;
+    transition: opacity 0.2s ease, filter 0.2s ease;
+}
+
+.customer-sidebar-link:hover .customer-sidebar-icon-image {
+    opacity: 1;
+}
+
+.customer-sidebar-link.active .customer-sidebar-icon-image {
+    opacity: 1;
+    filter: brightness(1.15) drop-shadow(0 1px 3px rgba(245, 166, 35, 0.4));
+}
+
+.customer-sidebar-icon-fallback {
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    line-height: 1;
+}
+
+/* ============================================================
+   متن لینک
+   ============================================================ */
+.customer-sidebar-text {
+    font-size: 12.5px;
+    font-weight: 600;
+    color: inherit;
+    white-space: nowrap;
+    letter-spacing: 0.3px;
+    flex: 1;
+    text-align: right;
+}
+
+.customer-sidebar-link.active .customer-sidebar-text {
+    color: var(--gold-text);
+    font-weight: 700;
+}
+
+/* ============================================================
+   بج‌ها
+   ============================================================ */
+.customer-sidebar-badge {
+    background: var(--gold);
+    color: var(--primary-dark);
+    border-radius: 10px;
+    padding: 1px 7px;
+    font-size: 10px;
+    font-weight: 800;
+    min-width: 18px;
+    text-align: center;
+    line-height: 1.4;
+    flex-shrink: 0;
+}
+
+.customer-sidebar-badge.notification-badge {
+    background: #f39c12;
+    color: #2c1810;
+}
+
+.customer-sidebar-link.active .customer-sidebar-badge {
+    background: #f5a623;
+    color: #2c1810;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+/* ============================================================
+   عناصر فقط موبایل — پیش‌فرض مخفی
+   ============================================================ */
+.customer-sidebar-toggle {
+    display: none;
+}
+
+.customer-sidebar-overlay {
+    display: none;
+}
+
+.customer-sidebar-mobile-header {
+    display: none;
+}
+
+/* ============================================================
+   موبایل — Drawer
+   ============================================================ */
+@media (max-width: 768px) {
+    /* سایدبار → Drawer از سمت راست */
     .customer-sidebar {
-        position: fixed;
-        top: 0;
+        display: flex !important;
+        flex-direction: column;
+        position: fixed !important;
+        top: 0 !important;
         right: 0;
         bottom: 0;
+        width: min(85vw, 300px);
+        height: 100vh !important;
+        padding: 0;
+        background: #ffffff;
+        border-left: 1px solid #f0e8df;
+        box-shadow: -10px 0 40px rgba(0, 0, 0, 0.18);
         z-index: 1000;
         transform: translateX(100%);
-        transition: transform 0.3s ease;
-        box-shadow: -8px 0 32px rgba(0,0,0,0.12);
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        overflow-y: auto;
+        border-radius: 0;
     }
+
     .customer-sidebar.open {
         transform: translateX(0);
     }
+
+    /* هدر داخل Drawer */
+    .customer-sidebar-mobile-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 14px 18px;
+        border-bottom: 1px solid #f0e8df;
+        margin-bottom: 8px;
+        position: sticky;
+        top: 0;
+        background: #fff;
+        z-index: 2;
+    }
+
+    .customer-sidebar-logo {
+        height: 38px;
+        width: auto;
+        object-fit: contain;
+    }
+
+    .customer-sidebar-close {
+        background: transparent;
+        border: 0;
+        font-size: 22px;
+        color: #999;
+        cursor: pointer;
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background 0.2s;
+        font-family: inherit;
+        padding: 0;
+    }
+
+    .customer-sidebar-close:active {
+        background: #f5f5f5;
+    }
+
+    /* ناوبری داخل Drawer */
+    .customer-sidebar-nav {
+        padding: 0 12px 20px;
+    }
+
+    /* ============ دکمه همبرگری ============ */
+    .customer-sidebar-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: fixed;
+        top: 12px;
+        right: 12px;
+        width: 44px;
+        height: 44px;
+        border-radius: 12px;
+        background: #fff;
+        border: 1px solid #eee;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        cursor: pointer;
+        z-index: 999;
+        color: #4a3a2a;
+        transition: transform 0.15s ease;
+        padding: 0;
+        font-family: inherit;
+    }
+
+    .customer-sidebar-toggle:active {
+        transform: scale(0.94);
+    }
+
+    .customer-sidebar-toggle-badge {
+        position: absolute;
+        top: -4px;
+        left: -4px;
+        background: #e74c3c;
+        color: #fff;
+        font-size: 10px;
+        font-weight: 700;
+        padding: 2px 5px;
+        border-radius: 8px;
+        min-width: 16px;
+        text-align: center;
+        line-height: 1.4;
+    }
+
+    /* ============ Overlay ============ */
+    .customer-sidebar-overlay {
+        display: block;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.45);
+        z-index: 999;
+        animation: customerFadeIn 0.2s ease;
+    }
 }
 
-.sidebar-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.4);
-    z-index: 999;
-    animation: fadeIn 0.2s;
+/* ============================================================
+   انیمیشن
+   ============================================================ */
+@keyframes customerFadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
 }
 
-@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-.sidebar-toggle {
-    position: fixed;
-    top: 12px;
-    right: 12px;
-    z-index: 998;
-    width: 44px;
-    height: 44px;
-    border-radius: 12px;
-    background: #fff;
-    border: 1px solid #eee;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.sidebar-close {
-    background: transparent;
-    border: 0;
-    font-size: 20px;
-    cursor: pointer;
+/* ============================================================
+   صفحه‌های خیلی باریک
+   ============================================================ */
+@media (max-width: 360px) {
+    .customer-sidebar {
+        width: 90vw;
+    }
+    .customer-sidebar-link {
+        padding: 8px 10px;
+        font-size: 12px;
+    }
 }

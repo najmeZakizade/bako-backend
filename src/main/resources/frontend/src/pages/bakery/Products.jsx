@@ -214,7 +214,7 @@ function Products() {
     const rowStyle = {
         display: 'flex',
         flexDirection: 'row',
-        flexWrap: 'nowrap',
+        flexWrap: 'wrap',       // 👈 این خط تغییر کرد (قبلاً nowrap بود)
         gap: '10px',
         alignItems: 'flex-end',
         width: '100%',
@@ -477,7 +477,7 @@ function Products() {
                 </p>
             ) : (
                 <div className="table-wrapper">
-                    <table className="order-table">
+                    <table className="order-table responsive-cards-table">
                         <thead>
                         <tr>
                             <th>تصویر</th>
@@ -490,7 +490,7 @@ function Products() {
                         <tbody>
                         {products.map((product) => (
                             <tr key={product.id}>
-                                <td>
+                                <td data-label="تصویر">
                                     <img
                                         src={product.imageUrl || DEFAULT_IMAGE}
                                         alt={product.name}
@@ -498,11 +498,17 @@ function Products() {
                                         onError={(e) => e.target.src = DEFAULT_IMAGE}
                                     />
                                 </td>
-                                <td><strong>{product.name}</strong></td>
-                                <td>{product.category || '—'}</td>
-                                <td>{formatPrice(product.price || 0)}</td>
-                                <td>
-                                    <div className="action-buttons">
+                                <td data-label="نام">
+                                    <strong>{product.name}</strong>
+                                </td>
+                                <td data-label="دسته‌بندی">
+                                    {product.category || '—'}
+                                </td>
+                                <td data-label="قیمت (ریال)">
+                                    {formatPrice(product.price || 0)}
+                                </td>
+                                <td data-label="عملیات">
+                                    <div className="action-buttons" style={{ justifyContent: 'center' }}>
                                         <button
                                             className="action-btn edit"
                                             onClick={() => handleEdit(product)}

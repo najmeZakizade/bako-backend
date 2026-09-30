@@ -4,6 +4,41 @@
    ============================================================ */
 
 /* ============================================================
+   0) 🆕 فونت Homa — WOFF2 + WOFF + TTF
+   ترتیب مهم است: WOFF2 → WOFF → TTF
+   ============================================================ */
+
+@font-face {
+  font-family: 'Homa';
+  src: url('/FarHoma.woff2') format('woff2'),
+  url('/FarHoma.woff') format('woff'),
+  url('/Far_Homa.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Homa';
+  src: url('/FarHoma.woff2') format('woff2'),
+  url('/FarHoma.woff') format('woff'),
+  url('/Far_Homa.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Homa';
+  src: url('/FarHoma.woff2') format('woff2'),
+  url('/FarHoma.woff') format('woff'),
+  url('/Far_Homa.ttf') format('truetype');
+  font-weight: 800 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ============================================================
    1) متغیرها و ریست پایه
    ============================================================ */
 :root {
@@ -32,7 +67,7 @@
   --radius-md: 10px;
   --radius-lg: 14px;
   --transition: 0.3s ease;
-  --font-family: 'Inter', 'Homa', 'Tahoma', 'Arial', sans-serif;
+  --font-family: 'Homa', 'Vazirmatn', 'Inter', 'Tahoma', 'Arial', sans-serif;
   --content-max: 1200px;
   --sidebar-width: 180px;
   --navbar-height: 66px;
@@ -52,6 +87,7 @@ html {
 }
 
 body {
+  zoom: 1.1;
   font-family: var(--font-family);
   color: var(--text-dark);
   line-height: 1.5;
@@ -67,8 +103,23 @@ body {
 }
 
 a { text-decoration: none; color: inherit; }
-button { font-family: inherit; cursor: pointer; }
-button, input, select, textarea { -webkit-font-smoothing: antialiased; }
+
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  -webkit-font-smoothing: antialiased;
+}
+
+button { cursor: pointer; }
+
+input::placeholder,
+textarea::placeholder {
+  font-family: inherit;
+}
 
 button:focus-visible,
 a:focus-visible,
@@ -378,7 +429,7 @@ textarea:focus-visible {
 }
 
 /* ============================================================
-   3.5) 🆕 دکمه سبد خرید در ناوبار (آیکون)
+   3.5) دکمه سبد خرید در ناوبار (آیکون)
    ============================================================ */
 .navbar-cart-btn {
   position: relative;
@@ -643,6 +694,7 @@ textarea:focus-visible {
   cursor: pointer;
   color: #6b3f2b;
   border-radius: 6px;
+  font-family: inherit;
 }
 .tab-btn.active {
   background: #ffffff;
@@ -667,6 +719,7 @@ textarea:focus-visible {
   background: #f5e6d3;
   outline: none;
   color: #4a2c1a;
+  font-family: inherit;
 }
 .login-form .form-group input:focus,
 .login-form .form-group select:focus {
@@ -684,6 +737,7 @@ textarea:focus-visible {
   font-weight: 800;
   cursor: pointer;
   margin-top: 8px;
+  font-family: inherit;
 }
 .login-btn:hover:not(:disabled) { background: #2c1810; }
 .login-btn:disabled { opacity: 0.6; cursor: not-allowed; }
@@ -700,6 +754,7 @@ textarea:focus-visible {
   font-weight: 700;
   cursor: pointer;
   padding: 0 4px;
+  font-family: inherit;
 }
 
 /* ============================================================
@@ -1113,6 +1168,7 @@ textarea:focus-visible {
   min-width: 100px;
   height: 29px;
   outline: none;
+  font-family: inherit;
 }
 .filter-bar button {
   padding: 5px 11px;
@@ -1123,6 +1179,7 @@ textarea:focus-visible {
   font-weight: 600;
   cursor: pointer;
   height: 29px;
+  font-family: inherit;
 }
 
 .product-table-image {
@@ -1190,6 +1247,7 @@ textarea:focus-visible {
   font-size: 11.5px;
   background: white;
   outline: none;
+  font-family: inherit;
 }
 .product-form .form-actions, .staff-form .form-actions {
   display: flex;
@@ -1314,6 +1372,7 @@ textarea:focus-visible {
   font-size: 12px;
   outline: none;
   margin-bottom: 10px;
+  font-family: inherit;
 }
 .btn-submit {
   width: 100%;
@@ -1456,6 +1515,7 @@ textarea:focus-visible {
   height: 24px;
   display: flex;
   align-items: center;
+  font-family: inherit;
 }
 .filter-btn:hover { border-color: var(--primary-light); }
 .filter-btn.active {
@@ -1527,7 +1587,6 @@ textarea:focus-visible {
 .product-price-row { margin: 2px 0; text-align: center; }
 .product-price { font-size: 11.5px; font-weight: 700; color: var(--gold-dark); }
 
-/* ===== دکمه‌های +/- داخل کارت محصول ===== */
 .counter-qty-controls {
   display: flex;
   align-items: center;
@@ -2144,7 +2203,6 @@ textarea:focus-visible {
 }
 .cart-item-large .remove-item-btn:hover { background: rgba(192, 57, 43, 0.1); transform: scale(1.1); }
 
-/* ===== دکمه‌های +/- گرد در Counter Cart ===== */
 .qty-btn-round {
   width: 26px;
   height: 26px;
@@ -2598,7 +2656,7 @@ textarea:focus-visible {
 .no-courier-needed .info-icon { font-size: 18px; }
 
 /* ============================================================
-   24) 🆕 صفحه انتخاب روش پرداخت (Payment Method)
+   24) صفحه انتخاب روش پرداخت (Payment Method)
    ============================================================ */
 .payment-page {
   max-width: 640px;
@@ -2609,7 +2667,6 @@ textarea:focus-visible {
   gap: 14px;
 }
 
-/* ===== خلاصه سفارش ===== */
 .payment-summary-box {
   background: var(--card-bg);
   border: 1px solid #eee4db;
@@ -2652,7 +2709,6 @@ textarea:focus-visible {
   font-size: 15px;
 }
 
-/* ===== انتخاب روش پرداخت ===== */
 .payment-methods-box {
   background: var(--card-bg);
   border: 1px solid #eee4db;
@@ -2737,7 +2793,6 @@ textarea:focus-visible {
   box-shadow: 0 2px 6px rgba(224, 153, 26, 0.4);
 }
 
-/* ===== دکمه‌های عملیات ===== */
 .payment-actions {
   display: flex;
   justify-content: space-between;
@@ -2754,7 +2809,7 @@ textarea:focus-visible {
 }
 
 /* ============================================================
-   25) 🆕 صفحه بازگشت از درگاه (Payment Callback)
+   25) صفحه بازگشت از درگاه (Payment Callback)
    ============================================================ */
 .payment-callback-page {
   min-height: 60vh;
@@ -2820,7 +2875,7 @@ textarea:focus-visible {
 }
 
 /* ============================================================
-   26) فاکتور فروش (Receipt) — نسخه فشرده
+   26) فاکتور فروش (Receipt)
    ============================================================ */
 .receipt-page {
   max-width: 640px;
@@ -2860,7 +2915,6 @@ textarea:focus-visible {
   transform: translateY(-1px);
 }
 
-/* ===== دکمه بازگشت با آیکون ===== */
 .btn-secondary-action.btn-back-icon {
   width: 36px;
   height: 36px;
@@ -2891,7 +2945,6 @@ textarea:focus-visible {
   transform: translateY(0) scale(0.96);
 }
 
-/* ===== کارت فاکتور ===== */
 .receipt-container {
   background: #ffffff;
   border-radius: 12px;
@@ -2901,7 +2954,6 @@ textarea:focus-visible {
   direction: rtl;
 }
 
-/* ===== ردیف بالا: ۳ ستون ===== */
 .receipt-header-row {
   display: grid;
   grid-template-columns: 1fr auto 1fr;
@@ -2982,7 +3034,6 @@ textarea:focus-visible {
   border-radius: 2px;
 }
 
-/* ===== اطلاعات مشتری ===== */
 .receipt-customer-section {
   display: flex;
   flex-direction: column;
@@ -3024,7 +3075,6 @@ textarea:focus-visible {
   white-space: normal;
 }
 
-/* ===== 🆕 نمایش روش پرداخت در فاکتور ===== */
 .receipt-payment-row {
   display: flex;
   align-items: baseline;
@@ -3221,7 +3271,6 @@ textarea:focus-visible {
   .navbar-user { padding: 4px 8px; font-size: 9.5px; max-width: 90px; }
   .switch-panel-btn { font-size: 10px; padding: 5px 9px; }
 
-  /* 🆕 ریسپانسیو دکمه سبد خرید در موبایل */
   .navbar-cart-btn { width: 30px; height: 30px; }
   .navbar-cart-btn::before { width: 14px; height: 14px; }
   .navbar-cart-btn .cart-count-badge {
@@ -3321,7 +3370,6 @@ textarea:focus-visible {
   .plate-preview strong { font-size: 12px; }
   .address-cell { max-width: 140px; }
 
-  /* ===== 🆕 صفحه پرداخت در موبایل ===== */
   .payment-methods-grid {
     grid-template-columns: 1fr;
   }
@@ -3352,7 +3400,6 @@ textarea:focus-visible {
     justify-content: center;
   }
 
-  /* ===== فاکتور در تبلت/موبایل ===== */
   .receipt-page { padding: 6px 0 20px; }
   .receipt-container { padding: 14px 14px; border-radius: 10px; }
 
@@ -3375,7 +3422,6 @@ textarea:focus-visible {
   .receipt-items-table th, .receipt-items-table td { padding: 7px 5px; font-size: 10px; }
   .receipt-total-row { padding: 8px 12px; font-size: 11px; }
 
-  /* ===== دکمه‌های فاکتور در موبایل ===== */
   .receipt-actions {
     flex-direction: row;
     justify-content: space-between;
@@ -3444,7 +3490,6 @@ textarea:focus-visible {
   .plate-iran { font-size: 9.5px; padding: 0 3px; }
   .address-cell { max-width: 100px; font-size: 10px; }
 
-  /* ===== فاکتور در موبایل کوچک ===== */
   .receipt-container { padding: 12px 12px; }
   .receipt-header-row {
     grid-template-columns: 1fr;
@@ -3480,7 +3525,6 @@ textarea:focus-visible {
   .receipt-info-value { font-size: 10.5px; }
   .receipt-invoice-number { font-size: 11px; }
 
-  /* ===== 🆕 صفحه پرداخت در موبایل کوچک ===== */
   .payment-page { padding: 8px 0 24px; }
   .payment-summary-box,
   .payment-methods-box { padding: 12px 14px; }
@@ -3505,7 +3549,7 @@ textarea:focus-visible {
 }
 
 /* ============================================================
-   28) استایل چاپ (Print) — A5، ساده، بدون رنگ، مشکی یکدست
+   28) استایل چاپ (Print)
    ============================================================ */
 @page {
   size: A5;
@@ -3623,7 +3667,6 @@ textarea:focus-visible {
   }
   .receipt-address-row .receipt-address-value { color: #000 !important; }
 
-  /* 🆕 روش پرداخت در پرینت */
   .receipt-payment-row {
     border-top: 1px dashed #000 !important;
   }
@@ -3748,5 +3791,190 @@ textarea:focus-visible {
   *, *::before, *::after {
     animation: none !important;
     transition: none !important;
+  }
+}
+
+/* ============================================================
+   29) اجبار فونت Homa روی همه‌ی وزن‌ها
+   ============================================================ */
+body,
+body * {
+  font-family: 'Homa', 'Vazirmatn', 'Inter', 'Tahoma', 'Arial', sans-serif;
+}
+
+code, pre, kbd, samp, tt,
+.receipt-invoice-number {
+  font-family: monospace !important;
+}
+
+/* ============================================================
+   30) سایدبار نانوایی — Drawer Overlay در موبایل
+   ============================================================ */
+
+.bakery-sidebar-overlay {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  /* هدر نانوایی در موبایل — غیر sticky، در جریان عادی صفحه */
+  .bakery-header {
+    position: static !important;
+    top: auto !important;
+    z-index: 1 !important;
+    background: #faf6f0 !important;
+    margin-bottom: 18px !important;
+    padding: 10px 14px !important;
+    border: 1px solid #eadfd4 !important;
+    box-shadow: 0 1px 4px rgba(74, 44, 26, 0.08) !important;
+    border-radius: 10px !important;
+  }
+
+  .bakery-sidebar {
+    width: min(85vw, 300px) !important;
+    position: fixed !important;
+    top: var(--navbar-height) !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    height: calc(100vh - var(--navbar-height)) !important;
+    padding: 10px 8px !important;
+    overflow-y: auto !important;
+    z-index: 1000 !important;
+    transform: translateX(100%);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    background: linear-gradient(180deg, #fdf8f0 0%, #f8f0e5 100%);
+    border-left: 1px solid #eadfd4;
+    box-shadow: -10px 0 40px rgba(74, 44, 26, 0.18);
+  }
+
+  .bakery-sidebar.closed {
+    width: min(85vw, 300px) !important;
+    padding: 10px 8px !important;
+    transform: translateX(100%);
+    overflow: hidden !important;
+    box-shadow: none;
+  }
+
+  .bakery-sidebar:not(.closed) {
+    transform: translateX(0);
+  }
+
+  .bakery-content {
+    margin-right: 0 !important;
+    padding: 14px 10px 24px !important;
+  }
+
+  .bakery-sidebar-overlay {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    z-index: 999;
+    animation: bakerySidebarFadeIn 0.2s ease;
+  }
+
+  @keyframes bakerySidebarFadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+
+  .bakery-sidebar::-webkit-scrollbar {
+    width: 4px;
+  }
+  .bakery-sidebar::-webkit-scrollbar-thumb {
+    background: rgba(107, 63, 43, 0.25);
+    border-radius: 4px;
+  }
+}
+
+/* ============================================================
+   31) 🆕 جدول → کارت در موبایل (Responsive Table)
+   برای جدول‌هایی که کلاس .responsive-cards-table دارند
+   ============================================================ */
+@media (max-width: 768px) {
+  .responsive-cards-table {
+    display: block;
+    width: 100%;
+    min-width: 0 !important;
+    background: transparent !important;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    overflow: visible !important;
+  }
+
+  .responsive-cards-table thead {
+    display: none;
+  }
+
+  .responsive-cards-table tbody {
+    display: block;
+    width: 100%;
+  }
+
+  .responsive-cards-table tr {
+    display: block;
+    background: var(--card-bg);
+    border: 1px solid #eee4db;
+    border-radius: 12px;
+    padding: 12px 14px;
+    margin-bottom: 10px;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .responsive-cards-table td {
+    display: flex !important;
+    justify-content: space-between;
+    align-items: center;
+    padding: 7px 0 !important;
+    border-bottom: 1px solid #f2e9dd !important;
+    text-align: right !important;
+    background: transparent !important;
+    gap: 10px;
+    font-size: 12px;
+    color: var(--text-dark);
+  }
+
+  .responsive-cards-table td:last-child {
+    border-bottom: none !important;
+    margin-top: 4px;
+    padding-top: 10px !important;
+  }
+
+  .responsive-cards-table td::before {
+    content: attr(data-label);
+    font-weight: 700;
+    color: var(--primary-light);
+    font-size: 11px;
+    flex-shrink: 0;
+    text-align: right;
+  }
+
+  .responsive-cards-table td:not([data-label]) {
+    justify-content: flex-end;
+  }
+  .responsive-cards-table td:not([data-label])::before {
+    display: none;
+  }
+
+  /* hover روی tr در موبایل غیرفعال (چون tr الان کارته) */
+  .responsive-cards-table tbody tr:hover td {
+    background: transparent !important;
+  }
+  .responsive-cards-table tbody tr:hover td:first-child {
+    box-shadow: none !important;
+  }
+
+  /* zebra striping رو در موبایل غیرفعال کن */
+  .responsive-cards-table tbody tr:nth-child(even) td {
+    background: transparent !important;
+  }
+
+  /* جدول‌هایی که کارت شدن نباید wrapper اسکرول داشته باشن */
+  .table-wrapper:has(.responsive-cards-table) {
+    overflow-x: visible !important;
+    border: none !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
   }
 }

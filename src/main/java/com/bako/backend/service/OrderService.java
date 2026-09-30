@@ -44,6 +44,13 @@ public class OrderService {
                         "سفارش با شناسه '" + id + "' در این نانوایی پیدا نشد."));
     }
 
+    // 🆕 دسترسی کامل — بدون فیلتر tenantId (برای سوپر ادمین)
+    public Order getOrderById(String id) {
+        return orderRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "سفارش با شناسه '" + id + "' پیدا نشد."));
+    }
+
     public Order getOrderByIdForCustomer(String id, String customerPhone) {
         Order order = orderRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(
@@ -124,7 +131,6 @@ public class OrderService {
         order.setStatus(status);
         Order saved = orderRepository.save(order);
 
-        // 🔔 اعلان به مشتری
         try {
             String statusLabel = getStatusLabel(status);
             notificationService.createNotification(
@@ -238,7 +244,6 @@ public class OrderService {
 
         Order saved = orderRepository.save(order);
 
-        // 🔔 اعلان به مشتری
         try {
             notificationService.createNotification(
                     "CUSTOMER",
@@ -331,7 +336,6 @@ public class OrderService {
         order.setCustomerReceivedAt(LocalDateTime.now());
         Order saved = orderRepository.save(order);
 
-        // 🔔 اعلان به نانوایی
         try {
             notificationService.createNotification(
                     "BAKERY",

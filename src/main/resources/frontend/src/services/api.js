@@ -5,7 +5,7 @@ import axios from 'axios';
 //  تنظیمات پایه Axios
 // ============================================================
 const api = axios.create({
-    baseURL: import.meta.env.VITE_API_URL || 'http://localhost:8080/api',
+    baseURL: import.meta.env.VITE_API_URL || '/api',
     headers: {
         'Content-Type': 'application/json',
     },
@@ -108,6 +108,16 @@ export const getOrders = async (params) => {
         return await api.get('/orders', { params });
     } catch (error) {
         console.error('❌ خطا در دریافت سفارشات:', error.message);
+        return { data: [] };
+    }
+};
+
+// 🆕 دریافت سفارشات شخصی کاربر لاگین‌شده (بدون فیلتر tenantId)
+export const getMyOrders = async () => {
+    try {
+        return await api.get('/orders/my');
+    } catch (error) {
+        console.error('❌ خطا در دریافت سفارشات شخصی:', error.message);
         return { data: [] };
     }
 };
@@ -444,7 +454,6 @@ export const enableCourier = (id) => api.patch(`/couriers/${id}/enable`);
 //  🆕 SUPER ADMIN API
 // ============================================================
 
-// ===== داشبورد =====
 export const getSuperAdminDashboardStats = () =>
     api.get('/super-admin/dashboard/stats');
 
@@ -454,14 +463,12 @@ export const getSuperAdminRevenueTimeline = (days = 7) =>
 export const getSuperAdminTopTenants = (limit = 5) =>
     api.get('/super-admin/dashboard/top-tenants', { params: { limit } });
 
-// ===== گزارشات =====
 export const getSuperAdminRevenueByTenant = () =>
     api.get('/super-admin/reports/revenue-by-tenant');
 
 export const getSuperAdminTopProducts = (limit = 10) =>
     api.get('/super-admin/reports/top-products', { params: { limit } });
 
-// ===== کاربران =====
 export const getSuperAdminUsers = (params = {}) =>
     api.get('/super-admin/users', { params });
 
@@ -477,11 +484,9 @@ export const toggleSuperAdminUserEnabled = (id, enabled) =>
 export const deleteSuperAdminUser = (id) =>
     api.delete(`/super-admin/users/${id}`);
 
-// ===== ویرایش نانوایی =====
 export const updateSuperAdminTenant = (id, data) =>
     api.put(`/super-admin/tenants/${id}`, data);
 
-// ===== تراکنش‌های سوپر ادمین =====
 export const getSuperAdminTransactions = (params = {}) =>
     api.get('/super-admin/transactions', { params });
 
@@ -489,7 +494,6 @@ export const getSuperAdminTransactions = (params = {}) =>
 //  🆕 MONITORING API — پنل مانیتورینگ
 // ============================================================
 
-// ===== داشبورد =====
 export const getMonitoringDashboardStats = () =>
     api.get('/monitoring/dashboard/stats');
 
@@ -499,18 +503,15 @@ export const getMonitoringRevenueTimeline = (days = 7) =>
 export const getMonitoringTopTenants = (limit = 5) =>
     api.get('/monitoring/dashboard/top-tenants', { params: { limit } });
 
-// ===== گزارشات =====
 export const getMonitoringRevenueByTenant = () =>
     api.get('/monitoring/reports/revenue-by-tenant');
 
 export const getMonitoringTopProducts = (limit = 10) =>
     api.get('/monitoring/reports/top-products', { params: { limit } });
 
-// ===== تراکنش‌ها =====
 export const getMonitoringTransactions = (params = {}) =>
     api.get('/monitoring/transactions', { params });
 
-// ===== هشدارها =====
 export const getMonitoringAlerts = () =>
     api.get('/monitoring/alerts');
 

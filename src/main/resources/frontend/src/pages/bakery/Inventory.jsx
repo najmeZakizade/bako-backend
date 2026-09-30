@@ -111,7 +111,7 @@ function Inventory() {
                 </p>
             ) : (
                 <div className="table-wrapper">
-                    <table className="order-table">
+                    <table className="order-table responsive-cards-table">
                         <thead>
                         <tr>
                             <th>تصویر</th>
@@ -130,7 +130,7 @@ function Inventory() {
 
                             return (
                                 <tr key={id}>
-                                    <td>
+                                    <td data-label="تصویر">
                                         <img
                                             src={product.imageUrl || '/images/default-bread.png'}
                                             alt={product.name}
@@ -145,9 +145,13 @@ function Inventory() {
                                             }}
                                         />
                                     </td>
-                                    <td><strong>{product.name}</strong></td>
-                                    <td>{formatPrice(product.price || 0)}</td>
-                                    <td>
+                                    <td data-label="نام محصول">
+                                        <strong>{product.name}</strong>
+                                    </td>
+                                    <td data-label="قیمت (ریال)">
+                                        {formatPrice(product.price || 0)}
+                                    </td>
+                                    <td data-label="موجودی فعلی">
                                         <div style={{
                                             display: 'flex',
                                             alignItems: 'center',
@@ -237,7 +241,7 @@ function Inventory() {
                                     </td>
                                     {/* 👇 سلول عملیات هم فقط وقتی ستونش هست رندر می‌شه */}
                                     {hasAnyChanges && (
-                                        <td>
+                                        <td data-label="عملیات">
                                             {hasChanged ? (
                                                 <button
                                                     onClick={() => handleStockUpdate(id)}
@@ -255,7 +259,8 @@ function Inventory() {
                                                         justifyContent: 'center',
                                                         transition: 'all 0.2s ease',
                                                         boxShadow: '0 2px 8px rgba(212, 163, 115, 0.25)',
-                                                        padding: 0
+                                                        padding: 0,
+                                                        margin: '0 auto'
                                                     }}
                                                     onMouseEnter={(e) => {
                                                         e.target.style.background = '#c49a6e';

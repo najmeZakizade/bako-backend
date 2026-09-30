@@ -1,7 +1,7 @@
 // src/components/common/InstallPWA.jsx
 import { useEffect, useState } from 'react';
 import { showToast } from '../../utils/toast';
-import './install-pwa.css';
+import '../../styles/install-pwa.css';
 
 export default function InstallPWA() {
     const [deferredPrompt, setDeferredPrompt] = useState(null);

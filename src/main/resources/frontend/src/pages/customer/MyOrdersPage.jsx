@@ -2,8 +2,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
-    getOrdersByPhone,
-    getMyProfile,
+    getMyOrders,
     markOrderAsReceived,
 } from '../../services/api';
 import { showToast } from '../../utils/toast';
@@ -23,61 +22,15 @@ function MyOrdersPage() {
     const navigate = useNavigate();
     const [orders, setOrders] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [userPhone, setUserPhone] = useState(undefined);
     const [updatingId, setUpdatingId] = useState(null);
 
     /* ============================================================
-       🎯 گرفتن شماره تماس — از API، بعد localStorage
-       ============================================================ */
-    useEffect(() => {
-        const fetchPhone = async () => {
-            try {
-                const res = await getMyProfile();
-                const profile = res?.data || null;
-                if (profile?.phone) {
-                    try {
-                        const userStr = localStorage.getItem('user');
-                        const cachedUser = userStr
-                            ? JSON.parse(userStr)
-                            : {};
-                        localStorage.setItem(
-                            'user',
-                            JSON.stringify({ ...cachedUser, ...profile })
-                        );
-                    } catch (e) {
-                        console.warn('⚠️ خطا در آپدیت localStorage:', e);
-                    }
-                    setUserPhone(profile.phone);
-                    return;
-                }
-            } catch (err) {
-                console.warn('⚠️ خطا در دریافت پروفایل:', err.message);
-            }
-
-            try {
-                const userStr = localStorage.getItem('user');
-                const user = userStr ? JSON.parse(userStr) : null;
-                if (user?.phone) {
-                    setUserPhone(user.phone);
-                    return;
-                }
-            } catch (e) {
-                console.warn('⚠️ خطا در خواندن localStorage:', e);
-            }
-
-            setUserPhone(null);
-        };
-
-        fetchPhone();
-    }, []);
-
-    /* ============================================================
-       دریافت سفارشات
+       دریافت سفارشات شخصی (از JWT — بدون فیلتر tenantId)
        ============================================================ */
     const fetchOrders = async () => {
         try {
             setLoading(true);
-            const res = await getOrdersByPhone(userPhone);
+            const res = await getMyOrders();
             const data = res.data || [];
 
             const sorted = [...data].sort((a, b) => {
@@ -97,18 +50,11 @@ function MyOrdersPage() {
     };
 
     useEffect(() => {
-        if (userPhone === undefined) return;
-        if (userPhone === null) {
-            setLoading(false);
-            setOrders([]);
-            return;
-        }
         fetchOrders();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [userPhone]);
+    }, []);
 
     /* ============================================================
-       🆕 تأیید دریافت سفارش
+       تأیید دریافت سفارش
        ============================================================ */
     const handleMarkReceived = async (orderId) => {
         if (updatingId) return;
@@ -117,7 +63,6 @@ function MyOrdersPage() {
         try {
             await markOrderAsReceived(orderId);
 
-            // 🎯 آپدیت local state بدون re-fetch
             setOrders((prev) =>
                 prev.map((o) =>
                     String(o._id || o.id) === String(orderId)
@@ -179,36 +124,6 @@ function MyOrdersPage() {
             <div className="counter-loading">
                 <div className="spinner"></div>
                 <p>⏳ در حال بارگذاری سفارش‌ها...</p>
-            </div>
-        );
-    }
-
-    /* ============================================================
-       رندر — شماره تماس پیدا نشد
-       ============================================================ */
-    if (!userPhone) {
-        return (
-            <div className="empty-cart">
-                <span
-                    style={{
-                        fontSize: '52px',
-                        display: 'block',
-                        marginBottom: '10px',
-                    }}
-                >
-                    🔒
-                </span>
-                <h2>برای مشاهده سفارش‌ها ابتدا وارد شوید</h2>
-                <p>
-                    لطفاً وارد حساب کاربری خود شوید تا سفارش‌هایتان را
-                    ببینید.
-                </p>
-                <button
-                    className="btn-back-shop"
-                    onClick={() => navigate('/login')}
-                >
-                    🔑 ورود به حساب
-                </button>
             </div>
         );
     }
@@ -296,7 +211,7 @@ function MyOrdersPage() {
                                         </span>
                                     </td>
 
-                                    {/* 🆕 ستون دریافت */}
+                                    {/* ستون دریافت */}
                                     <td>
                                         {isReceived ? (
                                             <span className="received-badge">

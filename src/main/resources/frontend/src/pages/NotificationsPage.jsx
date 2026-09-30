@@ -1,6 +1,6 @@
 // src/pages/NotificationsPage.jsx
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import {
     getNotifications,
     markNotificationAsRead,
@@ -24,6 +24,7 @@ function isRead(notif) {
 
 function NotificationsPage() {
     const navigate = useNavigate();
+    const location = useLocation();
     const [notifications, setNotifications] = useState([]);
     const [loading, setLoading] = useState(true);
     const [markingAll, setMarkingAll] = useState(false);
@@ -72,6 +73,17 @@ function NotificationsPage() {
     };
 
     /* ============================================================
+       🆕 تشخیص پنل فعلی از روی URL
+       ============================================================ */
+    const getCurrentPanel = () => {
+        const path = location.pathname;
+        if (path.startsWith('/bakery')) return 'bakery';
+        if (path.startsWith('/admin')) return 'admin';
+        if (path.startsWith('/monitoring')) return 'monitoring';
+        return 'customer';
+    };
+
+    /* ============================================================
        کلیک روی اعلان
        ============================================================ */
     const handleNotificationClick = async (notif) => {
@@ -98,7 +110,21 @@ function NotificationsPage() {
             }
         }
 
-        if (notif.orderId) {
+        if (!notif.orderId) return;
+
+        /* ============================================================
+           🆕 ناوبری هوشمند بر اساس پنل فعلی
+           ============================================================ */
+        const panel = getCurrentPanel();
+
+        if (panel === 'bakery') {
+            navigate(`/bakery/counter/receipt/${notif.orderId}`);
+        } else if (panel === 'monitoring') {
+            navigate(`/monitoring/orders/${notif.orderId}`);
+        } else if (panel === 'admin') {
+            // پنل ادمین فاکتور نداره — فعلاً به لیست تراکنش‌ها برو
+            navigate(`/admin/transactions`);
+        } else {
             navigate(`/receipt/${notif.orderId}`);
         }
     };
@@ -162,7 +188,6 @@ function NotificationsPage() {
                 }
             />
 
-            {/* ===== 🆕 دکمه فقط وقتی unread > 0 نشون داده می‌شه ===== */}
             {notifications.length > 0 && unreadCount > 0 && (
                 <div className="notifications-toolbar">
                     <button

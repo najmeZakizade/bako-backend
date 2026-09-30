@@ -35,9 +35,6 @@ function UserManagement() {
 
     const [deleteTarget, setDeleteTarget] = useState(null);
 
-    // ============================================================
-    //  بارگذاری
-    // ============================================================
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -58,9 +55,6 @@ function UserManagement() {
         fetchData();
     }, []);
 
-    // ============================================================
-    //  فیلتر
-    // ============================================================
     const filteredUsers = useMemo(() => {
         return users.filter((u) => {
             if (roleFilter && u.role !== roleFilter) return false;
@@ -78,9 +72,6 @@ function UserManagement() {
         });
     }, [users, roleFilter, tenantFilter, search]);
 
-    // ============================================================
-    //  تغییر نقش
-    // ============================================================
     const handleRoleChange = async (userId, newRole) => {
         setSaving(true);
         try {
@@ -95,9 +86,6 @@ function UserManagement() {
         }
     };
 
-    // ============================================================
-    //  تغییر نانوایی
-    // ============================================================
     const handleTenantChange = async (userId, newTenantId) => {
         setSaving(true);
         try {
@@ -112,9 +100,6 @@ function UserManagement() {
         }
     };
 
-    // ============================================================
-    //  فعال/غیرفعال
-    // ============================================================
     const handleToggleEnabled = async (user) => {
         setSaving(true);
         try {
@@ -129,9 +114,6 @@ function UserManagement() {
         }
     };
 
-    // ============================================================
-    //  حذف
-    // ============================================================
     const handleDelete = async () => {
         if (!deleteTarget) return;
         setSaving(true);
@@ -234,7 +216,7 @@ function UserManagement() {
                 </div>
             ) : (
                 <div className="sa-table-wrapper">
-                    <table className="sa-table">
+                    <table className="sa-table responsive-cards-table">
                         <thead>
                         <tr>
                             <th>نام کاربری</th>
@@ -249,20 +231,21 @@ function UserManagement() {
                         <tbody>
                         {filteredUsers.map((user) => (
                             <tr key={user.id}>
-                                <td className="sa-cell-username">
+                                <td className="sa-cell-username" data-label="نام کاربری">
                                     {user.username}
                                 </td>
 
-                                <td>{user.fullName || '—'}</td>
+                                <td data-label="نام کامل">
+                                    {user.fullName || '—'}
+                                </td>
 
-                                {/* موبایل — اعداد فارسی با فونت اصلی سایت */}
-                                <td className="sa-cell-phone">
+                                <td className="sa-cell-phone" data-label="موبایل">
                                     {user.phone
                                         ? toPersianNumber(user.phone)
                                         : '—'}
                                 </td>
 
-                                <td>
+                                <td data-label="نقش">
                                     <select
                                         className="sa-inline-select"
                                         value={user.role}
@@ -285,7 +268,7 @@ function UserManagement() {
                                     </select>
                                 </td>
 
-                                <td>
+                                <td data-label="نانوایی">
                                     <select
                                         className="sa-inline-select"
                                         value={user.tenantId || ''}
@@ -314,7 +297,7 @@ function UserManagement() {
                                     </select>
                                 </td>
 
-                                <td>
+                                <td data-label="وضعیت">
                                     <button
                                         type="button"
                                         className={`sa-status-icon ${
@@ -336,8 +319,8 @@ function UserManagement() {
                                     </button>
                                 </td>
 
-                                <td>
-                                    <div className="sa-actions">
+                                <td data-label="عملیات">
+                                    <div className="sa-actions" style={{ justifyContent: 'center' }}>
                                         <button
                                             type="button"
                                             className="sa-btn-icon sa-btn-danger"

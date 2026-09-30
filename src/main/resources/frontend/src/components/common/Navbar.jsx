@@ -27,15 +27,14 @@ function getCurrentPanel(pathname) {
 }
 
 // ============================================================
-//  بج خوش‌آمدگویی (وسط navbar)
-//  🆕 اگه bakeryName داشته باشیم، پیام کامل‌تر می‌شه
+//  بج خوش‌آمدگویی
 // ============================================================
 function WelcomeBadge({ panel, bakeryName }) {
     if (bakeryName) {
         return (
             <div className="navbar-welcome" aria-live="polite">
                 <span className="welcome-message">
-                     <strong>{bakeryName}</strong>، به{' '}
+                    <strong>{bakeryName}</strong>، به{' '}
                     <strong>{panel.label}</strong> خوش آمدید.
                 </span>
             </div>
@@ -52,23 +51,21 @@ function WelcomeBadge({ panel, bakeryName }) {
 }
 
 // ============================================================
-//  بج کاربر (آیکون + اسم)
+//  بج کاربر (فقط یک آواتار + اسم)
 // ============================================================
 function UserBadge({ user }) {
     if (!user) return null;
     const displayName = user.fullName || user.username || 'کاربر';
     return (
         <div className="navbar-user" title={displayName}>
-            <span className="user-avatar" aria-hidden="true">
-                👤
-            </span>
+            <span className="user-avatar" aria-hidden="true"></span>
             <span className="user-name">{displayName}</span>
         </div>
     );
 }
 
 // ============================================================
-//  دکمه سبد خرید (آیکون + بج تعداد)
+//  دکمه سبد خرید
 // ============================================================
 function CartButton({ count }) {
     return (
@@ -103,9 +100,7 @@ function Navbar() {
         localStorage.removeItem('user');
     }
 
-    /* ============================================================
-       🎯 اتصال به Store مرکزی سبد خرید
-       ============================================================ */
+    // ===== اتصال به Store سبد خرید =====
     useEffect(() => {
         initializeCartStore();
         const unsubscribe = subscribeToCartCount((newCount) => {
@@ -114,18 +109,14 @@ function Navbar() {
         return unsubscribe;
     }, []);
 
-    /* ============================================================
-       🆕 دریافت نام نانوایی — فقط برای BAKERY_OWNER و STAFF
-       ============================================================ */
+    // ===== دریافت نام نانوایی برای BAKERY_OWNER و STAFF =====
     useEffect(() => {
-        // اگه کاربر لاگین نیست → پاک کن
         if (!user) {
             setBakeryName(null);
             localStorage.removeItem('bako_tenant_name');
             return;
         }
 
-        // فقط صاحب نانوایی یا کارمند
         const isBakeryRole =
             user.role === 'BAKERY_OWNER' || user.role === 'STAFF';
         if (!isBakeryRole) {
@@ -133,17 +124,14 @@ function Navbar() {
             return;
         }
 
-        // اگه tenantId نداره → نمی‌تونیم بگیریم
         if (!user.tenantId) return;
 
         const fetchBakeryName = async () => {
-            // ۱. اگه قبلاً cached داریم، فوراً نشون بده
             const cached = localStorage.getItem('bako_tenant_name');
             if (cached) {
                 setBakeryName(cached);
             }
 
-            // ۲. از API بگیر
             try {
                 const res = await getBakery(user.tenantId);
                 const tenant = res?.data || null;
@@ -154,37 +142,28 @@ function Navbar() {
                     localStorage.setItem('bako_tenant_name', name);
                 }
             } catch (err) {
-                console.warn(
-                    '⚠️ خطا در دریافت نام نانوایی:',
-                    err.message
-                );
-                // اگه خطا داد ولی cache داشتیم، همون بمونه
+                console.warn('⚠️ خطا در دریافت نام نانوایی:', err.message);
             }
         };
 
         fetchBakeryName();
     }, [user]);
 
-    // در صفحه لاگین هیچ نوار ناوبری نشون نده
+    // در صفحه لاگین Navbar نشان داده نمی‌شود
     if (location.pathname === '/login') {
         return null;
     }
 
     const currentPanel = getCurrentPanel(location.pathname);
 
-    /* ============================================================
-       خروج
-       ============================================================ */
+    // ===== خروج =====
     const handleLogout = () => {
         localStorage.removeItem('token');
         localStorage.removeItem('user');
-        localStorage.removeItem('bako_tenant_name'); // 🆕 پاک کن
+        localStorage.removeItem('bako_tenant_name');
         window.location.href = '/login';
     };
 
-    /* ============================================================
-       رندر
-       ============================================================ */
     return (
         <nav className="navbar navbar-simple">
             {/* لوگو */}
@@ -203,7 +182,7 @@ function Navbar() {
             {/* بج خوش‌آمدگویی */}
             <WelcomeBadge panel={currentPanel} bakeryName={bakeryName} />
 
-            {/* آیکون سبد خرید + بج کاربر + دکمه خروج */}
+            {/* آیکون‌های سمت چپ */}
             {user && (
                 <div className="navbar-actions">
                     <CartButton count={cartCount} />
