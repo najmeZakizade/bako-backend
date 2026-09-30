@@ -60,18 +60,36 @@ public class ProductService {
         log.info("🗑️ محصول با شناسه {} از نانوایی {} حذف شد.", id, tenantId);
     }
 
-    // ===== کاهش موجودی به مقدار مشخص (برای سفارش‌ها) =====
+    // ============================================================
+    //  کاهش موجودی به مقدار مشخص (برای سفارش‌ها)
+    //
+    //  ⭐️ تغییرات امنیتی:
+    //   - چک quantity <= 0 (جلوگیری از سوءاستفاده با مقدار منفی)
+    //   - چک quantity > stock (جلوگیری از منفی شدن موجودی)
+    // ============================================================
     public void decreaseStock(String productId, int quantity, String tenantId) {
-        Product product = getProductOrThrow(productId, tenantId);
 
-        if (product.getStock() < quantity) {
-            throw new RuntimeException("موجودی محصول '" + product.getName() + "' کافی نیست. موجودی فعلی: " + product.getStock());
+        // ⭐️ اعتبارسنجی ورودی — باید مقدار مثبت باشه
+        if (quantity <= 0) {
+            throw new IllegalArgumentException(
+                    "مقدار کاهش موجودی باید مثبت باشد. مقدار دریافتی: " + quantity);
         }
 
-        product.setStock(product.getStock() - quantity);
+        Product product = getProductOrThrow(productId, tenantId);
+
+        // چک کافی بودن موجودی
+        if (product.getStock() < quantity) {
+            throw new RuntimeException("موجودی محصول '" + product.getName()
+                    + "' کافی نیست. موجودی فعلی: " + product.getStock()
+                    + " — درخواست: " + quantity);
+        }
+
+        int oldStock = product.getStock();
+        product.setStock(oldStock - quantity);
         productRepository.save(product);
-        log.info("📉 موجودی محصول {} از {} به {} کاهش یافت.",
-                product.getName(), product.getStock() + quantity, product.getStock());
+
+        log.info("📉 موجودی محصول '{}' از {} به {} کاهش یافت.",
+                product.getName(), oldStock, product.getStock());
     }
 
     // ===== کاهش یک واحد (برای استفاده در جاهای دیگر) =====
@@ -85,9 +103,26 @@ public class ProductService {
         return false;
     }
 
+    // ============================================================
+    //  افزایش موجودی
+    //
+    //  ⭐️ تغییر امنیتی:
+    //   - چک amount <= 0 (جلوگیری از سوءاستفاده با مقدار منفی)
+    // ============================================================
     public void increaseStock(String productId, int amount, String tenantId) {
+
+        // ⭐️ اعتبارسنجی ورودی — باید مقدار مثبت باشه
+        if (amount <= 0) {
+            throw new IllegalArgumentException(
+                    "مقدار افزایش موجودی باید مثبت باشد. مقدار دریافتی: " + amount);
+        }
+
         Product product = getProductOrThrow(productId, tenantId);
-        product.setStock(product.getStock() + amount);
+        int oldStock = product.getStock();
+        product.setStock(oldStock + amount);
         productRepository.save(product);
+
+        log.info("📈 موجودی محصول '{}' از {} به {} افزایش یافت.",
+                product.getName(), oldStock, product.getStock());
     }
 }
