@@ -80,7 +80,11 @@ public class AuthController {
     //  ثبت‌نام (Register)
     //  🎯 چک‌های اعتبارسنجی:
     //   - نام کاربری یکتا
-    //   - 🆕 شماره موبایل یکتا
+    //   - شماره موبایل یکتا
+    //
+    //  🔴 نکته امنیتی مهم:
+    //   نقش همیشه CUSTOMER است. مقدار role از request نادیده گرفته می‌شود.
+    //   ارتقاء به نقش‌های دیگر فقط توسط SUPER_ADMIN از پنل خودش انجام می‌شود.
     // ============================================================
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody Map<String, Object> registerRequest) {
@@ -90,7 +94,7 @@ public class AuthController {
             String username = getString(registerRequest, "username");
             String phone = getString(registerRequest, "phone");
             String password = getString(registerRequest, "password");
-            String role = getString(registerRequest, "role");
+            // 🔴 خط role حذف شد — به‌عمد نادیده گرفته می‌شود
 
             // ===== ۲. اعتبارسنجی پایه =====
             if (username == null || username.trim().isEmpty()) {
@@ -119,7 +123,7 @@ public class AuthController {
             }
 
             // ============================================================
-            //  🆕 ۴. چک تکراری نبودن شماره موبایل
+            //  ۴. چک تکراری نبودن شماره موبایل
             // ============================================================
             if (userService.existsByPhone(trimmedPhone)) {
                 log.warn("⚠️ تلاش برای ثبت‌نام با شماره تکراری: {}", trimmedPhone);
@@ -138,13 +142,10 @@ public class AuthController {
             newUser.setPhone(trimmedPhone);
             newUser.setEmail("");
 
-            // 🎯 نقش پیش‌فرض CUSTOMER
-            String finalRole = (role != null && !role.trim().isEmpty())
-                    ? role.trim().toUpperCase()
-                    : "CUSTOMER";
-            newUser.setRole(finalRole);
+            // 🔴🔴🔴 تغییر امنیتی اصلی: نقش همیشه CUSTOMER
+            newUser.setRole("CUSTOMER");
+            newUser.setAvailableRoles(List.of("CUSTOMER"));
 
-            newUser.setAvailableRoles(List.of(finalRole));
             newUser.setEnabled(true);
             newUser.setTenantId(null);
 
